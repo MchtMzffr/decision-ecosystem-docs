@@ -34,6 +34,19 @@ If you need domain-specific logic:
 3. Keep adapter isolated from cores
 4. Document in `docs/examples/[your-domain]/`
 
+## Real API imports (verified)
+
+Use these import paths in each core repo (CI/docs executable snippet target):
+
+| Core | Import (actual API) |
+|------|---------------------|
+| **mdm-engine** | `from mdm_engine.mdm.decision_engine import DecisionEngine` |
+| **decision-modulation-core** | `from dmc_core.dmc.modulator import modulate` |
+| **ops-health-core** | `from ops_health_core.kill_switch import update_kill_switch` |
+| **evaluation-calibration-core** | `from eval_calibration_core.report.builder import build_report` |
+| **execution-orchestration-core** | `from execution_orchestration_core.orchestrator import execute` |
+| **integration-harness** | `from harness.run_one_step import run_one_step` |
+
 ## Integration Examples
 
 ### Minimal Integration (Single Core)
@@ -42,14 +55,14 @@ If you need domain-specific logic:
 # Pseudocode: conceptual flow. Verify actual API in each core repo.
 # Example: Using only mdm-engine
 from decision_schema import Proposal
-from mdm_engine import generate_proposal  # or actual export, see mdm-engine docs
+from mdm_engine.mdm.decision_engine import DecisionEngine  # real API
 
 context = {
     "state": {...},
     "signals": {...}
 }
-
-proposal = generate_proposal(context)
+engine = DecisionEngine()
+proposal = engine.propose(context)  # or actual method, see mdm-engine docs
 # proposal is a Proposal type from decision-schema
 ```
 
