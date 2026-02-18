@@ -1,6 +1,6 @@
-# Taşıma planı: DOCS_REPO_STRUCTURE §7 tablosuna göre.
-# Format: SOURCE -> DEST (her satır bir taşıma; # ile başlayanlar yorum).
-# Seçenek B ile kullanım: script sadece "->" içeren satırları işler.
+# Move plan: per DOCS_REPO_STRUCTURE §7 table.
+# Format: SOURCE -> DEST (one move per line; lines starting with # are comments).
+# Option B usage: script only processes lines containing "->".
 SESSION_COMPLETE_SUMMARY.md -> archive/2026-02-19/SESSION_COMPLETE_SUMMARY.md
 FINAL_SESSION_SUMMARY.md -> archive/2026-02-19/FINAL_SESSION_SUMMARY.md
 RELEASE_COMPLETE_SUMMARY.md -> archive/2026-02-19/RELEASE_COMPLETE_SUMMARY.md

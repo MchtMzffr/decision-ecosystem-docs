@@ -1,3 +1,8 @@
+<!--
+Decision Ecosystem — decision-ecosystem-docs
+Copyright (c) 2026 Mücahit Muzaffer Karafil (MchtMzffr)
+SPDX-License-Identifier: MIT
+-->
 # decision-ecosystem-docs — Static Analysis Remediation (2026-02-18)
 
 **Scope:** SSOT for governance, release, and verification; reduce contradiction, drift, and broken references.

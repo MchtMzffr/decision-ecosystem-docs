@@ -1,3 +1,8 @@
+<!--
+Decision Ecosystem — decision-ecosystem-docs
+Copyright (c) 2026 Mücahit Muzaffer Karafil (MchtMzffr)
+SPDX-License-Identifier: MIT
+-->
 # GitHub Releases Guide — Quick Reference
 
 **Purpose:** Create GitHub Releases for patch releases  

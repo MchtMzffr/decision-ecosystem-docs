@@ -13,6 +13,7 @@
 | **decision-modulation-core** | `main` | Guards/risk |
 | **ops-health-core** | `main` | Safety signals |
 | **evaluation-calibration-core** | `main` | Metrics/reports |
+| **execution-orchestration-core** | `main` | Execution orchestration |
 | **integration-harness** | `main` | Integration layer |
 
 ### Rationale

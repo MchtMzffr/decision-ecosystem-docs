@@ -131,7 +131,7 @@ MDD = max(DD_t for t ∈ [0, T])
 ```
 SR = R̄ / σ
 ```
-Interpretation: mean outcome per unit variability; domain-agnostic. (In some domains this is known as a Sharpe-like ratio; we keep the formula generic.)
+Interpretation: mean outcome per unit variability; domain-agnostic. (In some domains this is known as a Sharpe-like ratio; we keep the formula and core vocabulary generic. Domain-specific names are for illustration only.)
 
 ### Guard Compliance Rate
 ```

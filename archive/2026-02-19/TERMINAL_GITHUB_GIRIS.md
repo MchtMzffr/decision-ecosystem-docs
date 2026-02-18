@@ -1,35 +1,35 @@
-# Terminal Üzerinden GitHub Girişi
+# GitHub Login from the Terminal
 
-## Yöntem 1: GitHub CLI (Önerilen)
+## Method 1: GitHub CLI (recommended)
 
-GitHub CLI yüklüyse tarayıcı veya token ile giriş yaparsınız.
+If GitHub CLI is installed, you sign in via browser or token.
 
-### Kurulum (yoksa)
+### Install (if missing)
 ```powershell
 winget install GitHub.cli
 ```
-Veya: https://cli.github.com/
+Or: https://cli.github.com/
 
-### Giriş (gh yüklüyse)
+### Sign in (when gh is installed)
 ```powershell
 gh auth login
 ```
-**`gh` komutu tanınmıyorsa:** GitHub CLI yüklü değildir. Önce kurun: `winget install GitHub.cli` veya [cli.github.com](https://cli.github.com/). Kurulumdan sonra **yeni bir terminal** açıp `gh auth login` çalıştırın.  
-Alternatif: **Yöntem 2** (Git HTTPS + Personal Access Token) ile push yapabilirsiniz; `gh` gerekmez.
+**If `gh` is not recognized:** GitHub CLI is not installed. Install it first: `winget install GitHub.cli` or [cli.github.com](https://cli.github.com/). After installing, open a **new terminal** and run `gh auth login`.  
+Alternative: use **Method 2** (Git HTTPS + Personal Access Token) for push; `gh` is not required.
 
-- "GitHub.com" seçin  
-- "HTTPS" seçin  
-- "Login with a web browser" veya "Paste an authentication token" seçin  
-- Tarayıcı açılırsa kodu girin; token kullanacaksanız token’ı yapıştırın  
+- Choose "GitHub.com"  
+- Choose "HTTPS"  
+- Choose "Login with a web browser" or "Paste an authentication token"  
+- If the browser opens, enter the code; if using a token, paste the token  
 
-### Kontrol
+### Check status
 ```powershell
 gh auth status
 ```
 
-### Kişisel hesaptan (MchtMzffr) tüm ekosistem repolarını klonlama
+### Cloning all ecosystem repos from a personal account (e.g. MchtMzffr)
 
-Repolar **MchtMzffr** altında mevcutsa (sizin oluşturduğunuz veya fork), aynı klasörde sırayla:
+If the repos exist under **MchtMzffr** (created or forked by you), run in the same folder:
 
 ```powershell
 gh repo clone MchtMzffr/decision-schema
@@ -39,63 +39,63 @@ gh repo clone MchtMzffr/ops-health-core
 gh repo clone MchtMzffr/evaluation-calibration-core
 ```
 
-Önce ilgili klasöre gidin (örn. masaüstü):
+Change to the target folder first (e.g. Desktop):
 ```powershell
 cd $env:USERPROFILE\Desktop
 ```
 
 ---
 
-## Yöntem 2: Git HTTPS (Token ile)
+## Method 2: Git HTTPS (with token)
 
-Push/pull sırasında Git sizden kullanıcı adı ve şifre ister. GitHub artık **şifre kabul etmez**; **Personal Access Token (PAT)** kullanmanız gerekir.
+Git will ask for username and password on push/pull. GitHub no longer **accepts account passwords**; you must use a **Personal Access Token (PAT)**.
 
-### 1) Token oluşturma
-1. GitHub → Sağ üst profil → **Settings**
-2. Sol menü → **Developer settings** → **Personal access tokens** → **Tokens (classic)** veya **Fine-grained tokens**
+### 1) Create a token
+1. GitHub → top-right profile → **Settings**
+2. Left menu → **Developer settings** → **Personal access tokens** → **Tokens (classic)** or **Fine-grained tokens**
 3. **Generate new token**
-4. **repo** (veya gerekli scope’lar) işaretleyin
-5. Token’ı kopyalayın (bir kez gösterilir; kaydedin)
+4. Check **repo** (or the scopes you need)
+5. Copy the token (it is shown once; store it safely)
 
-### 2) İlk push’ta giriş
-Aşağıdaki komutlardan birini çalıştırdığınızda Git sizden ister:
-- **Username:** GitHub kullanıcı adınız (örn. `MchtMzffr` veya `MeetlyTR`)
-- **Password:** Şifre değil, **oluşturduğunuz Personal Access Token**
+### 2) Sign in on first push
+When you run a push command, Git will prompt:
+- **Username:** Your GitHub username (e.g. `MchtMzffr` or `MeetlyTR`)
+- **Password:** Not your password — use the **Personal Access Token** you created
 
 ```powershell
 cd "c:\Users\tsgal\Desktop\Decision Ecosystem\decision-schema"
 git push origin main
 ```
 
-### 3) Bilgileri saklamak (tekrar sormasın)
-Windows’ta credential helper ile bir kez girince saklanır:
+### 3) Storing credentials (so you are not asked again)
+On Windows, the credential helper can store them after the first entry:
 
 ```powershell
 git config --global credential.helper manager
 ```
-Sonra ilk `git push` veya `git pull`’da kullanıcı adı + token girilir; sonrakilerde sorulmaz.
+Then on the first `git push` or `git pull` you enter username + token; later runs will not prompt.
 
 ---
 
-## Yöntem 3: SSH Key
+## Method 3: SSH key
 
-SSH ile şifre/token girmeden push/pull yapmak için:
+To push/pull without entering password/token using SSH:
 
-### 1) SSH key oluşturma
+### 1) Create SSH key
 ```powershell
 ssh-keygen -t ed25519 -C "mucahit.muzaffer@gmail.com" -f "$env:USERPROFILE\.ssh\id_ed25519_github"
 ```
-Enter’a basıp (passphrase isteğe bağlı) bitirin.
+Press Enter (passphrase optional) to finish.
 
-### 2) Public key’i GitHub’a ekleme
+### 2) Add public key to GitHub
 ```powershell
 Get-Content "$env:USERPROFILE\.ssh\id_ed25519_github.pub"
 ```
-Çıkan satırı kopyalayın.  
-GitHub → **Settings** → **SSH and GPG keys** → **New SSH key** → yapıştırın.
+Copy the output line.  
+GitHub → **Settings** → **SSH and GPG keys** → **New SSH key** → paste.
 
-### 3) Remote’u SSH yapma
-Mevcut remote HTTPS ise SSH’a çevirin:
+### 3) Switch remote to SSH
+If the current remote is HTTPS, switch to SSH:
 ```powershell
 cd "c:\Users\tsgal\Desktop\Decision Ecosystem\decision-schema"
 git remote set-url origin git@github.com:MeetlyTR/decision-schema.git
@@ -104,13 +104,13 @@ git push origin main
 
 ---
 
-## Hızlı Özet
+## Quick reference
 
-| Amaç | Komut |
+| Goal | Command |
 |------|--------|
-| GitHub CLI ile giriş | `gh auth login` |
-| Giriş durumunu kontrol | `gh auth status` |
-| Credential’ı saklamak | `git config --global credential.helper manager` |
-| İlk kez push (HTTPS) | `git push origin main` → username + **Token** girin |
+| Sign in with GitHub CLI | `gh auth login` |
+| Check sign-in status | `gh auth status` |
+| Store credentials | `git config --global credential.helper manager` |
+| First push (HTTPS) | `git push origin main` → enter username + **Token** |
 
-**Önemli:** Token’ı kimseyle paylaşmayın; terminale yapıştırırken başkası görmesin.
+**Important:** Do not share the token; ensure no one can see it when you paste it in the terminal.

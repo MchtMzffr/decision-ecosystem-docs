@@ -1,60 +1,65 @@
-# decision-ecosystem-docs — Dosya Yapısı Standardı
+<!--
+Decision Ecosystem — decision-ecosystem-docs
+Copyright (c) 2026 Mücahit Muzaffer Karafil (MchtMzffr)
+SPDX-License-Identifier: MIT
+-->
+# decision-ecosystem-docs — File Structure Standard
 
-**Amaç:** Bu repo ekosistem genelinde **governance, release ve verification** için tek kaynak (SSOT) olsun. Her dosyayı root’a atmak yerine net bir yapı ve kural seti uygulanır.
+**Purpose:** This repo is the single source of truth (SSOT) for ecosystem-wide **governance, release, and verification**. A clear structure and rule set is applied instead of placing every file at root.
 
-**İlkeler:** CURRENT (güncel, tek bakışta bulunur) vs ARCHIVE (tarihsel snapshot); root sadece “yaşayan” dokümanlar; tekrarlar ve eski raporlar archive’da.
-
----
-
-## 1. Repo amacı (net)
-
-- **Governance:** Branch/tag/release kuralları (INV-REL-*, INV-GOV-*)
-- **Release & verification:** Checklist, contract matrix, tag politikası
-- **Mimari & entegrasyon:** Ekosistem genel bakış, formüller, entegrasyon rehberi
-- **Güncel durum:** Roadmap ve tamamlanan işler için **tek** özet dosyası
-
-Bu amaca hizmet etmeyen veya “bir oturumun çıktısı” olan dokümanlar root’ta **kalıcı** yer almaz; archive’a taşınır.
+**Principles:** CURRENT (live, at-a-glance) vs ARCHIVE (historical snapshot); root holds only "living" documents; duplicates and old reports go to archive.
 
 ---
 
-## 2. Kök dizin (root) kuralları
+## 1. Repo purpose (clear)
 
-### 2.1 Root’ta bulunabilecek dosyalar (izin listesi)
+- **Governance:** Branch/tag/release rules (INV-REL-*, INV-GOV-*)
+- **Release & verification:** Checklist, contract matrix, tag policy
+- **Architecture & integration:** Ecosystem overview, formulas, integration guide
+- **Current status:** A **single** summary file for roadmap and completed work
 
-Sadece aşağıdaki kategorilerde ve isimlendirmeyle dosya **root’ta** tutulur. README “Current documentation” bölümü **yalnızca** bu dosyalara link verir.
-
-| Kategori | Dosya(lar) | Açıklama |
-|----------|------------|----------|
-| **Release & verification** | `GITHUB_RELEASES_GUIDE.md`, `RELEASE_VERIFICATION_CHECKLIST.md`, `TAG_GOVERNANCE.md`, `ECOSYSTEM_CONTRACT_MATRIX.md` | Release süreci ve invariant doğrulama |
-| **CI & operations** | `CI_RELIABILITY.md` | CI flakiness ve çözümler |
-| **Governance** | `BRANCH_GOVERNANCE.md` | Branch kuralları; dev vs CI fallback |
-| **Mimari & rehber** | `ARCHITECTURE.md`, `FORMULAS.md`, `INTEGRATION_GUIDE.md` | Ekosistem mimarisi, formüller, entegrasyon (DOC TRIO referansı) |
-| **Roadmap & durum** | `NEXT_STEPS_ROADMAP.md`, `TASK_COMPLETION_SUMMARY.md` | Tek “ileride ne var” + tek “ne bitti” özeti |
-| **Analiz (güncel)** | En fazla **1–2** “current” analiz raporu (örn. `ACADEMIC_STATIC_ANALYSIS_REPORT.md` veya `ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md`) | Eski raporlar archive’a taşınır |
-| **Meta** | `README.md`, `DOCS_REPO_STRUCTURE.md` (bu dosya) | Repo tanımı ve bu standardın kendisi |
-
-### 2.2 Root’ta olmaması gerekenler
-
-- Oturum/session özetleri (örn. `SESSION_COMPLETE_SUMMARY.md`, `FINAL_SESSION_SUMMARY.md`)
-- Tek seferlik migration/closure raporları (örn. `MIGRATION_SUMMARY.md`, `P0_CLOSURE_CHECKLIST.md`)
-- Sprint/board dosyaları (örn. `P2_SPRINT_BOARD_*.md`, `P3_KICKOFF_CHECKLIST.md`) — tamamlandıktan sonra archive
-- Tarihsel doğrulama snapshot’ları (örn. `FINAL_RELEASE_VERIFICATION.md`, `RELEASE_VERIFICATION_COMPLETE.md`) — sadece `archive/YYYY-MM-DD/` altında
-- Kişisel/operasyonel notlar (örn. `TERMINAL_GITHUB_GIRIS.md`, `GIT_KIMLIK_KONTROL.md`, `REPO_YONETIMI_VE_KATKIDA_BULUNANLAR.md`) — isteğe bağlı `docs/operational/` veya archive
-- Eski remediation/summary dosyaları (örn. `VERSION_BUMP_SUMMARY.md`, `EXECUTION_ORCHESTRATION_CORE_CREATED.md`) — archive
-
-**Kural:** Yeni bir “özet” veya “rapor” yazıldığında: “Bu root’ta kalıcı mı?” sorusu sorulur. Kalıcı değilse `archive/YYYY-MM-DD/` altında açılır veya taşınır.
+Documents that do not serve this purpose or are "one-off session output" do **not** live permanently at root; they are moved to archive.
 
 ---
 
-## 3. Klasör yapısı (standart)
+## 2. Root directory rules
+
+### 2.1 Files allowed at root (allowlist)
+
+Only files in the categories below (with the given names) may live at **root**. The README "Current documentation" section links **only** to these files.
+
+| Category | File(s) | Description |
+|----------|---------|-------------|
+| **Release & verification** | `GITHUB_RELEASES_GUIDE.md`, `RELEASE_VERIFICATION_CHECKLIST.md`, `TAG_GOVERNANCE.md`, `ECOSYSTEM_CONTRACT_MATRIX.md` | Release process and invariant verification |
+| **CI & operations** | `CI_RELIABILITY.md` | CI flakiness and mitigations |
+| **Governance** | `BRANCH_GOVERNANCE.md` | Branch rules; dev vs CI fallback |
+| **Architecture & guide** | `ARCHITECTURE.md`, `FORMULAS.md`, `INTEGRATION_GUIDE.md` | Ecosystem architecture, formulas, integration (DOC TRIO reference) |
+| **Roadmap & status** | `NEXT_STEPS_ROADMAP.md`, `TASK_COMPLETION_SUMMARY.md` | Single "what's next" + single "what's done" summary |
+| **Analysis (current)** | At most **1–2** current analysis reports (e.g. `ACADEMIC_STATIC_ANALYSIS_REPORT.md`, `ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md`) | Older reports are moved to archive |
+| **Meta** | `README.md`, `DOCS_REPO_STRUCTURE.md` (this file) | Repo description and this standard itself |
+
+### 2.2 What must not stay at root
+
+- Session/summary outputs (e.g. `SESSION_COMPLETE_SUMMARY.md`, `FINAL_SESSION_SUMMARY.md`)
+- One-off migration/closure reports (e.g. `MIGRATION_SUMMARY.md`, `P0_CLOSURE_CHECKLIST.md`)
+- Sprint/board files (e.g. `P2_SPRINT_BOARD_*.md`, `P3_KICKOFF_CHECKLIST.md`) — move to archive when done
+- Historical verification snapshots (e.g. `FINAL_RELEASE_VERIFICATION.md`, `RELEASE_VERIFICATION_COMPLETE.md`) — only under `archive/YYYY-MM-DD/`
+- Personal/operational notes (e.g. terminal or repo management guides) — optional `docs/operational/` or archive
+- Old remediation/summary files (e.g. `VERSION_BUMP_SUMMARY.md`, `EXECUTION_ORCHESTRATION_CORE_CREATED.md`) — archive
+
+**Rule:** When adding a new "summary" or "report", ask: "Is this permanent at root?" If not, create or move it under `archive/YYYY-MM-DD/`.
+
+---
+
+## 3. Folder structure (standard)
 
 ```
 decision-ecosystem-docs/
-├── README.md                          # Giriş; sadece CURRENT + Archive linki
-├── DOCS_REPO_STRUCTURE.md             # Bu standard (meta)
-├── ARCHITECTURE.md                    # Ekosistem mimarisi
-├── FORMULAS.md                        # Formüller / invariant referansı
-├── INTEGRATION_GUIDE.md               # Entegrasyon rehberi
+├── README.md                          # Entry; CURRENT + Archive links only
+├── DOCS_REPO_STRUCTURE.md             # This standard (meta)
+├── ARCHITECTURE.md                    # Ecosystem architecture
+├── FORMULAS.md                        # Formulas / invariant reference
+├── INTEGRATION_GUIDE.md               # Integration guide
 ├── GITHUB_RELEASES_GUIDE.md
 ├── RELEASE_VERIFICATION_CHECKLIST.md
 ├── TAG_GOVERNANCE.md
@@ -63,118 +68,116 @@ decision-ecosystem-docs/
 ├── CI_RELIABILITY.md
 ├── NEXT_STEPS_ROADMAP.md
 ├── TASK_COMPLETION_SUMMARY.md
-├── [en fazla 1–2 güncel analiz raporu]
+├── [at most 1–2 current analysis reports]
 │
-├── archive/                           # Tarihsel snapshot’lar
-│   └── YYYY-MM-DD/                    # Tarih bazlı (örn. 2026-02-17)
-│       ├── README.md                  # O tarih için içerik özeti
-│       └── *.md                       # O güne ait raporlar/özetler
+├── archive/                           # Historical snapshots
+│   └── YYYY-MM-DD/                    # Date-based (e.g. 2026-02-17)
+│       ├── README.md                  # Content summary for that date
+│       └── *.md                       # Reports/summaries for that date
 │
-├── docs/                              # Opsiyonel: ek teknik doküman
-│   └── [ör. STATIC_ANALYSIS_REMEDIATION_*.md]
+├── docs/                              # Optional: extra technical docs
+│   └── [e.g. STATIC_ANALYSIS_REMEDIATION_*.md]
 │
-└── examples/                          # Domain örnekleri rehberi (varsa)
+└── examples/                          # Domain examples guide (if any)
     └── README.md
 ```
 
-### 3.1 Archive kuralı (INV-DOC-2)
+### 3.1 Archive rule (INV-DOC-2)
 
-- **archive/YYYY-MM-DD/** = Belirli bir tarihe ait snapshot’lar (release verification, session summary, migration raporu vb.).
-- README’de “Archive” bölümü sadece `archive/` alt dizinlerine link verir; root’ta “Final Release Verification” gibi eski tek dosya **kalmaz**.
-- Yeni tarihli snapshot için yeni klasör: `archive/2026-02-19/` gibi.
+- **archive/YYYY-MM-DD/** = Snapshots for a given date (release verification, session summary, migration report, etc.).
+- The README "Archive" section links only to subdirs under `archive/`; old single files like "Final Release Verification" do **not** stay at root.
+- For a new dated snapshot, create a new folder: e.g. `archive/2026-02-19/`.
 
-### 3.2 Root’ta “Analysis & reports”
+### 3.2 "Analysis & reports" at root
 
-- README’de listelenen “Analysis & reports” **en fazla 1–2** güncel rapor olsun.
-- Yeni analiz raporu eklendiğinde, eski olan `archive/YYYY-MM-DD/` altına taşınır (veya silinmez, sadece README linki kaldırılır ve dosya archive’a taşınır).
-
----
-
-## 4. İsimlendirme kuralları
-
-| Tür | Kural | Örnek |
-|-----|--------|--------|
-| Governance / süreç | `BÜYÜK_HARF_SNAKE_CASE.md` | `RELEASE_VERIFICATION_CHECKLIST.md` |
-| Tek tarihli snapshot | `archive/YYYY-MM-DD/` içinde, anlamlı isim | `FINAL_RELEASE_VERIFICATION.md` |
-| Analiz raporu | Açıklayıcı, tek tip | `ACADEMIC_STATIC_ANALYSIS_REPORT.md` |
-| Yeni rapor eklerken | Root’u şişirmemek; mümkünse archive | `archive/2026-02-19/STATIC_ANALYSIS_P0_P1_APPLIED.md` |
+- The "Analysis & reports" listed in the README should be **at most 1–2** current reports.
+- When a new analysis report is added, the previous one is moved under `archive/YYYY-MM-DD/` (or the README link is removed and the file is moved to archive).
 
 ---
 
-## 5. README ile uyum (INV-DOC-1)
+## 4. Naming conventions
 
-- README “Current documentation” bölümü **sadece** bu standarda uyan root dosyalarını listeler.
-- “Archive” bölümü sadece `archive/YYYY-MM-DD/` gibi dizinlere link verir.
-- Eski veya tekrarlayan dokümanlar README’den çıkarılır (dosya archive’da kalabilir).
-
----
-
-## 6. Özet (tek cümle)
-
-**Root = sadece yaşayan, tek kaynak dokümanlar; oturum özetleri, migration raporları ve tarihsel snapshot’lar `archive/YYYY-MM-DD/` altında.**
+| Type | Rule | Example |
+|------|------|---------|
+| Governance / process | `UPPER_SNAKE_CASE.md` | `RELEASE_VERIFICATION_CHECKLIST.md` |
+| Single-date snapshot | Under `archive/YYYY-MM-DD/`, meaningful name | `FINAL_RELEASE_VERIFICATION.md` |
+| Analysis report | Descriptive, consistent | `ACADEMIC_STATIC_ANALYSIS_REPORT.md` |
+| When adding new report | Prefer archive; avoid inflating root | `archive/2026-02-19/STATIC_ANALYSIS_P0_P1_APPLIED.md` |
 
 ---
 
-## 7. Mevcut dosyaların sınıflandırması (uygulama rehberi)
+## 5. README alignment (INV-DOC-1)
 
-Standarda göre root’ta **kalması gerekenler** ve **archive’a taşınacaklar** aşağıda. Taşıma yapılırken `archive/2026-02-19/` (veya ilgili tarih) kullanılabilir.
+- The README "Current documentation" section lists **only** root files that comply with this standard.
+- The "Archive" section links only to directories like `archive/YYYY-MM-DD/`.
+- Obsolete or duplicate documents are removed from the README (the file may remain in archive).
 
-### Root’ta kalsın (CURRENT)
+---
 
-| Dosya | Sebep |
-|-------|--------|
+## 6. Summary (one sentence)
+
+**Root = only living, single-source documents; session summaries, migration reports, and historical snapshots live under `archive/YYYY-MM-DD/`.**
+
+---
+
+## 7. Current file classification (implementation guide)
+
+Per this standard, below is what **stays at root** and what **moves to archive**. Use `archive/2026-02-19/` (or the relevant date) when performing the move.
+
+### Keep at root (CURRENT)
+
+| File | Reason |
+|------|--------|
 | `README.md` | Meta |
-| `DOCS_REPO_STRUCTURE.md` | Bu standard |
-| `ARCHITECTURE.md`, `FORMULAS.md`, `INTEGRATION_GUIDE.md` | DOC TRIO referansı |
+| `DOCS_REPO_STRUCTURE.md` | This standard |
+| `ARCHITECTURE.md`, `FORMULAS.md`, `INTEGRATION_GUIDE.md` | DOC TRIO reference |
 | `GITHUB_RELEASES_GUIDE.md`, `RELEASE_VERIFICATION_CHECKLIST.md`, `TAG_GOVERNANCE.md`, `ECOSYSTEM_CONTRACT_MATRIX.md` | Release & verification |
 | `BRANCH_GOVERNANCE.md` | Governance |
 | `CI_RELIABILITY.md` | CI & operations |
-| `NEXT_STEPS_ROADMAP.md`, `TASK_COMPLETION_SUMMARY.md` | Roadmap & durum |
-| `ACADEMIC_STATIC_ANALYSIS_REPORT.md`, `ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md` | En fazla 2 analiz (güncel) |
-| `TAG_ALIGNMENT_COMPLETE.md` | Tarihsel not ile uyumlu; isteğe bağlı archive’a taşınabilir |
+| `NEXT_STEPS_ROADMAP.md`, `TASK_COMPLETION_SUMMARY.md` | Roadmap & status |
+| `ACADEMIC_STATIC_ANALYSIS_REPORT.md`, `ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md` | At most 2 analysis (current) |
+| `TAG_ALIGNMENT_COMPLETE.md` | Aligns with historical note; optionally move to archive |
 
-### Archive’a taşınsın (archive/2026-02-19 veya uygun tarih)
+### Move to archive (archive/2026-02-19 or appropriate date)
 
-| Dosya | Önerilen hedef |
-|-------|-----------------|
-| `SESSION_COMPLETE_SUMMARY.md`, `FINAL_SESSION_SUMMARY.md`, `RELEASE_COMPLETE_SUMMARY.md` | archive/YYYY-MM-DD/ |
-| `MIGRATION_SUMMARY.md`, `FINAL_MIGRATION_STATUS.md`, `BRANCH_MIGRATION_COMPLETE.md`, `BRANCH_MIGRATION_FINAL_STATUS.md`, `INTEGRATION_HARNESS_BRANCH_MIGRATION.md` | archive/ |
-| `P0_CLOSURE_CHECKLIST.md`, `P2_SPRINT_BOARD_*.md`, `P3_*.md`, `P2_GITHUB_ISSUE_PACK.md` | archive/ |
-| `VERSION_BUMP_SUMMARY.md`, `EXECUTION_ORCHESTRATION_CORE_CREATED.md`, `WORKFLOW_RUN_DELETION_SAFE.md`, `CI_MASTER_BRANCH_LEGACY_RUNS.md`, `CI_WORKFLOW_MASTER_BRANCH_ISSUE.md` | archive/ |
-| `REMOTE_VERIFICATION_*.md`, `INTEGRATION_HARNESS_CASE_SENSITIVITY_FIX.md` | archive/ |
-| `STATIC_ANALYSIS_FIXES_REPORT.md` | archive/ (veya docs/; güncel analiz 2 tane kalınca üçüncüsü archive) |
-| `AUDIT_REMEDIATION_PLAN.md` | archive/ veya docs/ |
-| `TERMINAL_GITHUB_GIRIS.md`, `GIT_KIMLIK_KONTROL.md`, `REPO_YONETIMI_VE_KATKIDA_BULUNANLAR.md` | archive/ veya docs/operational/ |
-| `ECOSYSTEM_ROADMAP_AND_RECOMMENDATIONS.md` | İçerik NEXT_STEPS_ROADMAP ile birleştirilip tek roadmap kalabilir; eski sürüm archive’a |
+| File | Suggested destination |
+|------|------------------------|
+| Session/complete summaries, migration/branch migration reports | archive/YYYY-MM-DD/ |
+| P0/P2/P3 closure, sprint board, issue pack | archive/ |
+| Version bump, execution core created, workflow, CI legacy docs | archive/ |
+| Remote verification, integration harness fixes | archive/ |
+| Static analysis fixes, audit remediation | archive/ or docs/ |
+| Terminal/Git/repo management guides | archive/ or docs/operational/ |
+| Ecosystem roadmap (older version) | Merge into NEXT_STEPS_ROADMAP; old version to archive |
 
-Taşıma sonrası README “Current documentation” bölümünden kaldırılan dosyaların linkleri silinir; Archive bölümüne ilgili `archive/YYYY-MM-DD/` linki eklenir. Geçici taşıma planı `archive_move_plan_2026-02-19.txt` taşıma tamamlanınca silinir veya archive’a alınır (allowlist’te değildir).
+After the move, remove links to moved files from the README "Current documentation" section and add the relevant `archive/YYYY-MM-DD/` link to the Archive section. The temporary move plan file `archive_move_plan_2026-02-19.txt` is deleted or moved to archive when done (it is not on the allowlist).
 
 ---
 
-## 8. Invariant kapıları (CI’da kanıtlanabilir)
+## 8. Invariant gates (CI-verifiable)
 
-Root ve README kuralları CI ile zorunlu tutulur. Tek kaynak: `ROOT_ALLOWLIST.txt` (CI script bu listeyi okur).
+Root and README rules are enforced in CI. Single source: `ROOT_ALLOWLIST.txt` (CI script reads this list).
 
-| Invariant | Kural | Metrik |
-|-----------|--------|--------|
-| **INV-DOC-ROOT-ALLOW-1** | Root’ta yalnız allowlist dosyaları + `.github/`, `archive/`, `docs/`, `examples/` | root_non_allowed_count == 0 |
-| **INV-DOC-ARCHIVE-SNAPSHOT-1** | `archive/` altında sadece `YYYY-MM-DD/` formatında dizin | regex dışı klasör sayısı 0 |
-| **INV-DOC-README-CURRENT-1** | README “Current documentation” yalnız root allowlist’teki dosyalara link verir | root dışı link 0 |
-| **INV-DOC-ANALYSIS-LIMIT-1** | Root’ta en fazla 2 analiz/rapor dosyası (`*_REPORT.md`, `*_ANALYSIS*.md`) | analysis_report_count ≤ 2 |
+| Invariant | Rule | Metric |
+|-----------|------|--------|
+| **INV-DOC-ROOT-ALLOW-1** | Only allowlist files + `.github/`, `archive/`, `docs/`, `examples/` at root | root_non_allowed_count == 0 |
+| **INV-DOC-ARCHIVE-SNAPSHOT-1** | Only `YYYY-MM-DD/` format dirs under `archive/` | count of non-matching dirs == 0 |
+| **INV-DOC-README-CURRENT-1** | README "Current documentation" links only to root allowlist files | root-external link count == 0 |
+| **INV-DOC-ANALYSIS-LIMIT-1** | At most 2 analysis/report files at root (`*_REPORT.md`, `*_ANALYSIS*.md`) | analysis_report_count ≤ 2 |
 
-- **Workflow:** `.github/workflows/docs_structure_guard.yml` (push/PR to `main`).
-- **Script:** `.github/scripts/check_docs_root.py` (allowlist, archive path, README linkler, analiz sayısı).
-- Allowlist’i güncellerken `ROOT_ALLOWLIST.txt` düzenlenir; script bu dosyayı tek kaynak kabul eder.
+- **Workflow:** `.github/workflows/docs_structure_guard.yml` (on push/PR to `main`).
+- **Script:** `.github/scripts/check_docs_root.py` (allowlist, archive path, README links, analysis count).
+- When updating the allowlist, edit `ROOT_ALLOWLIST.txt`; the script treats it as the single source.
 
 ---
 
-## 9. Arşiv taşıma operasyonu
+## 9. Archive move operation
 
-Tablo (§7) tek kaynaktır. Taşıma iki şekilde yapılabilir:
+The table (§7) is the single source. The move can be done in two ways:
 
-- **Seçenek A (elle):** `git checkout -b chore/archive-YYYY-MM-DD`, `mkdir -p archive/YYYY-MM-DD`, sonra her dosya için `git mv <dosya> archive/YYYY-MM-DD/`.
-- **Seçenek B (plan dosyası):** `archive_move_plan_YYYY-MM-DD.txt` içinde satır formatı `SOURCE -> archive/YYYY-MM-DD/SOURCE`. Sonra:
+- **Option A (manual):** `git checkout -b chore/archive-YYYY-MM-DD`, `mkdir -p archive/YYYY-MM-DD`, then `git mv <file> archive/YYYY-MM-DD/` for each file.
+- **Option B (plan file):** In `archive_move_plan_YYYY-MM-DD.txt`, line format `SOURCE -> archive/YYYY-MM-DD/SOURCE`. Then:
   - `python .github/scripts/run_archive_move_from_plan.py archive_move_plan_2026-02-19.txt`
-  - Taşıma bitince plan dosyası silinir veya archive’a alınır (root allowlist’te değildir).
+  - When the move is done, delete the plan file or move it to archive (it is not on the root allowlist).
 
-Taşıma sonrası `python .github/scripts/check_docs_root.py` ile invariant’lar doğrulanır; CI yeşil olmalıdır.
+After the move, run `python .github/scripts/check_docs_root.py` to verify invariants; CI should be green.

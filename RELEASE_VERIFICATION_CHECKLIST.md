@@ -1,3 +1,8 @@
+<!--
+Decision Ecosystem — decision-ecosystem-docs
+Copyright (c) 2026 Mücahit Muzaffer Karafil (MchtMzffr)
+SPDX-License-Identifier: MIT
+-->
 # Release Verification Checklist — Quick Reference
 
 **Purpose:** 2-minute verification of release invariants  

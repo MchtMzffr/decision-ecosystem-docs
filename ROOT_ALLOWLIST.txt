@@ -1,6 +1,6 @@
-# INV-DOC-ROOT-ALLOW-1: Root'ta bulunabilecek dosyalar (tek kaynak).
-# CI: .github/scripts/check_docs_root.py bu listeyi kullanır.
-# Yorum satırları ve boş satırlar yok sayılır.
+# INV-DOC-ROOT-ALLOW-1: Files allowed at repo root (single source of truth).
+# CI: .github/scripts/check_docs_root.py reads this list.
+# Comment lines and blank lines are ignored.
 ROOT_ALLOWLIST.txt
 README.md
 DOCS_REPO_STRUCTURE.md

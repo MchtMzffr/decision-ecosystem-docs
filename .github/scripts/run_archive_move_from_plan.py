@@ -1,7 +1,10 @@
+# Decision Ecosystem — decision-ecosystem-docs
+# Copyright (c) 2026 Mücahit Muzaffer Karafil (MchtMzffr)
+# SPDX-License-Identifier: MIT
 #!/usr/bin/env python3
 """
-Seçenek B: archive_move_plan_YYYY-MM-DD.txt dosyasından git mv ile taşıma.
-Repo root'tan çalıştır: python .github/scripts/run_archive_move_from_plan.py archive_move_plan_2026-02-19.txt
+Option B: Run git mv from archive_move_plan_YYYY-MM-DD.txt.
+Run from repo root: python .github/scripts/run_archive_move_from_plan.py archive_move_plan_2026-02-19.txt
 """
 from __future__ import annotations
 

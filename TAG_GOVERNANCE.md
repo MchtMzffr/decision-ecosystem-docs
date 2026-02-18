@@ -1,3 +1,8 @@
+<!--
+Decision Ecosystem — decision-ecosystem-docs
+Copyright (c) 2026 Mücahit Muzaffer Karafil (MchtMzffr)
+SPDX-License-Identifier: MIT
+-->
 # Tag Governance — Immutability Policy
 
 **Date:** 2026-02-17  

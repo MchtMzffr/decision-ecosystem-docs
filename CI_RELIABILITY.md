@@ -1,67 +1,72 @@
-# CI Güvenilirlik Rehberi
+<!--
+Decision Ecosystem — decision-ecosystem-docs
+Copyright (c) 2026 Mücahit Muzaffer Karafil (MchtMzffr)
+SPDX-License-Identifier: MIT
+-->
+# CI Reliability Guide
 
-**Amaç:** CI’nin ara ara hata vermesinin nedenleri ve alınan önlemler.
-
----
-
-## “Ara ara hata” normal mi?
-
-Kısmen **evet**. Aşağıdakiler tek seferlik/geçici hatalara yol açabilir; tamamen sıfırlamak mümkün değil, **azaltmak** mümkün.
-
----
-
-## Olası nedenler
-
-| Neden | Açıklama | Alınan önlem |
-|-------|----------|----------------|
-| **Ağ / PyPI / GitHub** | `pip install` veya `git clone` zaman aşımı, geçici kesinti | Pip adımlarında **bir kez retry** (önce bekleyip tekrar dene, olmazsa git fallback) |
-| **Job takılması** | Adım cevap vermeyince run saatlerce sürer | Her job’a **timeout-minutes** (15–25 dk) |
-| **Concurrency iptali** | Yeni push yapıldığında önceki run **iptal** edilir | Bu “failure” değil, **cancelled**; UI’da “Cancelled” olarak görünür |
-| **Matrix’te tek fail** | Varsayılan `fail-fast: true` ile bir Python versiyonu fail edince diğeri de iptal edilir | **fail-fast: false** ile 3.11 ve 3.12 ayrı ayrı biter, hangi ortamda fail olduğu netleşir |
+**Purpose:** Why CI may occasionally fail and what we did to reduce it.
 
 ---
 
-## Yapılan iyileştirmeler (tüm repolarda)
+## Is "occasional failure" normal?
+
+Partly **yes**. The following can cause one-off or transient failures; we cannot eliminate them entirely, but we can **reduce** them.
+
+---
+
+## Possible causes
+
+| Cause | Description | Mitigation |
+|-------|-------------|------------|
+| **Network / PyPI / GitHub** | `pip install` or `git clone` timeout, transient outage | **Single retry** on pip steps (wait and retry once, then git fallback) |
+| **Job hang** | Step stops responding and the run runs for hours | **timeout-minutes** on every job (15–25 min) |
+| **Concurrency cancel** | When a new push is made, the previous run is **cancelled** | This is not a "failure" but **cancelled**; appears as "Cancelled" in the UI |
+| **Single matrix fail** | With default `fail-fast: true`, one Python version failing cancels the other | **fail-fast: false** so 3.11 and 3.12 finish separately and it is clear which environment failed |
+
+---
+
+## Improvements applied (all repos)
 
 1. **Job timeout**
-   - `timeout-minutes: 15` (tek job’lı workflow’lar)
+   - `timeout-minutes: 15` (single-job workflows)
    - `timeout-minutes: 20` (integration-harness core_only)
    - `timeout-minutes: 25` (integration-harness full_stack)
 
 2. **Pip retry**
-   - Test aracı: `pip install ... || (sleep 15 && pip install ...)`
-   - Bağımlılıklar: `pip install pkg... || (sleep 20 && pip install pkg...) || pip install git+...`
-   - Böylece geçici ağ hatası tek denemede fail etmez.
+   - Test runner: `pip install ... \|\| (sleep 15 && pip install ...)`
+   - Dependencies: `pip install pkg... \|\| (sleep 20 && pip install pkg...) \|\| pip install git+...`
+   - So a transient network error does not fail on the first attempt.
 
 3. **fail-fast: false**
-   - Matrix’te (örn. 3.11, 3.12) bir hücre fail etse bile diğeri çalışır; raporlama daha net.
+   - In the matrix (e.g. 3.11, 3.12), if one cell fails the other still runs; reporting is clearer.
 
-4. **decision-schema pin (core’lar)**
-   - Tüm core’larda `>=0.2.2` + fallback `@v0.2.2` kullanılıyor; tek SSOT sürümü ile tutarlılık.
-
----
-
-## UI’da gördüğün durumlar
-
-- **Failed (kırmızı):** En az bir step gerçekten hata verdi. Log’a bak; çoğu zaman “pip” veya “pytest” satırında sebep yazar.
-- **Cancelled (gri):** Yeni bir push bu run’ı iptal etti. Kod hatası değil; istersen “Re-run all jobs” ile aynı commit’i tekrar çalıştırabilirsin.
-- **Success (yeşil):** Tüm adımlar geçti.
+4. **decision-schema pin (cores)**
+   - All cores use `>=0.2.2` and fallback `@v0.2.2`; consistent with a single SSOT version.
 
 ---
 
-## Garanti mümkün mü?
+## What you see in the UI
 
-**%100 garanti mümkün değil** (ağ, GitHub/PyPI kesintisi, runner problemi kontrolümüz dışında). Yapılanlarla:
-
-- Geçici ağ hataları büyük ölçüde **retry** ile toparlanır.
-- Takılan job’lar **timeout** ile kesilir, sonsuz bekleyen run kalmaz.
-- **fail-fast: false** ile hangi Python/ortamda fail olduğu net görülür.
-
-Ek istersen: flaky test’ler için pytest’te `--flake-finder` veya belirli testlere `@pytest.mark.flaky(retries=2)` eklenebilir; şu an workflow seviyesi önlemler uygulandı.
+- **Failed (red):** At least one step actually failed. Check the log; the cause is often on the "pip" or "pytest" line.
+- **Cancelled (grey):** A new push cancelled this run. Not a code bug; you can "Re-run all jobs" to run the same commit again.
+- **Success (green):** All steps passed.
 
 ---
 
-## Hangi repolarda güncellendi
+## Can we guarantee no failures?
+
+**We cannot guarantee 100%** (network, GitHub/PyPI outages, runner issues are outside our control). With the above:
+
+- Transient network errors are largely **recovered** by retry.
+- Hanging jobs are **stopped** by timeout, so we avoid runs that wait forever.
+- **fail-fast: false** makes it clear which Python/environment failed.
+
+Optional extras: for flaky tests, pytest `--flake-finder` or `@pytest.mark.flaky(retries=2)` on specific tests; currently workflow-level mitigations are in place.
+
+---
+
+## Repos updated
 
 - decision-schema  
 - mdm-engine  
@@ -71,8 +76,8 @@ Ek istersen: flaky test’ler için pytest’te `--flake-finder` veya belirli te
 - execution-orchestration-core  
 - decision-ecosystem-integration-harness  
 
-Hepsi aynı pattern: `timeout-minutes`, `fail-fast: false`, pip retry.
+All use the same pattern: `timeout-minutes`, `fail-fast: false`, pip retry.
 
 ---
 
-**Son güncelleme:** 2026-02-18
+**Last updated:** 2026-02-18

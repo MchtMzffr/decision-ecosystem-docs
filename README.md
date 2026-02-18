@@ -2,7 +2,7 @@
 
 Central documentation for the Decision Ecosystem: release guides, verification checklists, and governance.
 
-**Dosya yapısı standardı:** [DOCS_REPO_STRUCTURE.md](DOCS_REPO_STRUCTURE.md) — Root’ta ne kalır, ne archive’a taşınır.
+**File structure standard:** [DOCS_REPO_STRUCTURE.md](DOCS_REPO_STRUCTURE.md) — What stays at root vs what goes to archive.
 
 ---
 
@@ -11,6 +11,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 ### Release & verification
 
 - [GitHub Releases Guide](GITHUB_RELEASES_GUIDE.md) — Create and publish releases
+- [Release Notes Standard and Templates](docs/RELEASE_NOTES_STANDARD_AND_TEMPLATES.md) — Section order, INV-REL-TAG-1/SSOT-1/SEC-1, copy-paste templates for P0 (decision-schema v0.2.2, dmc-core v0.1.0)
 - [Release Verification Checklist](RELEASE_VERIFICATION_CHECKLIST.md) — INV-REL-* and INV-REL-GH (including INV-REL-4)
 - [Tag Governance](TAG_GOVERNANCE.md) — Tag immutability policy
 - [Ecosystem Contract Matrix](ECOSYSTEM_CONTRACT_MATRIX.md) — Dependency ranges and CI fallback tags
@@ -35,6 +36,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 
 - [Academic Static Analysis Report](ACADEMIC_STATIC_ANALYSIS_REPORT.md)
 - [Ecosystem QA Static Analysis Report](ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md)
+- [Docs Static Analysis TODO — Completion](docs/DOCS_STATIC_ANALYSIS_TODO_COMPLETE.md) — Governance/release doc alignment and summary checklist
 
 ---
 

@@ -1,72 +1,71 @@
-# Repo Yönetimi ve Katkıda Bulunanlar
+# Repo Management and Contributors
 
-## 1. İki Farklı Kavram
+## 1. Two Different Concepts
 
-### Katkıda Bulunanlar (Contributors)
-- GitHub’daki **Contributors** listesi, repoya **commit atmış** hesapları gösterir.
-- Bu liste **otomatik** oluşur; commit’lerdeki `author` bilgisine göre.
-- Bu liste **yetki vermez veya kaldırmaz**. Sadece “bu commit’leri kim yaptı” bilgisidir.
+### Contributors
+- GitHub’s **Contributors** list shows accounts that have **committed** to the repo.
+- This list is **automatic**, based on the `author` field in commits.
+- This list **does not grant or revoke permissions**. It only indicates “who made these commits”.
 
-### Repoyu Kim Değiştirebilir? (Erişim / Permissions)
-- Repoyu **değiştirebilen** (push atabilen) kişiler: **Settings → Collaborators / Manage access** ile tanımlıdır.
-- Sadece **burada yazma yetkisi olan** hesaplar push atabilir.
-- Yani: “Sadece ben yöneteyim” demek = **Collaborators** kısmında sadece kendi hesabınız (veya güvendiğiniz hesaplar) olsun demektir.
+### Who Can Change the Repo? (Access / Permissions)
+- People who **can change** the repo (push) are defined under **Settings → Collaborators / Manage access**.
+- Only accounts **with write permission there** can push.
+- So: “Only I manage it” means **Collaborators** should list only your account (and any accounts you trust).
 
-**Özet:**  
-- **tsgal** listede görünüyorsa = geçmişte bazı commit’ler `tsgal` kullanıcı adı/e-postası ile atılmış.  
-- **tsgal’in repoyu değiştirebilmesi** = sadece `tsgal` hesabına **Collaborator olarak yazma yetkisi verildiyse** mümkündür.  
-- Yazma yetkisi yoksa tsgal sadece “geçmişte commit atmış” olarak görünür; artık push atamaz.
-
----
-
-## 2. Repoyu Sadece Kendi Hesabınızla Yönetmek
-
-1. GitHub’da ilgili repoya gidin (örn. `MeetlyTR/decision-schema`).
-2. **Settings** → **Collaborators** (veya **Manage access**).
-3. **tsgal** veya başka biri listede **yazma (Write)** veya **admin** ile görünüyorsa ve bu kişinin artık erişimi olmamasını istiyorsanız:
-   - İlgili kullanıcıyı **Remove** edin.
-4. Sadece **kendi hesabınız** (Mücahit Muzaffer / MeetlyTR) ve gerekirse organizasyon rolleri kalsın.
-
-Böylece **repoyu fiilen sadece siz (ve yetki verdiğiniz hesaplar) değiştirebilir** hale gelir. Contributors listesi buna bağlı değildir.
+**Summary:**  
+- If **tsgal** appears in the list = some past commits used the `tsgal` username/email.  
+- **tsgal being able to change the repo** = only if the `tsgal` account was explicitly given **write permission as a Collaborator**.  
+- Without write permission, tsgal only appears as “has committed in the past”; they cannot push anymore.
 
 ---
 
-## 3. “tsgal”i Katkıda Bulunanlar Listesinden Silmek
+## 2. Managing the Repo Only With Your Account
 
-- GitHub’da **Contributors listesinden bir ismi “silmek”** diye bir seçenek **yoktur**.
-- Liste, **commit geçmişindeki author bilgisine** göre otomatik oluşur.
+1. Open the repo on GitHub (e.g. `MeetlyTR/decision-schema`).
+2. Go to **Settings** → **Collaborators** (or **Manage access**).
+3. If **tsgal** or anyone else has **Write** or **Admin** and you no longer want them to have access:
+   - **Remove** that user.
+4. Keep only **your account** (and organization roles if needed).
 
-İki yol vardır:
-
-### Seçenek A: Hiçbir Şey Yapmamak (Önerilen)
-- tsgal, **sizin bilgisayarınızda** (örn. `C:\Users\tsgal\...`) Cursor ile yapılan commit’lerde kullanılmış olabilir.
-- Yani “tsgal” aslında sizin yaptığınız işler olabilir; sadece o anki Git kullanıcı adı farklıydı.
-- Gelecek commit’ler artık **M.Muzaffer / mucahit.muzaffer@gmail.com** ile atılacak; yeni katkılar sizin adınıza görünür.
-- Eski commit’ler tsgal olarak kalır; **yetki** tarafında bir değişiklik yapmadığınız sürece sorun olmaz.
-
-### Seçenek B: Eski Commit’lerin Yazarını Değiştirmek (İleri Seviye)
-- Tüm commit’lerdeki **author**’ı `M.Muzaffer <mucahit.muzaffer@gmail.com>` yapmak için **git history rewrite** gerekir.
-- Bu işlem:
-  - `git filter-branch` veya `git filter-repo` ile yapılır,
-  - **Force push** gerektirir,
-  - Tüm clone edenler için “history değişti” anlamına gelir.
-- Eğer repo’yu tek başınıza kullanıyorsanız ve “tek isim görünsün” istiyorsanız yapılabilir; ama **mutlaka yedek alıp** ve sadece gerekirse uygulayın.
+Then **only you (and accounts you granted access) can change the repo**. The Contributors list does not control this.
 
 ---
 
-## 4. Kısa Cevaplar
+## 3. “Removing” Someone From the Contributors List
 
-| Soru | Cevap |
-|------|--------|
-| Başkası şu an bu repoyu değiştirebiliyor mu? | Sadece **Collaborators / Manage access**’te yazma yetkisi verdiğiniz hesaplar değiştirebilir. Kontrol: Settings → Collaborators. |
-| Sadece benim hesabım yönetiyor olması için ne gerekir? | Collaborators’da sadece sizin (ve isterseniz organizasyon) hesabınızın yazma yetkisi olması yeterli. |
-| tsgal’i silebiliyor muyum? | **Yetki listesinden** silmek: Evet (Collaborators’dan Remove). **Contributors listesinden** “silme” seçeneği yok; sadece eski commit’lerin yazarını değiştirirseniz liste zamanla değişir. |
-| Kendi hesabım için ne gerekiyor? | 1) Git’te `user.name` / `user.email` = M.Muzaffer / mucahit.muzaffer@gmail.com (zaten ayarlı). 2) Repo erişiminde sadece sizin (ve güvendiğiniz) hesapların yazma yetkisi olması. |
+- GitHub **does not offer** a way to “remove” a name from the Contributors list.
+- The list is **generated automatically** from commit history author information.
+
+Two options:
+
+### Option A: Do Nothing (recommended)
+- tsgal may have been used on **your machine** (e.g. `C:\Users\tsgal\...`) for commits made with Cursor.
+- So “tsgal” may actually be your work; only the Git user name was different at the time.
+- Future commits will use **M.Muzaffer / mucahit.muzaffer@gmail.com**; new contributions will appear under your name.
+- Old commits stay as tsgal; this is fine as long as you do not change **permissions**.
+
+### Option B: Change the Author of Past Commits (advanced)
+- To set **author** to `M.Muzaffer <mucahit.muzaffer@gmail.com>` for all commits, you need a **git history rewrite**.
+- This is done with `git filter-branch` or `git filter-repo`,
+- Requires a **force push**,
+- And means “history changed” for everyone who has cloned the repo.
+- Only do this if you use the repo alone and want a single name to appear; **back up first** and apply only if necessary.
 
 ---
 
-## 5. Özet
+## 4. Short Answers
 
-- **Değiştirme yetkisi** = GitHub **Settings → Collaborators / Manage access**. Sadece siz (ve eklediğiniz hesaplar) yazabiliyorsa repoyu sadece siz yönetiyorsunuz demektir.
-- **Katkıda bulunanlar** = Sadece commit geçmişine göre otomatik liste. tsgal orada çünkü bazı commit’ler o isimle atıldı; bunu “hesaptan silmek” yok, isterseniz eski commit’lerin yazarını değiştirerek listeyi değiştirebilirsiniz.
-- İleride tüm commit’leri **M.Muzaffer** ile atarsanız, yeni katkılar zaten sizin adınıza görünecektir.
+| Question | Answer |
+|----------|--------|
+| Can someone else change this repo right now? | Only accounts with write permission under **Collaborators / Manage access** can. Check: Settings → Collaborators. |
+| What is needed for only my account to manage it? | Have only your (and optionally org) account with write permission under Collaborators. |
+| Can I remove tsgal? | **From the permission list:** Yes (Remove from Collaborators). **From the Contributors list:** There is no “remove” option; the list can only change if you rewrite past commit authors. |
+| What do I need for my own account? | 1) Git `user.name` / `user.email` = M.Muzaffer / mucahit.muzaffer@gmail.com (already set). 2) Only your (and trusted) accounts have write access to the repo. |
+
+---
+
+## 5. Summary
+
+- **Permission to change** = GitHub **Settings → Collaborators / Manage access**. If only you (and accounts you added) can write, you are the only one managing the repo.
+- **Contributors** = Automatic list from commit history. tsgal appears because some commits used that name; you cannot “delete” it from the list, but you can change the list over time by rewriting past commit authors if you wish.
+- If you make all future commits as **M.Muzaffer**, new contributions will already appear under your name.

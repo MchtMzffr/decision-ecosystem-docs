@@ -2,6 +2,8 @@
 
 This guide explains how to integrate the Decision Ecosystem cores and build domain-specific decision systems.
 
+**Code blocks:** Either (a) verified against the real API (see "Real API imports" table below), or (b) explicitly labeled as pseudocode for conceptual flow.
+
 ## Prerequisites
 
 - Understanding of `decision-schema` contract types
