@@ -2,6 +2,8 @@
 
 Central documentation for the Decision Ecosystem: release guides, verification checklists, and governance.
 
+**Dosya yapısı standardı:** [DOCS_REPO_STRUCTURE.md](DOCS_REPO_STRUCTURE.md) — Root’ta ne kalır, ne archive’a taşınır.
+
 ---
 
 ## Current documentation (CURRENT)
@@ -29,11 +31,10 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 - [Next Steps Roadmap](NEXT_STEPS_ROADMAP.md) — Planned work
 - [Task Completion Summary](TASK_COMPLETION_SUMMARY.md) — Completed work
 
-### Analysis & reports
+### Analysis & reports (max 2 at root — INV-DOC-ANALYSIS-LIMIT-1)
 
 - [Academic Static Analysis Report](ACADEMIC_STATIC_ANALYSIS_REPORT.md)
 - [Ecosystem QA Static Analysis Report](ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md)
-- [Static Analysis Fixes Report](STATIC_ANALYSIS_FIXES_REPORT.md)
 
 ---
 
@@ -42,6 +43,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 Point-in-time verification and session reports are under **archive** so CURRENT stays clear:
 
 - [archive/2026-02-17/](archive/2026-02-17/) — Verification snapshots from 2026-02-17 (e.g. FINAL_RELEASE_VERIFICATION, RELEASE_VERIFICATION_COMPLETE)
+- [archive/2026-02-19/](archive/2026-02-19/) — Session/migration/sprint summaries and reports (per DOCS_REPO_STRUCTURE §7)
 
 For current verification always use [RELEASE_VERIFICATION_CHECKLIST.md](RELEASE_VERIFICATION_CHECKLIST.md).
 

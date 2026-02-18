@@ -24,7 +24,7 @@ This document defines the mathematical formulas and metrics used in the Decision
 
 ## Proposal Generation (mdm-engine)
 
-### Proposal Score
+### Proposal Score (abstract)
 ```
 score(p, c_t) = f(x_t, c_t, θ)
 ```
@@ -35,6 +35,8 @@ Where:
 - `x_t` is the current state
 - `θ` are model parameters
 - `f` is the proposal generation function
+
+Concrete reference formulas (moral scores W,J,H,C, Score, confidence, CUS) and the generic numeric scorer (e.g. 0.4·scale + 0.4·signal + 0.2·width, sigmoid confidence) are in **mdm-engine** `docs/FORMULAS.md`.
 
 ### Context Encoding
 ```
@@ -48,30 +50,24 @@ Context is encoded from:
 
 ## Risk Assessment (decision-modulation-core)
 
-### Risk Score
-```
-risk(d) = Σᵢ wᵢ · gᵢ(d)
-```
+**Current implementation: ordered hard guards.** Guards run in a fixed order; the **first** guard that fails yields fail-closed and evaluation stops. There is no weighted sum of guard outputs in the core.
 
-Where:
-- `d` is the final decision
-- `gᵢ` are guard functions
-- `wᵢ` are guard weights
+### Guard order (deterministic)
 
-### Guard Evaluation
-```
-gᵢ(d) = {
-  0 if guard passes
-  1 if guard fails (hard guard)
-  [0, 1] if guard modulates (soft guard)
-}
-```
+1. Ops-health: `context["ops_deny_actions"] == True` → deny (HOLD/STOP)
+2. Staleness: `(now_ms - last_event_ts_ms) > policy.staleness_ms` → HOLD
+3. Error-rate, rate-limit, circuit-breaker, cooldown (policy thresholds) → HOLD on first failure
 
-### Modulation Factor
-```
-modulation(d) = 1 - risk(d) if risk(d) < threshold
-modulation(d) = 0 if risk(d) ≥ threshold (fail-closed)
-```
+### Fail-closed
+
+- Any guard returns fail → `FinalDecision(allowed=False, action=policy.fail_closed_action)` (e.g. HOLD or STOP)
+- Any exception during guard evaluation → same fail-closed outcome
+
+### Optional future model (risk score)
+
+A possible future extension could define a risk score and modulation factor as:
+
+- `risk(d) = Σᵢ wᵢ · gᵢ(d)` with `gᵢ ∈ {0,1}` or [0,1], and `modulation(d) = 1 - risk(d)` with a threshold for fail-closed. This is **not** the current implementation; the core uses ordered hard guards only.
 
 ## Operational Health (ops-health-core)
 
@@ -100,17 +96,21 @@ d_final = {
 
 ## Evaluation Metrics (evaluation-calibration-core)
 
-### Cumulative Outcome
+**Implemented in the core:** `action_distribution`, `guard_trigger_rates`, `safety_invariant_pass_rate`, `latency_percentiles` (and related confidence stats). See `evaluation-calibration-core/docs/FORMULAS.md`.
+
+**General notation (optional / not computed by the core):** The following are domain-agnostic formulas for outcome/reward aggregates; the core does not currently compute them.
+
+### Cumulative Outcome (general notation)
 ```
 R_T = Σₜ₌₁ᵀ r_t
 ```
 
-### Average Outcome
+### Average Outcome (general notation)
 ```
 R̄ = (1/T) · R_T
 ```
 
-### Volatility
+### Volatility (general notation)
 ```
 σ = √(E[(r_t - R̄)²])
 ```
@@ -147,8 +147,9 @@ acceptance_rate = (decisions_approved / total_proposals) × 100%
 
 ### Invariant 1: Fail-Closed Behavior
 ```
-∀d: risk(d) ≥ threshold → d.approved == false
+∀d: (any guard fails in order) → d.approved == false
 ```
+(In the current implementation, the first failing guard yields fail-closed; no risk-score threshold.)
 
 ### Invariant 2: Guard Ordering Determinism
 ```

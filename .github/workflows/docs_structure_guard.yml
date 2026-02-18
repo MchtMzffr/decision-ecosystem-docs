@@ -1,0 +1,23 @@
+# INV-DOC-*: Docs repo root structure guard.
+# Root allowlist, archive path format, README current links, analysis report limit.
+name: Docs structure guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-docs-root:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run docs root invariants
+        run: python .github/scripts/check_docs_root.py
