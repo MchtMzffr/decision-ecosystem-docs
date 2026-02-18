@@ -18,7 +18,9 @@
 | ops-health-core | [main/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/ops-health-core/main/pyproject.toml) | [v0.1.1/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/ops-health-core/v0.1.1/pyproject.toml) |
 | evaluation-calibration-core | [main/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/evaluation-calibration-core/main/pyproject.toml) | [v0.1.1/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/evaluation-calibration-core/v0.1.1/pyproject.toml) |
 
-**Expected:** Both show same `version = "X.Y.Z"`
+**Expected:** Both show same `version = "X.Y.Z"` (or main may show a newer patch; tag is the released snapshot).
+
+**INV-REL-4 (Tag Reachability):** The tag commit must be an ancestor of `main` (i.e. in main’s history). Main may have commits after the tag; that is acceptable. Verify with: `git merge-base --is-ancestor vX.Y.Z origin/main`.
 
 ---
 
@@ -103,8 +105,9 @@ Copy this for each release:
 - [ ] evaluation-calibration-core: Release for v0.1.1, set Latest
 - [ ] execution-orchestration-core: Release for v0.1.0, set Latest
 
-### Tag Alignment
-- [ ] Tag commit == main commit (git log verification)
+### INV-REL-4 (Tag Reachability)
+- [ ] Tag commit is ancestor of `main` (tag must be in main history; main may be ahead)
+- [ ] Verification: `git merge-base --is-ancestor vX.Y.Z origin/main` exits 0
 
 **Status:** ✅ PASS / ❌ FAIL
 ```
@@ -121,10 +124,9 @@ git show origin/main:pyproject.toml | grep "version ="
 # Check version in tag
 git show vX.Y.Z:pyproject.toml | grep "version ="
 
-# Verify tag alignment
-git log --oneline origin/main -1
-git log --oneline vX.Y.Z -1
-# Should show same commit hash
+# Verify tag reachability (INV-REL-4): tag must be ancestor of main
+git fetch origin
+git merge-base --is-ancestor vX.Y.Z origin/main && echo "OK: tag is ancestor of main" || echo "FAIL: tag not in main history"
 
 # Check CI fallback
 git show origin/main:.github/workflows/ci.yml | grep -A 2 "fallback"
@@ -144,9 +146,10 @@ https://raw.githubusercontent.com/.../main/pyproject.toml?cb=20260218
 
 ## Related Documentation
 
-- **FINAL_RELEASE_VERIFICATION.md:** Detailed verification report
 - **TAG_GOVERNANCE.md:** Tag immutability policy
-- **BRANCH_GOVERNANCE.md:** Branch governance rules
+- **BRANCH_GOVERNANCE.md:** Branch governance rules (dev vs CI fallback)
+- **ECOSYSTEM_CONTRACT_MATRIX.md:** Dependency and CI fallback reference
+- **archive/2026-02-17/:** Historical verification snapshots (point-in-time reports)
 
 ---
 

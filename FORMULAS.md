@@ -10,7 +10,7 @@ This document defines the mathematical formulas and metrics used in the Decision
 - `r_t`: Reward/outcome at time `t`
 - `c_t`: Context at time `t`
 - `s_t`: Signal at time `t`
-- `DD_t`: Drawdown at time `t`
+- `DD_t`: Peak-to-trough decline at time `t` (generic; see “Example domain metrics” for naming notes)
 - `σ_t`: Volatility/uncertainty at time `t`
 - `θ`: Parameters/configuration
 - `P(·)`: Probability
@@ -115,21 +115,23 @@ R̄ = (1/T) · R_T
 σ = √(E[(r_t - R̄)²])
 ```
 
-### Drawdown
+### Peak-to-trough decline (generic)
 ```
 DD_t = max(0, peak_t - current_t)
 peak_t = max(x₀, x₁, ..., x_t)
 ```
+Interpretation: decline from running maximum; domain-agnostic.
 
-### Maximum Drawdown
+### Maximum decline over horizon
 ```
 MDD = max(DD_t for t ∈ [0, T])
 ```
 
-### Sharpe-like Ratio (Risk-Adjusted Performance)
+### Risk-adjusted outcome ratio (generic)
 ```
 SR = R̄ / σ
 ```
+Interpretation: mean outcome per unit variability; domain-agnostic. (In some domains this is known as a Sharpe-like ratio; we keep the formula generic.)
 
 ### Guard Compliance Rate
 ```
@@ -225,6 +227,6 @@ MA_t = (1/n) · Σᵢ₌ₜ₋ₙ⁺¹ᵗ xᵢ
 ## Notes
 
 - All formulas use generic symbols suitable for any domain
-- Domain-specific interpretations are provided only in `docs/examples/`
+- Domain-specific interpretations (e.g. finance-origin names like “drawdown”, “Sharpe”) are only in `docs/examples/` or in adapter layers; core vocabulary stays domain-agnostic
 - Symbols follow mathematical conventions
 - Formulas are testable and verifiable

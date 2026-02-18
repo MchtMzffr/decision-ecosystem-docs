@@ -262,7 +262,8 @@ Initial release of the domain-agnostic execution orchestration core.
 - Requires: decision-schema >= 0.2.2, < 0.3
 
 ### Install
-pip install "execution-orchestration-core==0.1.0"
+If published to PyPI: `pip install "execution-orchestration-core==0.1.0"`
+Otherwise install from GitHub tag: `pip install "git+https://github.com/MchtMzffr/execution-orchestration-core.git@v0.1.0"`
 ```
 
 ---

@@ -1,11 +1,13 @@
 # Tag Alignment Complete — Final Verification
 
 **Date:** 2026-02-17  
-**Status:** ✅ Tags Aligned with `main` Branch
+**Status:** Historical incident report (not current policy)
+
+**Note:** This document describes a one-time correction (2026-02-17) where tags were moved to match `main` HEAD. Current policy is **TAG_GOVERNANCE.md**: tags are immutable; we do not move tags. For release verification we use **INV-REL-4**: tag commit must be an *ancestor* of `main` (see RELEASE_VERIFICATION_CHECKLIST.md).
 
 ---
 
-## Issue Identified
+## Issue Identified (historical)
 
 Tag commit'leri `main` branch'in son commit'leriyle uyumsuzdu:
 - Tag'ler oluşturulduktan sonra `main`'e yeni commit'ler push edilmiş

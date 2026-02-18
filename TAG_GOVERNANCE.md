@@ -99,9 +99,9 @@ git push origin v0.2.1  # ❌ FORBIDDEN
 
 ## Related Policies
 
-- **BRANCH_GOVERNANCE.md:** `main` as source of truth
-- **ECOSYSTEM_CONTRACT_MATRIX.md:** SemVer rules
-- **FINAL_RELEASE_VERIFICATION.md:** Release verification checklist
+- **BRANCH_GOVERNANCE.md:** `main` as source of truth; dev vs CI fallback policy
+- **RELEASE_VERIFICATION_CHECKLIST.md:** INV-REL-* and INV-REL-GH checks (including INV-REL-4: tag reachability)
+- **ECOSYSTEM_CONTRACT_MATRIX.md:** SemVer and dependency ranges (see repo root or decision-schema repo)
 
 ---
 

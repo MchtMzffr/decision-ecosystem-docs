@@ -8,11 +8,11 @@ This document describes the architecture of the Decision Ecosystem, a domain-agn
 
 ### Core Components
 
-The ecosystem consists of five independent cores:
+The ecosystem consists of six independent cores (plus optional integration harness):
 
 1. **decision-schema**: Single Source of Truth (SSOT) contract
    - Defines types: `Proposal`, `FinalDecision`, `PacketV2`
-   - Provides trace format specification
+   - Provides trace format specification and trace key registry
    - No runtime logic, pure contract definition
 
 2. **mdm-engine**: Proposal Generation Runtime
@@ -35,6 +35,12 @@ The ecosystem consists of five independent cores:
    - Computes metrics and invariants
    - Generates evaluation reports
    - Calibrates system parameters
+
+6. **execution-orchestration-core**: Execution Orchestration (optional)
+   - Orchestrates execution of `FinalDecision` actions (retries, timeouts, idempotency policies)
+   - Fail-closed on exceptions; kill-switch gating
+   - Secret hygiene (redaction); trace keys under `exec.*` namespace
+   - Depends on decision-schema >= 0.2.2 for `exec.*` trace key registry
 
 ### Design Principles
 
@@ -68,6 +74,8 @@ Context + State
 [decision-modulation-core] → FinalDecision
     ↓
 [ops-health-core] → Safety Override (if needed)
+    ↓
+[execution-orchestration-core] → Bounded execution (optional)
     ↓
 Execution + Trace (PacketV2)
     ↓

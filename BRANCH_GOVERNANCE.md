@@ -28,24 +28,32 @@
 - **`release/*`**: (Optional) Release candidate branches
 - **`hotfix/*`**: (Optional) Critical fixes
 
-## Git Fallback URLs
+## Git Fallback URLs — Two Policies
 
-When installing from git (fallback for PyPI), always use `@main`:
+### Dev / experiments (non-deterministic)
+
+For local development or one-off experiments you may use `@main` to get the latest code. This is **explicitly non-deterministic**: main moves over time.
 
 ```bash
 pip install "git+https://github.com/MchtMzffr/repo-name.git@main"
 ```
 
-Examples:
-- `decision-schema`: `git+https://github.com/MchtMzffr/decision-schema.git@main`
-- `mdm-engine`: `git+https://github.com/MchtMzffr/mdm-engine.git@main`
-- `evaluation-calibration-core`: `git+https://github.com/MchtMzffr/evaluation-calibration-core.git@main`
+Examples: `decision-schema`, `mdm-engine`, `evaluation-calibration-core` — use `@main` only when you accept non-deterministic builds.
+
+### CI / release verification (deterministic)
+
+For CI pipelines and release verification, **always use tag-pinned fallbacks** so builds are reproducible:
+
+- **INV-GOV-1:** CI fallback ⇒ tag (e.g. `@v0.2.2`, `@v0.2.1`, `@v0.1.1`).
+- See **RELEASE_VERIFICATION_CHECKLIST.md** for the exact tags each repo’s CI must use.
+
+Do **not** use `@main` in CI fallbacks when a release tag exists.
 
 ## CI/CD Workflows
 
 All GitHub Actions workflows:
-- Trigger on `main` branch pushes
-- Use `@main` for git fallback installs
+- Trigger on `main` branch pushes only
+- Use **tag-pinned** git fallbacks in CI (e.g. `@v0.2.2` for decision-schema); `@main` is for dev only
 - Do not reference `master` branch (deprecated)
 
 ## Migration Notes
@@ -59,9 +67,10 @@ If any repository still has `master` branch:
 
 ## Enforcement
 
-- **INV-BRANCH-1**: All repos must use `main` as source of truth
-- **INV-BRANCH-2**: CI workflows must trigger on `main` only
-- **INV-BRANCH-3**: Git fallback URLs must use `@main`
+- **INV-BRANCH-1:** All repos must use `main` as source of truth
+- **INV-BRANCH-2:** CI workflows must trigger on `main` only
+- **INV-GOV-1:** CI fallback URLs must use tags (`@vX.Y.Z`), not `@main`
+- **INV-GOV-2:** Dev/experiment install guidance may allow `@main` (documented as non-deterministic)
 
 ---
 

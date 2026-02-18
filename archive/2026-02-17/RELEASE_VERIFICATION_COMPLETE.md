@@ -1,7 +1,8 @@
 # Release Verification Complete — Final Status
 
 **Date:** 2026-02-17  
-**Status:** ✅ All Invariants Verified
+**Status:** ✅ All Invariants Verified  
+**Note:** Historical snapshot; see [archive README](README.md). Current checklist: root **RELEASE_VERIFICATION_CHECKLIST.md**.
 
 ---
 

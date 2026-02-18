@@ -39,9 +39,10 @@ If you need domain-specific logic:
 ### Minimal Integration (Single Core)
 
 ```python
+# Pseudocode: conceptual flow. Verify actual API in each core repo.
 # Example: Using only mdm-engine
 from decision_schema import Proposal
-from mdm_engine import generate_proposal
+from mdm_engine import generate_proposal  # or actual export, see mdm-engine docs
 
 context = {
     "state": {...},
@@ -55,12 +56,13 @@ proposal = generate_proposal(context)
 ### Full Stack Integration
 
 ```python
+# Pseudocode: conceptual flow. Verify actual module/function names in each core repo.
 # Example: Using all cores
 from decision_schema import Proposal, FinalDecision, PacketV2
-from mdm_engine import generate_proposal
-from decision_modulation_core import evaluate_proposal
-from ops_health_core import check_health, apply_kill_switch
-from evaluation_calibration_core import record_trace, compute_metrics
+from mdm_engine import generate_proposal  # see mdm-engine API
+from decision_modulation_core import evaluate_proposal  # see dmc-core API
+from ops_health_core import check_health, apply_kill_switch  # see ops-health-core API
+from evaluation_calibration_core import record_trace, compute_metrics  # see eval-calibration-core API
 
 # 1. Generate proposal
 context = {...}

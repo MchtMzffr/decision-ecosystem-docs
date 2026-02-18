@@ -2,7 +2,8 @@
 
 **Date:** 2026-02-17  
 **Verification Method:** Direct GitHub raw content + Git log  
-**Status:** ✅ **ALL INVARIANTS PASS**
+**Status:** ✅ **ALL INVARIANTS PASS**  
+**Note:** Historical snapshot; see [archive README](README.md). Current checklist: root **RELEASE_VERIFICATION_CHECKLIST.md** (includes INV-REL-4).
 
 ---
 
@@ -88,9 +89,9 @@ pip install "decision-schema>=0.2.1,<0.3" || pip install "git+...decision-schema
 
 ---
 
-## ✅ Tag Alignment — PASS
+## ✅ Tag Alignment — PASS (historical wording)
 
-**Verification:** Tag commit == `main` branch commit
+**Verification:** Tag commit == `main` branch commit (as of 2026-02-17)
 
 | Repository | Tag Commit | `main` Commit | Status |
 |------------|------------|---------------|--------|
@@ -100,6 +101,8 @@ pip install "decision-schema>=0.2.1,<0.3" || pip install "git+...decision-schema
 | **evaluation-calibration-core** | e628733 | e628733 | ✅ Aligned |
 
 **Evidence:** Git log verification confirms tag points to `main` HEAD
+
+**Current policy:** See **INV-REL-4** in RELEASE_VERIFICATION_CHECKLIST.md — tag must be *ancestor* of main (main may be ahead).
 
 ---
 
@@ -125,14 +128,5 @@ If you see outdated versions in GitHub UI, this may be due to:
 
 ---
 
-## Related Policies
-
-- **TAG_GOVERNANCE.md:** Tag immutability policy
-- **BRANCH_GOVERNANCE.md:** Branch governance rules
-- **RELEASE_VERIFICATION_CHECKLIST.md:** Quick reference checklist
-
----
-
 **Last Verified:** 2026-02-17  
-**Verification Method:** Direct GitHub API + Git log  
-**Quick Reference:** See `RELEASE_VERIFICATION_CHECKLIST.md` for 2-minute verification
+**Quick Reference:** See root **RELEASE_VERIFICATION_CHECKLIST.md** for current 2-minute verification
