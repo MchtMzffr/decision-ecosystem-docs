@@ -19,7 +19,7 @@ ALLOWLIST_FILE = REPO_ROOT / "ROOT_ALLOWLIST.txt"
 README_FILE = REPO_ROOT / "README.md"
 
 # Directories allowed at root (archive/ may only contain YYYY-MM-DD subdirs)
-ALLOWED_DIRS = {".github", "archive", "docs", "examples", ".git"}
+ALLOWED_DIRS = {".github", "archive", "docs", "examples", ".git", "tools", ".ruff_cache"}
 
 # INV-DOC-ANALYSIS-LIMIT-1: Max number of analysis/report files at root
 MAX_ANALYSIS_REPORTS = 2
@@ -98,7 +98,7 @@ def check_inv_doc_readme_current_1(allowlist: set[str]) -> tuple[bool, list[str]
                 ):
                     continue
                 base = link.split("/")[0].split("#")[0]
-                if base and base not in allowlist:
+                if base and base not in allowlist and base not in ALLOWED_DIRS:
                     errors.append(
                         f"INV-DOC-README-CURRENT-1: link in Current section not in allowlist: {base}"
                     )

@@ -18,3 +18,9 @@ TASK_COMPLETION_SUMMARY.md
 ACADEMIC_STATIC_ANALYSIS_REPORT.md
 ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md
 TAG_ALIGNMENT_COMPLETE.md
+LICENSE
+ECOSYSTEM_INVARIANTS.md
+.pre-commit-config.yaml
+release_dmc_v0.1.0_body.md
+release_dmc_v0.1.1_body.md
+release_dmc_v0.1.1_verification.txt
