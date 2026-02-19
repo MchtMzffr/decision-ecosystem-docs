@@ -6,6 +6,7 @@
 Docs repo root structure guard — INV-DOC-ROOT-*, INV-DOC-ARCHIVE-*, INV-DOC-README-*, INV-DOC-ANALYSIS-LIMIT-1.
 Run from repo root: python .github/scripts/check_docs_root.py
 """
+
 from __future__ import annotations
 
 import os
@@ -48,7 +49,9 @@ def check_inv_doc_root_allow_1(allowlist: set[str]) -> tuple[bool, list[str]]:
         path = REPO_ROOT / name
         if path.is_dir():
             if name not in ALLOWED_DIRS:
-                errors.append(f"INV-DOC-ROOT-ALLOW-1: disallowed directory at root: {name}")
+                errors.append(
+                    f"INV-DOC-ROOT-ALLOW-1: disallowed directory at root: {name}"
+                )
         else:
             if name not in allowlist:
                 errors.append(f"INV-DOC-ROOT-ALLOW-1: disallowed file at root: {name}")
@@ -63,7 +66,9 @@ def check_inv_doc_archive_snapshot_1() -> tuple[bool, list[str]]:
         return True, []
     for name in os.listdir(archive_dir):
         if not ARCHIVE_SUBDIR_RE.match(name):
-            errors.append(f"INV-DOC-ARCHIVE-SNAPSHOT-1: disallowed path under archive/: archive/{name}")
+            errors.append(
+                f"INV-DOC-ARCHIVE-SNAPSHOT-1: disallowed path under archive/: archive/{name}"
+            )
     return len(errors) == 0, errors
 
 
@@ -86,11 +91,17 @@ def check_inv_doc_readme_current_1(allowlist: set[str]) -> tuple[bool, list[str]
             # ](FILENAME.md) veya ](FILENAME)
             for m in re.finditer(r"\]\(([^)]+)\)", line):
                 link = m.group(1).strip()
-                if link.startswith("http") or link.startswith("#") or link.startswith("archive/"):
+                if (
+                    link.startswith("http")
+                    or link.startswith("#")
+                    or link.startswith("archive/")
+                ):
                     continue
                 base = link.split("/")[0].split("#")[0]
                 if base and base not in allowlist:
-                    errors.append(f"INV-DOC-README-CURRENT-1: link in Current section not in allowlist: {base}")
+                    errors.append(
+                        f"INV-DOC-README-CURRENT-1: link in Current section not in allowlist: {base}"
+                    )
     return len(errors) == 0, errors
 
 

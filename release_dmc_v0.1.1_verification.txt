@@ -1,0 +1,3 @@
+﻿- [OK] Tests: PASS (CI run link: https://github.com/MchtMzffr/decision-modulation-core/actions/runs/22164074830)
+- [OK] Test counts: py3.11: total=31 passed=31 failed=0 skipped=0; py3.12: total=31 passed=31 failed=0 skipped=0
+- [OK] Contract gate: PASS (expected schema minor: 2)

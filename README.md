@@ -16,6 +16,10 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 - [Tag Governance](TAG_GOVERNANCE.md) — Tag immutability policy
 - [Ecosystem Contract Matrix](ECOSYSTEM_CONTRACT_MATRIX.md) — Dependency ranges and CI fallback tags
 
+**Tools (docs repo):**
+- `tools/get_ci_proof.py` — CI run URL + test counts for release notes (run from docs repo; requires `gh` and local core repo clone).
+- `tools/check_release_alignment.py` — INV-DOC-DRIFT-1: roadmap table vs local `pyproject.version`; run with `--workspace <parent-of-docs>`.
+
 ### CI & operations
 
 - [CI Reliability](CI_RELIABILITY.md) — Why CI may flake and what we did to reduce it
@@ -23,6 +27,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 ### Architecture & governance
 
 - [Architecture](ARCHITECTURE.md) — Ecosystem overview (cores and integration)
+- [Ecosystem Invariants](ECOSYSTEM_INVARIANTS.md) — Contract, CI, docs, license checklist (INV-CORE-DEP-1, INV-LIC-1, INV-DOC-DRIFT-1, etc.)
 - [Branch Governance](BRANCH_GOVERNANCE.md) — Branch rules; dev vs CI fallback (INV-GOV-1, INV-GOV-2)
 - [Formulas](FORMULAS.md) — Invariants and formulas
 - [Integration Guide](INTEGRATION_GUIDE.md) — How to integrate cores
@@ -36,6 +41,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 
 - [Academic Static Analysis Report](ACADEMIC_STATIC_ANALYSIS_REPORT.md)
 - [Ecosystem QA Static Analysis Report](ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md)
+- [Static Analysis & Code Quality — 5N1K and Control](docs/STATIC_ANALYSIS_CODE_QUALITY_5N1K_AND_CONTROL.md) — 5N1K, Feynman, uygunsuzluk/eksik/öneri listesi, akademik kontrol matrisi
 - [Docs Static Analysis TODO — Completion](docs/DOCS_STATIC_ANALYSIS_TODO_COMPLETE.md) — Governance/release doc alignment and summary checklist
 
 ---
@@ -52,3 +58,7 @@ For current verification always use [RELEASE_VERIFICATION_CHECKLIST.md](RELEASE_
 ---
 
 All documents in this repository are the single source of truth for ecosystem-wide release, verification, and governance practices.
+
+## License
+
+MIT License. See [LICENSE](LICENSE).

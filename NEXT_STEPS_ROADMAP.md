@@ -17,33 +17,16 @@ This makes dependency pinning and contract matrices reproducible.
 
 | Repository | pyproject version (main) | Latest tag/release | Next action |
 |---|---:|---:|---|
-| decision-schema | 0.2.2 | v0.2.1 | **Publish v0.2.2** (tag + release notes) |
+| decision-schema | 0.2.2 | v0.2.2 | OK |
 | mdm-engine | 0.2.1 | v0.2.1 | OK |
 | ops-health-core | 0.1.1 | v0.1.1 | OK |
 | evaluation-calibration-core | 0.1.1 | v0.1.1 | OK |
 | execution-orchestration-core | 0.1.0 | v0.1.0 | OK |
-| decision-modulation-core (dmc-core) | 0.1.0 | (none) | **Publish first release v0.1.0** |
+| decision-modulation-core (dmc-core) | 0.1.1 | v0.1.1 | OK |
 
 **Source of truth:** pyproject version on `main` + Git tags. Update this table whenever you publish a tag.
 
-**Invariant:** `tag(version) == pyproject.version` for released packages.
-
----
-
-## P1 — Optional: Ops-Health Latency Windowing
-
-**Task:** Add `latency_timestamps` to `OpsState` for proper window-based pruning.
-
-**Current State:**
-- `latency_samples` is timestamp-less
-- p95 computed over all samples (not windowed)
-
-**Implementation Sketch:**
-1. Add `latency_timestamps: list[int]` to `OpsState` (default empty).
-2. Update scorer to prune latency samples by timestamp within the configured window.
-3. Add tests covering pruning correctness and percentile stability.
-
-**Effort:** Medium (state-model change + tests)
+**Invariants:** `tag(version) == pyproject.version` for released packages; roadmap must match tags (INV-DOC-DRIFT-1). Full list: [ECOSYSTEM_INVARIANTS.md](ECOSYSTEM_INVARIANTS.md). To check table vs local repos: `python tools/check_release_alignment.py --workspace <parent-of-docs>`.
 
 ---
 
@@ -57,13 +40,20 @@ This makes dependency pinning and contract matrices reproducible.
 - Extended fail-closed invariant to cover exception path.
 - Published in eval release: v0.1.1
 
+### P1 — Ops-Health Latency Windowing — ✅ DONE
+- `OpsState.latency_timestamps` added; window-based pruning in `kill_switch.py`; p95 on windowed samples in `scorer.py`; CLI appends both on `latency` event.
+- Tests: `tests/test_latency_window_pruning.py` (pruning, sync, window-based p95, empty-after-prune).
+
 ---
 
 ## Future (P2–P3) — New Core Proposals
 
-### explainability-audit-core (Priority: High)
+**Note:** Yeni çekirdek geliştirmesi şu an **ertelendi**; öncelik mevcut core’ların stabilizasyonunda. Aşağıdaki proposal’lar ileride ele alınacak.
+
+### explainability-audit-core (Priority: High, deferred)
 **Purpose:** Explain "why" decisions were made (audit/compliance).
 **Scope:** proposal explanation, guard trigger chain, domain-agnostic reason codes.
+**Status:** Minimal repo mevcut (reason codes, `explain()`, testler); CI çalışıyor. Aktif geliştirme ertelendi.
 
 ### decision-ecosystem-cli (Priority: Medium)
 **Purpose:** Single-command ecosystem management.
@@ -77,8 +67,8 @@ This makes dependency pinning and contract matrices reproducible.
 
 | Item | Impact | Effort | Priority |
 |---|---:|---:|---:|
-| P0 Release alignment (tags) | Medium | Low | P0 |
-| P1 Ops latency windowing | Low | Medium | P1 |
+| P0 Release alignment (tags) | Medium | Low | P0 ✅ |
+| P1 Ops latency windowing | Low | Medium | P1 ✅ |
 | explainability-audit-core | High | High | P2 |
 | decision-ecosystem-cli | Medium | Medium | P2 |
 | CI/CD maturity (secret scan, vuln scan, coverage gates) | Medium | Medium | P3 |

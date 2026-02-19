@@ -6,6 +6,7 @@
 Option B: Run git mv from archive_move_plan_YYYY-MM-DD.txt.
 Run from repo root: python .github/scripts/run_archive_move_from_plan.py archive_move_plan_2026-02-19.txt
 """
+
 from __future__ import annotations
 
 import os
@@ -18,7 +19,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 def main() -> int:
     if len(sys.argv) < 2:
-        print("Usage: python run_archive_move_from_plan.py <archive_move_plan_2026-02-19.txt>", file=sys.stderr)
+        print(
+            "Usage: python run_archive_move_from_plan.py <archive_move_plan_2026-02-19.txt>",
+            file=sys.stderr,
+        )
         return 1
     plan_file = REPO_ROOT / sys.argv[1]
     if not plan_file.exists():

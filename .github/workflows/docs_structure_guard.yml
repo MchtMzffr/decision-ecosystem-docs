@@ -19,5 +19,14 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff check
+        run: ruff check .
+
+      - name: Ruff format check
+        run: ruff format --check .
+
       - name: Run docs root invariants
         run: python .github/scripts/check_docs_root.py
