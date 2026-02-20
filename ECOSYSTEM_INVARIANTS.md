@@ -45,6 +45,16 @@ CI can enforce INV-LIC-1 with a step: `test -f LICENSE`.
 
 ---
 
+## Repo hygiene (all cores, including new)
+
+| Invariant | Rule | Metric |
+|-----------|------|--------|
+| **INV-GITIGNORE-1** | `.gitignore` must include `__pycache__/`, `.pytest_cache/`, build/dist, venv, secrets/env; no such file may be tracked. | No `__pycache__/` or `.pytest_cache/` in `git status` as tracked; run `git rm --cached` if ever committed. |
+
+Details and required patterns: **docs/CORE_REPO_STANDARDS.md**. Applies to every core (existing and newly added).
+
+---
+
 ## Release notes
 
 See **docs/RELEASE_NOTES_STANDARD_AND_TEMPLATES.md** for INV-REL-TAG-1, INV-REL-SSOT-1, INV-REL-SEC-1, INV-REL-PROOF-1, INV-CI-TAG-1, INV-CI-PROOF-1.

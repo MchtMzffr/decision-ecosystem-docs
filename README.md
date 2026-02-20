@@ -42,6 +42,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 - [Academic Static Analysis Report](ACADEMIC_STATIC_ANALYSIS_REPORT.md)
 - [Ecosystem QA Static Analysis Report](ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md)
 - [Static Analysis & Code Quality — 5N1K and Control](docs/STATIC_ANALYSIS_CODE_QUALITY_5N1K_AND_CONTROL.md) — 5N1K, Feynman, uygunsuzluk/eksik/öneri listesi, akademik kontrol matrisi
+- [Core Repo Standards](docs/CORE_REPO_STANDARDS.md) — INV-GITIGNORE-1; .gitignore ve “never commit” kuralları (tüm çekirdekler, yeni eklenenler dahil)
 - [Docs Static Analysis TODO — Completion](docs/DOCS_STATIC_ANALYSIS_TODO_COMPLETE.md) — Governance/release doc alignment and summary checklist
 
 ---
