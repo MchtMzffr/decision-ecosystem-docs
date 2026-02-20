@@ -19,7 +19,15 @@ ALLOWLIST_FILE = REPO_ROOT / "ROOT_ALLOWLIST.txt"
 README_FILE = REPO_ROOT / "README.md"
 
 # Directories allowed at root (archive/ may only contain YYYY-MM-DD subdirs)
-ALLOWED_DIRS = {".github", "archive", "docs", "examples", ".git", "tools", ".ruff_cache"}
+ALLOWED_DIRS = {
+    ".github",
+    "archive",
+    "docs",
+    "examples",
+    ".git",
+    "tools",
+    ".ruff_cache",
+}
 
 # INV-DOC-ANALYSIS-LIMIT-1: Max number of analysis/report files at root
 MAX_ANALYSIS_REPORTS = 2

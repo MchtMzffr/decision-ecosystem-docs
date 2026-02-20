@@ -179,5 +179,19 @@ Her satır “kontrol edilen şey” ve “nasıl doğrulanacağı”nı özetle
 
 ---
 
+## 8. Uygulama Durumu (2026-02-19)
+
+| Öneri | Durum |
+|--------|--------|
+| P0 (syntax / CLI) | Kod tabanında zaten düzeltilmiş (ruff tüm repolarda geçiyor; CLI `input_path` kullanıyor). |
+| P1 Ruff + CI lint/format | Tüm core/harness/docs CI’da Ruff check + Ruff format check + pytest-cov zaten vardı. |
+| P2 Secret scanning | **Eklendi:** Tüm CI workflow’lara `secret_scan` job’ı (gitleaks/gitleaks-action@v2) eklendi. |
+| P2 Dependabot | Zaten vardı; execution-orchestration-core için `.github/dependabot.yml` eklendi. |
+| P2 Pre-commit | Tüm repolarda `.pre-commit-config.yaml` (ruff + ruff-format) zaten mevcut. |
+
+**Özet:** P0/P1 ve Dependabot/pre-commit mevcuttu; secret scanning tüm repolarda CI’a eklendi; execution-orchestration-core için Dependabot dosyası oluşturuldu.
+
+---
+
 **Son güncelleme:** 2026-02-19  
 **Referanslar:** ACADEMIC_STATIC_ANALYSIS_REPORT.md, STATIC_ANALYSIS_REMEDIATION_2026-02-18.md, ECOSYSTEM_INVARIANTS.md, Ruff 2026.x
