@@ -21,8 +21,10 @@
 | **INV-CI-NONDET-0** | CI fallback must not use `@main` when a release tag exists. | `@main` only in allowlist (e.g. unreleased dmc until v0.1.0). |
 | **INV-CI-TAG-1** | Tag push triggers CI (`on.push.tags: ["v*"]`). | Run count ≥ 1 after tag push. |
 | **INV-CI-PROOF-1** | CI produces machine-readable proof artifact (`pytest-report-<py>` with JSON). | Artifact downloadable, JSON parseable. |
+| **INV-CI-COMPLY-1** | Every repo’s CI workflow conforms to the **CI Compliance Standard** (secret_scan, LICENSE, Ruff check, Ruff format check, build, pytest, artifact per repo type). | All required steps present and passing. See **docs/CI_COMPLIANCE_STANDARD.md**. |
+| **INV-SYNC-1** | “Workspace’te var” ≠ “main’de var”. **DONE** = proof on GitHub `main` + CI gate passing. | Done = Gates_present ∧ CI_pass ∧ Main_parity. See **docs/CI_COMPLIANCE_STANDARD.md** §6. |
 
-Branch/CI policy details: **BRANCH_GOVERNANCE.md** (INV-BRANCH-1, INV-BRANCH-2, INV-GOV-1, INV-GOV-2).
+Branch/CI policy details: **BRANCH_GOVERNANCE.md** (INV-BRANCH-1, INV-BRANCH-2, INV-GOV-1, INV-GOV-2). **CI uyum standardı:** **docs/CI_COMPLIANCE_STANDARD.md**.
 
 ---
 

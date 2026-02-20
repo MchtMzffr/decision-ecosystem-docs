@@ -43,7 +43,8 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 - [Ecosystem QA Static Analysis Report](ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md)
 - [Static Analysis & Code Quality — 5N1K and Control](docs/STATIC_ANALYSIS_CODE_QUALITY_5N1K_AND_CONTROL.md) — 5N1K, Feynman, uygunsuzluk/eksik/öneri listesi, akademik kontrol matrisi
 - [Core Repo Standards](docs/CORE_REPO_STANDARDS.md) — INV-GITIGNORE-1, INV-COMMIT-1 (revised); .gitignore and commit/push rules
-- [Ecosystem Gates and Invariants](docs/ECOSYSTEM_GATES_AND_INVARIANTS.md) — SSOT: all gates (A–L), metric, CI check, remediation
+- [Ecosystem Gates and Invariants](docs/ECOSYSTEM_GATES_AND_INVARIANTS.md) — SSOT: all gates (A–M), metric, CI check, remediation
+- [CI Compliance Standard](docs/CI_COMPLIANCE_STANDARD.md) — INV-CI-COMPLY-1: required CI steps per repo type (core, harness, docs)
 - [Deprecation Policy](docs/DEPRECATION_POLICY.md) — INV-DEPREC-1: deprecated_in, remove_in, migration_note
 - [Docs Static Analysis TODO — Completion](docs/DOCS_STATIC_ANALYSIS_TODO_COMPLETE.md) — Governance/release doc alignment and summary checklist
 

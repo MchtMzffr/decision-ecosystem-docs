@@ -131,7 +131,17 @@ SPDX-License-Identifier: MIT
 
 ---
 
-## 13. Patch plan (fail-closed order)
+## 13. M. CI compliance (INV-CI-COMPLY-1)
+
+| ID | Definition | Metric | CI / check | Remediation |
+|----|------------|--------|------------|-------------|
+| **INV-CI-COMPLY-1** | Every repo’s CI workflow conforms to the **CI Compliance Standard**: required steps (secret_scan, LICENSE, Ruff check, Ruff format check, build, pytest, artifact) present and passing per repo type. | ci_compliance_failures == 0 | Manual or script: verify workflow YAML contains required steps; run workflow and confirm green | Add missing job/step; fix failing step. See **docs/CI_COMPLIANCE_STANDARD.md**. |
+
+**SSOT for required steps:** **docs/CI_COMPLIANCE_STANDARD.md** (§2: core, harness, docs).
+
+---
+
+## 14. Patch plan (fail-closed order)
 
 **P0**
 
