@@ -14,6 +14,7 @@ import sys
 from pathlib import Path
 
 
+# 8 repos per CI_COMPLIANCE_STANDARD: 6 cores + harness + docs. explainability-audit-core deferred.
 REPO_DIRS = [
     "decision-schema",
     "mdm-engine",
@@ -21,8 +22,8 @@ REPO_DIRS = [
     "ops-health-core",
     "evaluation-calibration-core",
     "execution-orchestration-core",
-    "explainability-audit-core",
     "decision-ecosystem-integration-harness",
+    "decision-ecosystem-docs",
 ]
 
 

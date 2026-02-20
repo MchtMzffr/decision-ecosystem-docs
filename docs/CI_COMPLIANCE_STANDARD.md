@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 **Purpose:** Define the minimum set of CI steps and jobs that every repo must have so that **CI uyumu** (CI compliance) is measurable and enforceable. New cores and the docs repo must follow this standard.
 
-**Scope:** All 8 repos (decision-schema, mdm-engine, decision-modulation-core, ops-health-core, evaluation-calibration-core, execution-orchestration-core, decision-ecosystem-integration-harness, decision-ecosystem-docs).
+**Scope:** Repo list and types are SSOT in **docs/REPO_REGISTRY.md** (INV-REPO-REG-1). Current set: 6 core + harness + docs; optional 9th = explainability-audit-core (experimental/unreleased).
 
 **Hard prerequisite (INV-SYNC-1):** Policy = **main’de kanıt** + CI pass. “Done” only when gates are present on GitHub `main` and CI is green. See §6.
 
@@ -35,6 +35,7 @@ Every repo’s default CI workflow (e.g. `.github/workflows/ci.yml` or `docs_str
 | 6 | Install package | — | `pip install -e .` or `pip install -e ".[dev]"`. |
 | 7 | **(decision-schema only)** INV-PARAM-INDEX-1 | INV-PARAM-INDEX-1 | `python tools/check_parameter_index.py` (exit 0). |
 | 8 | INV-BUILD-1 | INV-BUILD-1 | `python -m build` (exit 0). |
+| 8b | INV-CI-BUILD-SMOKE-1 | INV-CI-BUILD-SMOKE-1a | Wheel smoke: `pip install dist/*.whl` then import smoke. **SMOKE_IMPORT SSOT:** per repo, set `env.SMOKE_IMPORT` to canonical import (see **docs/REPO_REGISTRY.md**) or use `tools/smoke_import.py`; step: `python -c "import importlib, os; importlib.import_module(os.environ['SMOKE_IMPORT'])"`. |
 | 9 | Run tests | — | `pytest tests/ ...` with proof format per INV-CI-PROOF-STD-1. |
 | 10 | Upload pytest report | INV-CI-PROOF-1, INV-CI-PROOF-STD-1 | Artifact name `pytest-report` or `pytest-report-<py>`; path/format per §2.5. |
 
@@ -67,12 +68,20 @@ Single format to avoid drift and enable audit:
 - **Upload artifact name:** `pytest-report` or `pytest-report-<py>` (e.g. `pytest-report-3.11`). Path must be consistent (e.g. `pytest-report.json`).
 - **Metric:** `missing_or_wrong_artifact_count == 0`.
 
+### 2.6 SMOKE_IMPORT SSOT (INV-CI-BUILD-SMOKE-1a)
+
+Per-repo wheel smoke import is defined in one place so CI does not hardcode module names and drift.
+
+- **Option A (recommended):** In workflow, set `env: SMOKE_IMPORT: "<canonical_import>"` (e.g. `decision_schema`) at job or step level; smoke step: `pip install dist/*.whl && python -c "import importlib, os; importlib.import_module(os.environ['SMOKE_IMPORT'])"`.
+- **Option B:** Repo has `tools/smoke_import.py` that performs the single import; CI runs `python tools/smoke_import.py` after `pip install dist/*.whl`.
+- **Registry:** **docs/REPO_REGISTRY.md** lists `canonical_import` per repo; checker can validate workflow uses it. **Metric:** `missing_smoke_import == 0`.
+
 ---
 
 ## 3. Verification
 
 - **Per repo:** Open the default workflow YAML and confirm each step in §2 is present. Run the workflow; all jobs must succeed.
-- **Automated (optional):** A script could grep for `ruff check`, `ruff format --check`, `gitleaks`, `python -m build`, `pytest` in `.github/workflows/*.yml` and report missing steps per repo.
+- **Automated (mandatory for docs repo):** `tools/check_ci_compliance.py` runs in docs CI (INV-CI-COMPLY-2). For all repos locally: `python tools/check_ci_compliance.py --workspace <parent-of-all-repos>`. See §7.
 
 ---
 

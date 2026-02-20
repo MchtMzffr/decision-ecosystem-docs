@@ -15,6 +15,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 - [Release Verification Checklist](RELEASE_VERIFICATION_CHECKLIST.md) — INV-REL-* and INV-REL-GH (including INV-REL-4)
 - [Tag Governance](TAG_GOVERNANCE.md) — Tag immutability policy
 - [Ecosystem Contract Matrix](ECOSYSTEM_CONTRACT_MATRIX.md) — Dependency ranges and CI fallback tags
+- [Repository Registry](docs/REPO_REGISTRY.md) — INV-REPO-REG-1: SSOT for repo list and types (core, harness, docs, experimental)
 
 **Tools (docs repo):**
 - `tools/get_ci_proof.py` — CI run URL + test counts for release notes (run from docs repo; requires `gh` and local core repo clone).
@@ -45,7 +46,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 - [Static Analysis & Code Quality — 5N1K and Control](docs/STATIC_ANALYSIS_CODE_QUALITY_5N1K_AND_CONTROL.md) — 5N1K, Feynman, uygunsuzluk/eksik/öneri listesi, akademik kontrol matrisi
 - [Core Repo Standards](docs/CORE_REPO_STANDARDS.md) — INV-GITIGNORE-1, INV-COMMIT-1 (revised); .gitignore and commit/push rules
 - [Ecosystem Gates and Invariants](docs/ECOSYSTEM_GATES_AND_INVARIANTS.md) — SSOT: all gates (A–M), metric, CI check, remediation
-- [CI Compliance Standard](docs/CI_COMPLIANCE_STANDARD.md) — INV-CI-COMPLY-1: required CI steps per repo type (core, harness, docs)
+- [CI Compliance Standard](docs/CI_COMPLIANCE_STANDARD.md) — INV-CI-COMPLY-1/2: required CI steps per repo type, N/A conditions, proof artifact standard, compliance checker
 - [Deprecation Policy](docs/DEPRECATION_POLICY.md) — INV-DEPREC-1: deprecated_in, remove_in, migration_note
 - [Docs Static Analysis TODO — Completion](docs/DOCS_STATIC_ANALYSIS_TODO_COMPLETE.md) — Governance/release doc alignment and summary checklist
 

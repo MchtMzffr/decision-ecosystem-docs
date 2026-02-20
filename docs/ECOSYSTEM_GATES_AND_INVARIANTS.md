@@ -39,9 +39,11 @@ SPDX-License-Identifier: MIT
 
 | ID | Definition | Metric | CI / check | Remediation |
 |----|------------|--------|------------|-------------|
-| **Repo list (8)** | **Repos** (GitHub repos): decision-schema, mdm-engine, decision-modulation-core, ops-health-core, evaluation-calibration-core, execution-orchestration-core, decision-ecosystem-integration-harness, decision-ecosystem-docs. | component_list_length == 8 (for repo count) | — | Add new repo to list when new core is created |
-| **Workspace paths** | Workspace root may also contain folders `docs`, `scripts` (not standalone repos but paths under a monorepo/workspace). Script COMPONENT_MAP uses these for **signature component name** only; repo list remains 8. | — | — | Keep COMPONENT_MAP in sync with repo names + workspace path names for header attribution |
+| **INV-REPO-REG-1** | Repo list and type are SSOT in **docs/REPO_REGISTRY.md**. | repo_registry_count == expected; unknown_repo_in_ci == 0 | check_ci_compliance (reads registry) | Update REPO_REGISTRY.md; align checker/sync |
+| **Repo list** | Registry defines: core, harness, docs, experimental (e.g. explainability-audit-core as 9th). | — | REPO_REGISTRY.md | Add row when new repo joins ecosystem |
+| **Workspace paths** | Workspace root may also contain folders `docs`, `scripts` (not standalone repos but paths under a monorepo/workspace). Script COMPONENT_MAP uses these for **signature component name** only. | — | — | Keep COMPONENT_MAP in sync with repo names + workspace path names for header attribution |
 | **INV-CORE-DEP-1** | Core repos depend only on decision-schema (no core↔core). | core_to_core_dep_count == 0 | pyproject / grep | Remove cross-core dependency; use schema only |
+| **INV-REL-SSOT-2** | Version in docs = pyproject + Git tag; docs do not override reality. | version_mismatch_rows == 0 | check_release_alignment; ECOSYSTEM_CONTRACT_MATRIX | Set matrix/roadmap to actual versions |
 
 ---
 

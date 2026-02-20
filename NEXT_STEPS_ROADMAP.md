@@ -24,6 +24,8 @@ This makes dependency pinning and contract matrices reproducible.
 | execution-orchestration-core | 0.1.0 | v0.1.0 | OK |
 | decision-modulation-core (dmc-core) | 0.1.1 | v0.1.1 | OK |
 
+**Note:** integration-harness is not in this P0 version table; release version tracking for harness is separate. Add a row when harness has a published release to align with INV-DOC-DRIFT-1.
+
 **Source of truth:** pyproject version on `main` + Git tags. Update this table whenever you publish a tag.
 
 **Invariants:** `tag(version) == pyproject.version` for released packages; roadmap must match tags (INV-DOC-DRIFT-1). Full list: [ECOSYSTEM_INVARIANTS.md](ECOSYSTEM_INVARIANTS.md). To check table vs local repos: `python tools/check_release_alignment.py --workspace <parent-of-docs>`.

@@ -32,7 +32,7 @@ Only files in the categories below (with the given names) may live at **root**. 
 |----------|---------|-------------|
 | **Release & verification** | `GITHUB_RELEASES_GUIDE.md`, `RELEASE_VERIFICATION_CHECKLIST.md`, `TAG_GOVERNANCE.md`, `ECOSYSTEM_CONTRACT_MATRIX.md` | Release process and invariant verification |
 | **CI & operations** | `CI_RELIABILITY.md` | CI flakiness and mitigations |
-| **Governance** | `BRANCH_GOVERNANCE.md` | Branch rules; dev vs CI fallback |
+| **Governance** | `BRANCH_GOVERNANCE.md`, `ECOSYSTEM_INVARIANTS.md` | Branch rules; dev vs CI fallback; ecosystem invariants checklist |
 | **Architecture & guide** | `ARCHITECTURE.md`, `FORMULAS.md`, `INTEGRATION_GUIDE.md` | Ecosystem architecture, formulas, integration (DOC TRIO reference) |
 | **Roadmap & status** | `NEXT_STEPS_ROADMAP.md`, `TASK_COMPLETION_SUMMARY.md` | Single "what's next" + single "what's done" summary |
 | **Analysis (current)** | At most **1–2** current analysis reports (e.g. `ACADEMIC_STATIC_ANALYSIS_REPORT.md`, `ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md`) | Older reports are moved to archive |

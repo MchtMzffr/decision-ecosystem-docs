@@ -5,9 +5,10 @@
 """
 INV-CI-COMPLY-2: CI compliance checker. Fail-closed.
 Checks each repo's workflow(s) against required steps per repo type (CI_COMPLIANCE_STANDARD).
+Repo list and types: optional SSOT from docs/REPO_REGISTRY.md (INV-REPO-REG-1).
 Usage:
   python tools/check_ci_compliance.py --workspace <parent-of-all-repos>   # check all repos
-  python tools/check_ci_compliance.py --workspace .                      # check only current dir (single repo)
+  python tools/check_ci_compliance.py --workspace .                        # check only current dir (single repo)
 """
 
 from __future__ import annotations
@@ -16,7 +17,8 @@ import argparse
 import sys
 from pathlib import Path
 
-REPO_DIRS = [
+# Fallback when registry not found
+REPO_DIRS_FALLBACK = [
     "decision-schema",
     "mdm-engine",
     "decision-modulation-core",
@@ -28,7 +30,49 @@ REPO_DIRS = [
 ]
 
 
-def repo_type(name: str) -> str:
+def load_registry(workspace: Path) -> tuple[list[str], dict[str, str]] | None:
+    """Load REPO_REGISTRY.md from docs repo. Returns (repo_names, name -> type) or None."""
+    for docs_path in [
+        workspace / "decision-ecosystem-docs" / "docs" / "REPO_REGISTRY.md",
+        workspace / "docs" / "REPO_REGISTRY.md",
+        Path(__file__).resolve().parent.parent / "docs" / "REPO_REGISTRY.md",
+    ]:
+        if docs_path.exists():
+            break
+    else:
+        return None
+    text = docs_path.read_text(encoding="utf-8", errors="replace")
+    rows: list[tuple[str, str]] = []
+    in_table = False
+    for line in text.splitlines():
+        if "| repo_name |" in line or "| repo_name |" in line:
+            in_table = True
+            continue
+        if not in_table or not line.strip().startswith("|"):
+            continue
+        parts = [p.strip() for p in line.split("|") if p.strip()]
+        if len(parts) >= 2 and parts[0] != "---" and not parts[0].startswith("repo_name"):
+            name, typ = parts[0], parts[1]
+            if name and typ:
+                rows.append((name, typ))
+    if not rows:
+        return None
+    repo_list = [r[0] for r in rows]
+    type_map = {r[0]: r[1] for r in rows}
+    return (repo_list, type_map)
+
+
+def repo_type(name: str, type_map: dict[str, str] | None = None) -> str:
+    if type_map and name in type_map:
+        t = type_map[name]
+        if t == "docs":
+            return "docs"
+        if t == "harness":
+            return "harness"
+        if t == "core":
+            return "core_schema" if name == "decision-schema" else "core"
+        if t == "experimental":
+            return "core"  # checklist as core
     if name == "decision-ecosystem-docs":
         return "docs"
     if name == "decision-schema":
@@ -55,6 +99,27 @@ def all_workflows_content(repo_path: Path) -> str:
     return "\n".join(parts)
 
 
+def _check_action_pins(content: str) -> list[str]:
+    """INV-CI-ACT-PIN-1: every uses: must have @tag or @sha."""
+    missing = []
+    for line in content.splitlines():
+        if "uses:" in line and not line.strip().startswith("#"):
+            # Allow ${{ }} for matrix; require @ in the action ref
+            if "uses:" in line and "@" not in line.split("uses:")[-1].split("#")[0]:
+                missing.append("INV-CI-ACT-PIN-1: action without pin (uses: ...@vX or @sha)")
+                break
+    return missing
+
+
+def _check_permissions(content: str) -> list[str]:
+    """INV-CI-PERM-1: workflow should set permissions (e.g. contents: read)."""
+    if "permissions:" not in content:
+        return ["INV-CI-PERM-1: no permissions block (prefer contents: read)"]
+    if "contents: read" not in content and "contents: write" not in content:
+        return ["INV-CI-PERM-1: permissions block should include contents: read"]
+    return []
+
+
 def check_core_or_harness(repo_path: Path, typ: str) -> list[str]:
     content = workflow_content(repo_path, "ci.yml")
     missing = []
@@ -70,16 +135,27 @@ def check_core_or_harness(repo_path: Path, typ: str) -> list[str]:
         missing.append("ruff format check")
     if "python -m build" not in content:
         missing.append("INV-BUILD-1 (python -m build)")
+    has_smoke = (
+        "INV-CI-BUILD-SMOKE-1" in content
+        or "wheel smoke" in content.lower()
+        or ("SMOKE_IMPORT" in content and "import_module" in content)
+    )
+    if not has_smoke:
+        missing.append("INV-CI-BUILD-SMOKE-1 / SMOKE_IMPORT (wheel smoke after build)")
     if "pytest" not in content:
         missing.append("pytest")
     if "pytest-report" not in content and "pytest_report" not in content:
         missing.append("pytest report artifact (INV-CI-PROOF-STD-1)")
+    if "pytest-report.json" not in content and "json-report-file=" not in content:
+        missing.append("INV-CI-PROOF-STD-1: pytest json-report path (e.g. pytest-report.json)")
     if typ == "core_schema":
         if "check_parameter_index" not in content:
             missing.append("INV-PARAM-INDEX-1 (check_parameter_index.py)")
     if typ in ("core", "core_schema"):
         if "decision-schema" in content and "@main" in content and "v0.2.2" not in content:
             missing.append("INV-CI-SCHEMA-FB-1: schema fallback must be tag (e.g. @v0.2.2), not @main")
+    missing.extend(_check_action_pins(content))
+    missing.extend(_check_permissions(content))
     return missing
 
 
@@ -104,14 +180,14 @@ def check_docs(repo_path: Path) -> list[str]:
     return missing
 
 
-def check_repo(workspace: Path, repo_name: str) -> list[str]:
+def check_repo(workspace: Path, repo_name: str, type_map: dict[str, str] | None = None) -> list[str]:
     repo_path = workspace / repo_name
     if not repo_path.is_dir():
         if workspace.name == repo_name and (workspace / ".github").is_dir():
             repo_path = workspace  # single-repo mode: workspace is repo root
         else:
             return [f"Repo dir not found: {repo_name}"]
-    typ = repo_type(repo_name)
+    typ = repo_type(repo_name, type_map)
     if typ in ("core", "core_schema", "harness"):
         return check_core_or_harness(repo_path, typ)
     return check_docs(repo_path)
@@ -136,15 +212,24 @@ def main() -> int:
     args = ap.parse_args()
     workspace = args.workspace.resolve()
 
+    registry = load_registry(workspace)
+    if registry:
+        repo_list, type_map = registry
+        # CI scope: core, harness, docs (optional: include experimental)
+        repo_list_in_scope = [r for r in repo_list if type_map.get(r, "") in ("core", "harness", "docs")]
+    else:
+        repo_list_in_scope = REPO_DIRS_FALLBACK
+        type_map = None
+
     if args.repos:
-        repo_names = [r for r in args.repos if r in REPO_DIRS]
+        repo_names = [r for r in args.repos if r in repo_list_in_scope or not registry]
         if not repo_names and args.repos:
             repo_names = args.repos  # allow ad-hoc names
     else:
-        repo_names = [d for d in REPO_DIRS if (workspace / d).is_dir()]
+        repo_names = [d for d in repo_list_in_scope if (workspace / d).is_dir()]
         if not repo_names:
             name = workspace.name
-            if name in REPO_DIRS:
+            if name in repo_list_in_scope or name in (REPO_DIRS_FALLBACK if not registry else []):
                 repo_names = [name]
             else:
                 print("check_ci_compliance: no known repo dirs under workspace; specify --repos?", file=sys.stderr)
@@ -152,7 +237,7 @@ def main() -> int:
 
     errors: list[tuple[str, list[str]]] = []
     for repo_name in repo_names:
-        miss = check_repo(workspace, repo_name)
+        miss = check_repo(workspace, repo_name, type_map)
         if miss:
             errors.append((repo_name, miss))
 

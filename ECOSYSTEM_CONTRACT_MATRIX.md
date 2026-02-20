@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
 | Repository | decision-schema range | CI fallback tag | Notes |
 |------------|------------------------|-----------------|--------|
 | decision-schema | — | — | SSOT |
-| mdm-engine | >=0.2.1,<0.3 | @v0.2.2 | |
+| mdm-engine | >=0.2.1,<0.3 | @v0.2.2 | Version truth: pyproject + tag (INV-REL-SSOT-2). |
 | decision-modulation-core | >=0.2,<0.3 | @v0.2.2 | |
 | ops-health-core | >=0.2.1,<0.3 | @v0.2.2 | |
 | evaluation-calibration-core | >=0.2,<0.3 | @v0.2.2 | |

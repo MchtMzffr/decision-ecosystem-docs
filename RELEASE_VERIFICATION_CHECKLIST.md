@@ -22,6 +22,8 @@ SPDX-License-Identifier: MIT
 | mdm-engine | [main/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/mdm-engine/main/pyproject.toml) | [v0.2.1/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/mdm-engine/v0.2.1/pyproject.toml) |
 | ops-health-core | [main/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/ops-health-core/main/pyproject.toml) | [v0.1.1/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/ops-health-core/v0.1.1/pyproject.toml) |
 | evaluation-calibration-core | [main/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/evaluation-calibration-core/main/pyproject.toml) | [v0.1.1/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/evaluation-calibration-core/v0.1.1/pyproject.toml) |
+| decision-modulation-core (dmc-core) | [main/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/decision-modulation-core/main/pyproject.toml) | [v0.1.1/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/decision-modulation-core/v0.1.1/pyproject.toml) |
+| execution-orchestration-core | [main/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/execution-orchestration-core/main/pyproject.toml) | [v0.1.0/pyproject.toml](https://raw.githubusercontent.com/MchtMzffr/execution-orchestration-core/v0.1.0/pyproject.toml) |
 
 **Expected:** Both show same `version = "X.Y.Z"` (or main may show a newer patch; tag is the released snapshot).
 
@@ -93,6 +95,8 @@ Copy this for each release:
 - [ ] mdm-engine: main == tag
 - [ ] ops-health-core: main == tag
 - [ ] evaluation-calibration-core: main == tag
+- [ ] decision-modulation-core (dmc-core): main == tag
+- [ ] execution-orchestration-core: main == tag
 
 ### INV-REL-2 (Branch Governance)
 - [ ] All CI workflows: `branches: [main]`
