@@ -42,7 +42,34 @@ When adding a **new** core to the ecosystem:
 
 ---
 
-## 2. Alignment With Other Standards
+## 2. INV-COMMIT-1: No File or Repo Skipped on Commit/Push
+
+**Rule:** When doing commit and push (batch or per release), **no intended file and no repo may be skipped**. Every repo that has uncommitted or unpushed changes must be committed and pushed. Newly added cores and every relevant file must be included.
+
+### 2.1 What “no skip” means
+
+| Must be included | Must not be skipped |
+|------------------|----------------------|
+| Every core repo that has local changes | A repo left with uncommitted or unpushed work |
+| New cores and new files (source, config, docs) | Any source/config/doc file that should be in version control |
+| All modified/added files under target paths | Leaving a file out “by mistake” when it should be committed |
+
+### 2.2 What is intentionally excluded
+
+Files and directories listed in **INV-GITIGNORE-1** (§1.1) are **not** intended to be in the repo: `__pycache__/`, `*.pyc`, `.pytest_cache/`, `build/`, `dist/`, `.venv/`, secrets/env. These must remain untracked and are not “skipped” — they are excluded by rule.
+
+### 2.3 Checklist before “done” (commit/push completeness)
+
+1. Run `git status -sb` (or equivalent) in **every** core repo and in the docs repo.
+2. For each repo with changes: stage all **intended** files (respecting `.gitignore`), commit, then push.
+3. Confirm no repo is left **ahead** of `origin/main` (all pushed).
+4. New cores: same process; every file that belongs in the repo must be committed and pushed, no file skipped.
+
+**Invariant INV-COMMIT-1:** After a batch commit/push, no repo has uncommitted or unpushed changes for intended files; no file that should be in version control is left out.
+
+---
+
+## 3. Alignment With Other Standards
 
 | Standard | Applies to | Reference |
 |----------|------------|-----------|
@@ -51,14 +78,15 @@ When adding a **new** core to the ecosystem:
 | CI (lint, test, secret scan) | All cores | Each repo `.github/workflows/ci.yml` |
 | Dependabot / pre-commit | All cores | `.github/dependabot.yml`, `.pre-commit-config.yaml` |
 
-New cores must satisfy the same invariants (INV-LIC-1, INV-GITIGNORE-1, INV-SAFE-1, etc.) as existing cores.
+New cores must satisfy the same invariants (INV-LIC-1, INV-GITIGNORE-1, INV-COMMIT-1, INV-SAFE-1, etc.) as existing cores.
 
 ---
 
-## 3. Summary
+## 4. Summary
 
-- **INV-GITIGNORE-1:** `.gitignore` in every core must include `__pycache__/`, `.pytest_cache/`, build/dist, venv, and secrets/env patterns; no such file may remain tracked.
-- **New cores:** Same rules; use an existing core’s `.gitignore` as template and follow the same CI/signature/dependabot/pre-commit practices.
+- **INV-GITIGNORE-1:** `.gitignore` in every core must include `__pycache__/`, `.pytest_cache/`, build/dist, venv, and secrets/env patterns; no such file may remain tracked. (`__pycache__` and `.pyc` are **intentionally** not committed.)
+- **INV-COMMIT-1:** On commit/push, no repo and no intended file may be skipped; every new core and every file that belongs in the repo must be committed and pushed. Use the §2.3 checklist.
+- **New cores:** Same rules; use an existing core’s `.gitignore` as template; ensure every relevant file is committed and pushed with no file left out.
 
 ---
 
