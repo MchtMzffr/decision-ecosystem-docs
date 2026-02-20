@@ -50,9 +50,9 @@ CI can enforce INV-LIC-1 with a step: `test -f LICENSE`.
 | Invariant | Rule | Metric |
 |-----------|------|--------|
 | **INV-GITIGNORE-1** | `.gitignore` must include `__pycache__/`, `.pytest_cache/`, build/dist, venv, secrets/env; no such file may be tracked. | No `__pycache__/` or `.pytest_cache/` in `git status` as tracked; run `git rm --cached` if ever committed. |
-| **INV-COMMIT-1** | On commit/push, no repo and no intended file may be skipped; every new core and every file that belongs in the repo must be committed and pushed. | After batch commit/push: `git status` in each repo shows nothing to commit and nothing to push (for intended files). |
+| **INV-COMMIT-1** | Intended changes are committed and pushed; no repo left with uncommitted tracked changes or ahead of origin/main. | `git status --porcelain` empty; `git log origin/main..HEAD` empty. See **docs/CORE_REPO_STANDARDS.md** §2. |
 
-Details and checklist: **docs/CORE_REPO_STANDARDS.md**. Applies to every core (existing and newly added).
+Full gates (H–L, metrics, remediation): **docs/ECOSYSTEM_GATES_AND_INVARIANTS.md**. Details and checklist: **docs/CORE_REPO_STANDARDS.md**. Applies to every core (existing and newly added).
 
 ---
 

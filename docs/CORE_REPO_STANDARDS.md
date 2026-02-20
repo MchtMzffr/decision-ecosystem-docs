@@ -42,30 +42,29 @@ When adding a **new** core to the ecosystem:
 
 ---
 
-## 2. INV-COMMIT-1: No File or Repo Skipped on Commit/Push
+## 2. INV-COMMIT-1: Intended Changes Committed and Pushed (revised)
 
-**Rule:** When doing commit and push (batch or per release), **no intended file and no repo may be skipped**. Every repo that has uncommitted or unpushed changes must be committed and pushed. Newly added cores and every relevant file must be included.
+**Rule:** If a repo has **intended** (designed) changes, those changes are committed and pushed. If there are no intended changes, the repo remains clean. No repo may be left with uncommitted **tracked** changes or with commits **ahead** of `origin/main`. Intentionally excluded paths (see INV-GITIGNORE-1) are not “intended” and must not be committed.
 
-### 2.1 What “no skip” means
+### 2.1 What “intended” means
 
-| Must be included | Must not be skipped |
-|------------------|----------------------|
-| Every core repo that has local changes | A repo left with uncommitted or unpushed work |
-| New cores and new files (source, config, docs) | Any source/config/doc file that should be in version control |
-| All modified/added files under target paths | Leaving a file out “by mistake” when it should be committed |
+- **Intended:** Source, config, or doc files that are part of the designed change (e.g. feature, fix, release).
+- **Not intended:** Files under INV-GITIGNORE-1 (§1.1); large datasets, local caches, or temporary exports that are deliberately not in version control. Omitting these is **not** a rule violation.
 
 ### 2.2 What is intentionally excluded
 
-Files and directories listed in **INV-GITIGNORE-1** (§1.1) are **not** intended to be in the repo: `__pycache__/`, `*.pyc`, `.pytest_cache/`, `build/`, `dist/`, `.venv/`, secrets/env. These must remain untracked and are not “skipped” — they are excluded by rule.
+Paths in **INV-GITIGNORE-1** (§1.1): `__pycache__/`, `*.pyc`, `.pytest_cache/`, `build/`, `dist/`, `.venv/`, secrets/env. These remain untracked.
 
-### 2.3 Checklist before “done” (commit/push completeness)
+### 2.3 Deterministic checks (commit/push completeness)
 
-1. Run `git status -sb` (or equivalent) in **every** core repo and in the docs repo.
-2. For each repo with changes: stage all **intended** files (respecting `.gitignore`), commit, then push.
-3. Confirm no repo is left **ahead** of `origin/main` (all pushed).
-4. New cores: same process; every file that belongs in the repo must be committed and pushed, no file skipped.
+| Check | Command | Pass condition |
+|-------|--------|-----------------|
+| No uncommitted tracked changes | `test -z "$(git status --porcelain)"` | Exit 0 |
+| No commits ahead of origin/main | `git log --oneline origin/main..HEAD \| wc -l` | 0 |
 
-**Invariant INV-COMMIT-1:** After a batch commit/push, no repo has uncommitted or unpushed changes for intended files; no file that should be in version control is left out.
+Run in **every** core repo and docs repo after a batch. **Metric:** `uncommitted_tracked_changes == 0`, `ahead_of_origin_main == 0`.
+
+**Invariant INV-COMMIT-1 (revised):** After batch commit/push, every repo with intended changes has those changes committed and pushed; no repo is left with uncommitted tracked changes or ahead of origin/main.
 
 ---
 
