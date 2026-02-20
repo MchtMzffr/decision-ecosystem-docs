@@ -131,13 +131,21 @@ SPDX-License-Identifier: MIT
 
 ---
 
-## 13. M. CI compliance (INV-CI-COMPLY-1)
+## 13. M. CI compliance (INV-CI-COMPLY-1, INV-CI-COMPLY-2)
 
 | ID | Definition | Metric | CI / check | Remediation |
 |----|------------|--------|------------|-------------|
-| **INV-CI-COMPLY-1** | Every repo’s CI workflow conforms to the **CI Compliance Standard**: required steps (secret_scan, LICENSE, Ruff check, Ruff format check, build, pytest, artifact) present and passing per repo type. | ci_compliance_failures == 0 | Manual or script: verify workflow YAML contains required steps; run workflow and confirm green | Add missing job/step; fix failing step. See **docs/CI_COMPLIANCE_STANDARD.md**. |
+| **INV-CI-COMPLY-1** | Every repo’s CI workflow conforms to the **CI Compliance Standard**: required steps (secret_scan, LICENSE, Ruff check, Ruff format check, build, pytest, artifact) present and passing per repo type. | ci_compliance_failures == 0 | check_ci_compliance.py (INV-CI-COMPLY-2) | Add missing job/step; fix failing step. See **docs/CI_COMPLIANCE_STANDARD.md**. |
+| **INV-CI-COMPLY-2** | Compliance checker runs in docs CI; fail-closed. | compliance_checker_pass == true | docs workflow: `python tools/check_ci_compliance.py --workspace .` | Fix workflow or checker. |
+| **INV-CI-SCOPE-1** | N/A steps only with documented condition (e.g. Docs Ruff when no pyproject/tools/*.py). | na_steps_without_condition == 0 | check_ci_compliance.py | Document condition or add step. |
+| **INV-CI-PROOF-STD-1** | Proof artifact path/name fixed (pytest-report.json, artifact pytest-report or pytest-report-<py>). | missing_or_wrong_artifact_count == 0 | CI / checklist | Align pytest and upload-artifact with standard. |
+| **INV-CI-ACT-PIN-1** | Actions `uses:` pinned (tag/sha). | unpinned_actions_count == 0 | grep / script | Pin to @vX or @sha. |
+| **INV-CI-PERM-1** | Default permissions: contents read; widen only if needed. | overprivileged_workflows == 0 | workflow YAML | Set permissions explicitly. |
+| **INV-CI-PY-1** | Core/harness: at least one fixed Python (e.g. 3.11). | python_version_unspecified == 0 | workflow YAML | Add setup-python with version. |
+| **INV-CI-BUILD-SMOKE-1** | After build: pip install wheel + minimal import. | wheel_smoke_failures == 0 | CI step | Add smoke step. |
+| **INV-CI-SCHEMA-FB-1** | decision-schema fallback tag only; no @main. | schema_fallback_main_count == 0 | check_ci_compliance.py / grep | Use @vX.Y.Z. |
 
-**SSOT for required steps:** **docs/CI_COMPLIANCE_STANDARD.md** (§2: core, harness, docs).
+**SSOT for required steps and N/A conditions:** **docs/CI_COMPLIANCE_STANDARD.md** (§2: core, harness, docs; §2.4 N/A, §2.5 proof artifact, §5.1 additional invariants, §7 checker).
 
 ---
 

@@ -22,7 +22,15 @@
 | **INV-CI-TAG-1** | Tag push triggers CI (`on.push.tags: ["v*"]`). | Run count ≥ 1 after tag push. |
 | **INV-CI-PROOF-1** | CI produces machine-readable proof artifact (`pytest-report-<py>` with JSON). | Artifact downloadable, JSON parseable. |
 | **INV-CI-COMPLY-1** | Every repo’s CI workflow conforms to the **CI Compliance Standard** (secret_scan, LICENSE, Ruff check, Ruff format check, build, pytest, artifact per repo type). | All required steps present and passing. See **docs/CI_COMPLIANCE_STANDARD.md**. |
-| **INV-SYNC-1** | “Workspace’te var” ≠ “main’de var”. **DONE** = proof on GitHub `main` + CI gate passing. | Done = Gates_present ∧ CI_pass ∧ Main_parity. See **docs/CI_COMPLIANCE_STANDARD.md** §6. |
+| **INV-CI-COMPLY-2** | CI compliance checker runs in docs repo CI (and optionally with `--workspace`); fail-closed. | compliance_checker_pass == true. See **docs/CI_COMPLIANCE_STANDARD.md** §7. |
+| **INV-SYNC-1** | “Workspace’te var” ≠ “main’de var”. **DONE** = proof on GitHub `main` + CI gate passing. | Done = Gates_present ∧ Main_parity. See **docs/CI_COMPLIANCE_STANDARD.md** §6. |
+| **INV-CI-SCOPE-1** | Repo-type steps may be N/A only with documented condition (e.g. Docs Ruff when no pyproject/tools/*.py). | na_steps_without_condition == 0. |
+| **INV-CI-PROOF-STD-1** | Proof artifact path and name fixed (e.g. pytest-report.json, artifact name pytest-report or pytest-report-<py>). | missing_or_wrong_artifact_count == 0. |
+| **INV-CI-ACT-PIN-1** | GitHub Actions `uses:` pinned (tag or sha). | unpinned_actions_count == 0. |
+| **INV-CI-PERM-1** | Default `permissions: { contents: read }`. | overprivileged_workflows == 0. |
+| **INV-CI-PY-1** | Core/harness CI: at least one fixed Python version (e.g. 3.11). | python_version_unspecified == 0. |
+| **INV-CI-BUILD-SMOKE-1** | After build: pip install dist/*.whl + minimal import smoke. | wheel_smoke_failures == 0. |
+| **INV-CI-SCHEMA-FB-1** | decision-schema fallback tag only (@vX.Y.Z); no @main. | schema_fallback_main_count == 0. |
 
 Branch/CI policy details: **BRANCH_GOVERNANCE.md** (INV-BRANCH-1, INV-BRANCH-2, INV-GOV-1, INV-GOV-2). **CI uyum standardı:** **docs/CI_COMPLIANCE_STANDARD.md**.
 

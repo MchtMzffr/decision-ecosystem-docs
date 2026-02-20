@@ -22,6 +22,7 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 
 ### CI & operations
 
+- [CI Compliance Standard](docs/CI_COMPLIANCE_STANDARD.md) — INV-CI-COMPLY-1/2: required steps per repo type, N/A conditions, proof artifact standard, compliance checker
 - [CI Reliability](CI_RELIABILITY.md) — Why CI may flake and what we did to reduce it
 
 ### Architecture & governance

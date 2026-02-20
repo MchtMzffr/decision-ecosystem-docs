@@ -40,3 +40,6 @@ jobs:
 
       - name: Run docs root invariants
         run: python .github/scripts/check_docs_root.py
+
+      - name: INV-CI-COMPLY-2 (CI compliance check)
+        run: python tools/check_ci_compliance.py --workspace .

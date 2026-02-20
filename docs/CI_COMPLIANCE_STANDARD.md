@@ -9,13 +9,15 @@ SPDX-License-Identifier: MIT
 
 **Scope:** All 8 repos (decision-schema, mdm-engine, decision-modulation-core, ops-health-core, evaluation-calibration-core, execution-orchestration-core, decision-ecosystem-integration-harness, decision-ecosystem-docs).
 
+**Hard prerequisite (INV-SYNC-1):** Policy = **main’de kanıt** + CI pass. “Done” only when gates are present on GitHub `main` and CI is green. See §6.
+
 ---
 
 ## 1. Rule (INV-CI-COMPLY-1)
 
-Every repo’s default CI workflow (e.g. `.github/workflows/ci.yml` or `docs_structure_guard.yml`) must include the steps listed below for its **repo type**. No step may be omitted without a documented exception (e.g. docs repo has no `python -m build`).
+Every repo’s default CI workflow (e.g. `.github/workflows/ci.yml` or `docs_structure_guard.yml`) must include the steps listed below for its **repo type**. No step may be omitted without a documented exception or N/A condition (§2.4). Compliance is **enforced** by `tools/check_ci_compliance.py` (INV-CI-COMPLY-2).
 
-**Metric:** For each repo, `ci_compliance_failures == 0` (all required steps present and passing).
+**Metric:** For each repo, `ci_compliance_failures == 0` (all required steps present and passing). Produced by the compliance checker; see §7.
 
 ---
 
@@ -33,10 +35,10 @@ Every repo’s default CI workflow (e.g. `.github/workflows/ci.yml` or `docs_str
 | 6 | Install package | — | `pip install -e .` or `pip install -e ".[dev]"`. |
 | 7 | **(decision-schema only)** INV-PARAM-INDEX-1 | INV-PARAM-INDEX-1 | `python tools/check_parameter_index.py` (exit 0). |
 | 8 | INV-BUILD-1 | INV-BUILD-1 | `python -m build` (exit 0). |
-| 9 | Run tests | — | `pytest tests/ ...` with `--json-report` (INV-CI-PROOF-1). |
-| 10 | Upload pytest report | INV-CI-PROOF-1 | Artifact `pytest-report-<py>`. |
+| 9 | Run tests | — | `pytest tests/ ...` with proof format per INV-CI-PROOF-STD-1. |
+| 10 | Upload pytest report | INV-CI-PROOF-1, INV-CI-PROOF-STD-1 | Artifact name `pytest-report` or `pytest-report-<py>`; path/format per §2.5. |
 
-Cores that depend on decision-schema must install it (e.g. pin `>=0.2.2,<0.3` + fallback tag) before installing the package. See INV-CI-PIN-1.
+Cores that depend on decision-schema must install it (e.g. pin `>=0.2.2,<0.3` + fallback **tag only**, no `@main`) before installing the package. See INV-CI-PIN-1, INV-CI-SCHEMA-FB-1.
 
 ### 2.2 Integration harness (decision-ecosystem-integration-harness)
 
@@ -47,11 +49,23 @@ Same as **2.1** (secret_scan, LICENSE, Ruff check, Ruff format check, Install ha
 | Order | Step / job | Description |
 |-------|------------|-------------|
 | 1 | **secret_scan** job | gitleaks/gitleaks-action@v2. |
-| 2 | Ruff check | `ruff check .`. |
-| 3 | Ruff format check | `ruff format --check .`. |
+| 2 | Ruff check | `ruff check .` — **conditional (INV-CI-SCOPE-1):** required only if `pyproject.toml` exists OR `tools/*.py` exists; else N/A. |
+| 3 | Ruff format check | `ruff format --check .` — same condition as Ruff check. |
 | 4 | Docs structure guard | `python .github/scripts/check_docs_root.py` (INV-DOC-*). |
 
 No `python -m build` or pytest (docs repo is not a Python package).
+
+### 2.4 N/A conditions (INV-CI-SCOPE-1)
+
+Repo-type steps may be **N/A** only when the condition is documented and satisfied. Example: Docs repo Ruff is N/A when there is no `pyproject.toml` and no `tools/*.py`. **Metric:** `na_steps_without_condition == 0` (N/A only with explicit condition).
+
+### 2.5 Proof artifact standard (INV-CI-PROOF-STD-1)
+
+Single format to avoid drift and enable audit:
+
+- **Command:** `pytest ... --json-report --json-report-file=pytest-report.json` (or `artifacts/pytest-report.json`). Alternative: `--junitxml=artifacts/junit.xml`.
+- **Upload artifact name:** `pytest-report` or `pytest-report-<py>` (e.g. `pytest-report-3.11`). Path must be consistent (e.g. `pytest-report.json`).
+- **Metric:** `missing_or_wrong_artifact_count == 0`.
 
 ---
 
@@ -79,7 +93,19 @@ When adding a **new** core repo, copy the CI workflow from an existing core (e.g
 | INV-CI-PROOF-1 | Enforced by pytest + upload artifact. |
 | INV-PARAM-INDEX-1 | Enforced by check_parameter_index.py (decision-schema only). |
 
+### 5.1 Additional CI invariants (determinism, security, smoke)
+
+| Invariant | Rule | Metric |
+|-----------|------|--------|
+| **INV-CI-ACT-PIN-1** | GitHub Actions `uses:` must be pinned (tag or sha). No floating `@main` or unpinned. | `unpinned_actions_count == 0` |
+| **INV-CI-PERM-1** | Default `permissions: { contents: read }`; widen only when necessary. | `overprivileged_workflows == 0` |
+| **INV-CI-PY-1** | Core/harness CI: at least one fixed Python version (e.g. 3.11); matrix optional. | `python_version_unspecified == 0` |
+| **INV-CI-BUILD-SMOKE-1** | After `python -m build`, smoke test: `pip install dist/*.whl` + minimal import. | `wheel_smoke_failures == 0` |
+| **INV-CI-SCHEMA-FB-1** | decision-schema fallback **tag only** (`@vX.Y.Z`); no `@main`. | `schema_fallback_main_count == 0` |
+
 **INV-CI-COMPLY-1:** Every repo’s CI workflow conforms to this standard (all required steps present and passing).
+
+**INV-CI-COMPLY-2:** CI compliance checker runs in docs repo CI (and optionally locally with `--workspace`); fail-closed. **Metric:** `compliance_checker_pass == true`. See §7.
 
 ---
 
@@ -106,6 +132,16 @@ Before claiming “CI gates are in place”:
 - **(A) Gate present on main:** decision-schema CI shows `check_parameter_index` and `python -m build`; every core/harness CI shows `python -m build`. Verify by fetching the workflow file from **main** (e.g. raw GitHub URL).
 - **(B) Nondeterminism 0:** No `@main` in decision-schema fallback; use tag (e.g. `@v0.2.2`).
 - **(C) Tag CI:** Workflows have `on.push.tags: ["v*"]` (INV-CI-TAG-1).
+
+---
+
+## 7. Compliance checker (INV-CI-COMPLY-2)
+
+**Script:** `decision-ecosystem-docs/tools/check_ci_compliance.py`
+
+- **Local (all repos):** `python tools/check_ci_compliance.py --workspace <parent-of-all-repos>` — checks each repo’s workflow(s) against required steps for its type; exit 1 if any missing.
+- **Docs CI:** Run the same script (e.g. with `--workspace .` to check only docs repo, or with workspace root when multiple repos are checked out). Must pass for PR/merge.
+- **Metric:** `compliance_checker_pass == true` (script exit 0).
 
 ---
 
