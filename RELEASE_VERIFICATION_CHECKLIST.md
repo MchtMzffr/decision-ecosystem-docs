@@ -29,6 +29,8 @@ SPDX-License-Identifier: MIT
 
 **INV-REL-4 (Tag Reachability):** The tag commit must be an ancestor of `main` (i.e. in main’s history). Main may have commits after the tag; that is acceptable. Verify with: `git merge-base --is-ancestor vX.Y.Z origin/main`.
 
+**Contract matrix / CI fallback (INV-DOC-DRIFT-1, INV-CI-NONDET-0):** ECOSYSTEM_CONTRACT_MATRIX and workflow fallbacks use `@vX.Y.Z`. **Before relying on a tag in the matrix, confirm that tag exists on GitHub** (e.g. repo Tags page). If the tag does not exist, either create and push the tag for that version or change the matrix/fallback to the latest existing tag.
+
 ---
 
 ### Branch Governance (INV-REL-2)

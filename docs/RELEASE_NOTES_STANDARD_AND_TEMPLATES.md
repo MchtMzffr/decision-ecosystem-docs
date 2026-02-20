@@ -42,6 +42,8 @@ Every core repo release MUST use the same section order.
 Where applicable, use evidence-style lines so releases are auditable:
 
 - `✅ Tests: PASS (CI run link: <url>)` — use the CI run URL for the tag (see §4). **REQUIRED** for publish: no TBD in release body (INV-REL-PROOF-1).
+
+**INV-REL-NO-TBD-1:** At **publish** time, the release notes body MUST NOT contain `TBD`. Replace all TBD placeholders with actual commit/PR references or remove the line. **Metric:** `release_gate_fail` if release body contains `TBD` when publishing.
 - `✅ Contract gate: PASS (expected schema minor: 2)` — or equivalent for the repo.
 
 ### Changes section (optional subheadings)

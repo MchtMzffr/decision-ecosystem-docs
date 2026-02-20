@@ -63,5 +63,30 @@ SPDX-License-Identifier: MIT
 
 ---
 
+---
+
+## 6. External review (GitHub main) — 2026-02
+
+**Kaynak:** İnceleme GitHub main branch’teki dosyalar üzerinden yapıldı; bazı standart dosyaları fetch edilemediği için “doğrulanamadı” işaretlenmişti.
+
+**Workspace doğrulaması (bu repo setinde):**
+
+| P0 madde | İnceleme iddiası | Workspace durumu | Uygulanan |
+|----------|------------------|------------------|-----------|
+| P0.1 Matrix vs tag | decision-schema tag v0.2.1, matrix @v0.2.2 | decision-schema pyproject 0.2.2; matrix @v0.2.2. Tag’in GitHub’da var olması gerekir. | RELEASE_VERIFICATION_CHECKLIST’e “Contract matrix / CI fallback: tag’in var olduğunu teyit et” notu eklendi. |
+| P0.2 LICENSE + placeholder | ops/eval/exec/harness LICENSE 404, README [Add your license] | Tüm repolarda LICENSE var; README “MIT License. See [LICENSE](LICENSE)”. | Değişiklik yok (zaten uyumlu). |
+| P0.3 ops-health doc↔code | FORMULAS/README max_rate_limit_events | FORMULAS.md, README, INTEGRATION_GUIDE max_429_per_window kullanıyor. | Değişiklik yok (zaten uyumlu). |
+| P0.4 CI minimal | tag/ruff/proof/secret_scan görünmüyor | Workflow’larda secret_scan, tag, ruff, build, pytest, artifact, wheel smoke mevcut. | Değişiklik yok (zaten uyumlu). |
+
+**Yeni kurallar (inceleme önerisi → uygulandı):**
+
+- **INV-LIC-SPDX-2:** Repo-level LICENSE + README placeholder; CI her ikisini de doğrulasın. (ECOSYSTEM_INVARIANTS, ECOSYSTEM_GATES.)
+- **INV-REL-NO-TBD-1:** Publish anında release body’de TBD olmasın. (RELEASE_NOTES_STANDARD_AND_TEMPLATES.md.)
+- **INV-DOC-LANG-2:** Normatif dokümanlar İngilizce; meta/operasyonel (örn. CI_RELIABILITY) Türkçe allowlist ile. (ECOSYSTEM_GATES.)
+
+**2.1 / 2.2 (PARAMETER_INDEX, trace registry):** Workspace’te PARAMETER_INDEX context key’leri düz format, trace key’ler noktalı; trace_registry’de exec.* kayıtlı. Ek patch uygulanmadı.
+
+---
+
 **Last updated:** 2026-02-19  
 **References:** CI_COMPLIANCE_STANDARD.md, ECOSYSTEM_INVARIANTS.md, ECOSYSTEM_GATES_AND_INVARIANTS.md, DOCS_REPO_STRUCTURE.md, RELEASE_VERIFICATION_CHECKLIST.md, NEXT_STEPS_ROADMAP.md

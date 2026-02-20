@@ -53,7 +53,9 @@ SPDX-License-Identifier: MIT
 |----|------------|--------|------------|-------------|
 | **INV-LIC-1** | Every repo root has `LICENSE` (MIT text). | license_missing_count == 0 | `test -f LICENSE` | Add LICENSE file |
 | **INV-README-LIC-1** | README has no placeholder like `[Add your license]`. | count(placeholder) == 0 | grep | Replace placeholder |
+| **INV-LIC-SPDX-2** | Repo-level: LICENSE exists + README no license placeholder; CI enforces both. | license_missing == 0, license_placeholder_found == 0 | CI step + optional grep README | Add LICENSE; fix README |
 | **INV-LANG-1** | All documentation and file/dir names in **English**. | non_english_doc_or_filename == 0 | grep Turkish chars/words | Rename or translate to English |
+| **INV-DOC-LANG-2** | Language policy: normative docs (standards, invariants, release) in **English**. Meta/operational docs (e.g. CI_RELIABILITY.md) may be in Turkish per allowlist. | — | Policy / allowlist | Translate or add to allowlist |
 | **Doc naming** | Documentation filenames: **single format** `SCREAMING_SNAKE_CASE.md` (ASCII-only). | nonconforming_doc_filenames == 0 | CI / script | Rename to SCREAMING_SNAKE_CASE |
 
 ---

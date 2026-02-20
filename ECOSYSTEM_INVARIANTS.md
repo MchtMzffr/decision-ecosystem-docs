@@ -52,8 +52,9 @@ Branch/CI policy details: **BRANCH_GOVERNANCE.md** (INV-BRANCH-1, INV-BRANCH-2, 
 |-----------|------|--------|
 | **INV-LIC-1** | Every repo root has a `LICENSE` file (MIT text). | `license_missing_count == 0`. |
 | **INV-README-LIC-1** | README has no placeholder like `[Add your license]`. | `count(placeholder) == 0`. |
+| **INV-LIC-SPDX-2** | Repo-level: LICENSE exists and README has no license placeholder; CI enforces both. | `license_missing == 0`, `license_placeholder_found == 0`. |
 
-CI can enforce INV-LIC-1 with a step: `test -f LICENSE`.
+CI can enforce INV-LIC-1 with a step: `test -f LICENSE`. Optionally add a step to grep README for `[Add your license]` and fail if found (INV-LIC-SPDX-2).
 
 ---
 
@@ -70,7 +71,7 @@ Full gates (H–L, metrics, remediation): **docs/ECOSYSTEM_GATES_AND_INVARIANTS.
 
 ## Release notes
 
-See **docs/RELEASE_NOTES_STANDARD_AND_TEMPLATES.md** for INV-REL-TAG-1, INV-REL-SSOT-1, INV-REL-SEC-1, INV-REL-PROOF-1, INV-CI-TAG-1, INV-CI-PROOF-1.
+See **docs/RELEASE_NOTES_STANDARD_AND_TEMPLATES.md** for INV-REL-TAG-1, INV-REL-SSOT-1, INV-REL-SEC-1, INV-REL-PROOF-1, **INV-REL-NO-TBD-1** (no TBD in release body at publish time), INV-CI-TAG-1, INV-CI-PROOF-1.
 
 ---
 
