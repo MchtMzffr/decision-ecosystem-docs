@@ -27,6 +27,10 @@
 | **INV-CI-COMPLY-2** | CI compliance checker runs in docs repo CI (and optionally with `--workspace`); fail-closed. | compliance_checker_pass == true. See **docs/CI_COMPLIANCE_STANDARD.md** §7. |
 | **INV-SYNC-1** | “Workspace’te var” ≠ “main’de var”. **DONE** = proof on GitHub `main` + CI gate passing. | Done = Gates_present ∧ CI_pass ∧ Main_parity. See **docs/CI_COMPLIANCE_STANDARD.md** §6. |
 | **INV-PUBLIC-MAIN-1** | Standards are not marked DONE until verified on **public** main (`raw.githubusercontent.com/<owner>/<repo>/main/...`). | `public_main_drift_count == 0`. Run: `python tools/public_main_audit.py --owner <owner>`. |
+| **INV-PUBLIC-MAIN-2** | Public main raw content satisfies the same invariants (LICENSE, no placeholder, param names, SSOT version, CI no @main). Deterministic proof via raw URL + expected patterns; hard-fail. | Same as INV-PUBLIC-MAIN-1; audit script covers all P0 checks. |
+| **INV-README-NO-PLACEHOLDER-1** | README and docs root allowlist have no `[Add your license]` or equivalent placeholder. | `placeholder_hits == 0` (grep / audit script). |
+| **INV-OWNER-REF-1** | All `github.com/<owner>/...` references in README/docs use the canonical owner (e.g. MchtMzffr). No wrong-owner links (e.g. MeetlyTR). | `wrong_owner_link_count == 0`. |
+| **INV-SSOT-REALITY-1** | Docs’ claimed pin/tag/version is verifiable from public main (pyproject, tags page, ci.yml). | `docs_claim_mismatches == 0` (audit + release alignment). |
 | **INV-CI-SCOPE-1** | Repo-type steps may be N/A only with documented condition (e.g. Docs Ruff when no pyproject/tools/*.py). | na_steps_without_condition == 0. |
 | **INV-CI-PROOF-STD-1** | Proof artifact path and name fixed (e.g. pytest-report.json, artifact name pytest-report or pytest-report-<py>). | missing_or_wrong_artifact_count == 0. |
 | **INV-CI-ACT-PIN-1** | GitHub Actions `uses:` pinned (tag or sha). | unpinned_actions_count == 0. |

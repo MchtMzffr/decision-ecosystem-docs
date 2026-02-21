@@ -81,6 +81,10 @@ SPDX-License-Identifier: MIT
 | **INV-CI-PROOF-1** | CI produces machine-readable proof artifact. **Scope:** pytest repos → pytest-report JSON; docs → e.g. broken-link check. | Artifact present, parseable | upload-artifact / job | Add pytest-report or docs artifact step |
 | **INV-SYNC-1** | DONE = proof on GitHub main + CI pass; workspace-only state does not count. | Gates_present ∧ CI_pass ∧ Main_parity | CI / checklist | Push to main; re-run checks |
 | **INV-PUBLIC-MAIN-1** | Standards not DONE until verified on **public** main (`raw.githubusercontent.com/.../main/...`). | public_main_drift_count == 0 | public_main_audit.py | Push to origin main; run `python tools/public_main_audit.py --owner <owner>` |
+| **INV-PUBLIC-MAIN-2** | Public main raw content satisfies same invariants (deterministic proof; hard-fail). | Same as INV-PUBLIC-MAIN-1 | public_main_audit.py | Fix drift; push to origin; re-run audit |
+| **INV-README-NO-PLACEHOLDER-1** | README/docs have no `[Add your license]` placeholder. | placeholder_hits == 0 | grep / public_main_audit | Remove placeholder; add license link |
+| **INV-OWNER-REF-1** | All github.com/owner/... links use canonical owner (e.g. MchtMzffr). | wrong_owner_link_count == 0 | public_main_audit | Replace wrong owner with canonical |
+| **INV-SSOT-REALITY-1** | Docs pin/tag/version verifiable from public main. | docs_claim_mismatches == 0 | public_main_audit + check_release_alignment | Align pyproject/tag/CI on public main |
 | **INV-DOC-DRIFT-1** | Roadmap table matches pyproject.version and Git tags. | roadmap_mismatch_rows == 0 | check_release_alignment.py | Update NEXT_STEPS_ROADMAP or version/tag |
 
 ---

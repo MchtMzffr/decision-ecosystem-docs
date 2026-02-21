@@ -88,6 +88,8 @@ SPDX-License-Identifier: MIT
 
 **INV-PUBLIC-MAIN-1:** DONE öncesi public main doğrulaması zorunludur. `python tools/public_main_audit.py --owner MchtMzffr` (veya ilgili owner) exit 0 olmalı. Script: LICENSE, README placeholder, ops-health FORMULAS/README drift, CI tag trigger ve @main fallback kontrolleri.
 
+**P0 Patch Plan (fail-closed, deterministik):** (1) **P0.1** Remote/owner: `git remote -v` → `github.com/MchtMzffr/<repo>.git`; `python tools/check_remote_owner.py --workspace <parent>`. (2) **P0.2** LICENSE + README placeholder: tüm core/harness’ta root LICENSE, README’de placeholder yok; INV-OWNER-REF-1 (MeetlyTR → MchtMzffr). (3) **P0.3** SSOT: decision-schema 0.2.2 + tag v0.2.2; pin >=0.2.2,<0.3; CI fallback @v0.2.2 (no @main). (4) **P0.4** CI_COMPLIANCE_STANDARD: decision-schema CI’da PARAMETER_INDEX, ruff, build, artifact. Yeni invariant’lar: INV-PUBLIC-MAIN-2, INV-README-NO-PLACEHOLDER-1, INV-OWNER-REF-1, INV-SSOT-REALITY-1.
+
 ---
 
 **Last updated:** 2026-02-19  

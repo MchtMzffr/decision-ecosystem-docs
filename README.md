@@ -20,6 +20,9 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 **Tools (docs repo):**
 - `tools/get_ci_proof.py` — CI run URL + test counts for release notes (run from docs repo; requires `gh` and local core repo clone).
 - `tools/check_release_alignment.py` — INV-DOC-DRIFT-1: roadmap table vs local `pyproject.version`; run with `--workspace <parent-of-docs>`.
+- `tools/check_ci_compliance.py` — INV-CI-COMPLY-2: required CI steps per repo type; run with `--workspace <parent-of-docs>`.
+- `tools/public_main_audit.py` — INV-PUBLIC-MAIN-1/2: deterministic public main audit (raw URL + expected patterns, hard-fail); run `python tools/public_main_audit.py --owner MchtMzffr`.
+- `tools/check_remote_owner.py` — P0.1: verify each repo's `git remote origin` uses canonical owner; run with `--workspace <parent-of-docs>`.
 
 ### CI & operations
 
