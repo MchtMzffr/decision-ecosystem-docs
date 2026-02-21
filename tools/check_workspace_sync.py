@@ -48,7 +48,11 @@ def load_registry(workspace: Path) -> list[str] | None:
         if not in_table or not line.strip().startswith("|"):
             continue
         parts = [p.strip() for p in line.split("|") if p.strip()]
-        if len(parts) >= 2 and parts[0] != "---" and not parts[0].startswith("repo_name"):
+        if (
+            len(parts) >= 2
+            and parts[0] != "---"
+            and not parts[0].startswith("repo_name")
+        ):
             name, typ = parts[0], parts[1]
             if name and typ in ("core", "harness", "docs"):
                 repos.append(name)
@@ -67,8 +71,12 @@ def run(cmd: list[str], cwd: Path) -> tuple[int, str]:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="INV-SYNC-1: workspace vs origin/main parity check.")
-    ap.add_argument("--workspace", type=Path, required=True, help="Parent dir containing repo dirs")
+    ap = argparse.ArgumentParser(
+        description="INV-SYNC-1: workspace vs origin/main parity check."
+    )
+    ap.add_argument(
+        "--workspace", type=Path, required=True, help="Parent dir containing repo dirs"
+    )
     args = ap.parse_args()
     workspace = args.workspace.resolve()
     repo_dirs = load_registry(workspace) or REPO_DIRS_FALLBACK
@@ -107,11 +115,16 @@ def main() -> int:
         except (ValueError, IndexError):
             ahead = 0
         if ahead > 0:
-            errors.append(f"{name}: {ahead} commit(s) ahead of origin/main (push required)")
+            errors.append(
+                f"{name}: {ahead} commit(s) ahead of origin/main (push required)"
+            )
     if errors:
         for e in errors:
             print(e, file=sys.stderr)
-        print("INV-SYNC-1: FAIL (workspace not in parity with origin/main)", file=sys.stderr)
+        print(
+            "INV-SYNC-1: FAIL (workspace not in parity with origin/main)",
+            file=sys.stderr,
+        )
         return 1
     print("INV-SYNC-1: OK (all repos clean and in sync with origin/main)")
     return 0

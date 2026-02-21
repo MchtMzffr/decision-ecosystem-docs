@@ -51,7 +51,11 @@ def load_registry(workspace: Path) -> tuple[list[str], dict[str, str]] | None:
         if not in_table or not line.strip().startswith("|"):
             continue
         parts = [p.strip() for p in line.split("|") if p.strip()]
-        if len(parts) >= 2 and parts[0] != "---" and not parts[0].startswith("repo_name"):
+        if (
+            len(parts) >= 2
+            and parts[0] != "---"
+            and not parts[0].startswith("repo_name")
+        ):
             name, typ = parts[0], parts[1]
             if name and typ:
                 rows.append((name, typ))
@@ -107,10 +111,14 @@ def _check_action_pins(content: str) -> list[str]:
             continue
         ref = line.split("uses:")[-1].split("#")[0].strip()
         if "@" not in ref:
-            missing.append("INV-CI-ACT-PIN-1: action without pin (uses: ...@vX or @sha)")
+            missing.append(
+                "INV-CI-ACT-PIN-1: action without pin (uses: ...@vX or @sha)"
+            )
             break
         if "@main" in ref or "@master" in ref or "@HEAD" in ref:
-            missing.append("INV-CI-ACT-PIN-1: action must not use @main/@master/@HEAD (use @vX or sha)")
+            missing.append(
+                "INV-CI-ACT-PIN-1: action must not use @main/@master/@HEAD (use @vX or sha)"
+            )
             break
     return missing
 
@@ -128,7 +136,7 @@ def check_core_or_harness(repo_path: Path, typ: str) -> list[str]:
     content = workflow_content(repo_path, "ci.yml")
     missing = []
     if not content:
-        return [f"Missing .github/workflows/ci.yml"]
+        return ["Missing .github/workflows/ci.yml"]
     if "gitleaks" not in content.lower():
         missing.append("gitleaks (secret_scan)")
     if "LICENSE" not in content and "test -f LICENSE" not in content:
@@ -151,13 +159,21 @@ def check_core_or_harness(repo_path: Path, typ: str) -> list[str]:
     if "pytest-report" not in content and "pytest_report" not in content:
         missing.append("pytest report artifact (INV-CI-PROOF-STD-1)")
     if "json-report-file=" not in content:
-        missing.append("INV-CI-PROOF-STD-1: pytest --json-report-file= (e.g. pytest-report.json or artifacts/pytest-report.json)")
+        missing.append(
+            "INV-CI-PROOF-STD-1: pytest --json-report-file= (e.g. pytest-report.json or artifacts/pytest-report.json)"
+        )
     if typ == "core_schema":
         if "check_parameter_index" not in content:
             missing.append("INV-PARAM-INDEX-1 (check_parameter_index.py)")
     if typ in ("core", "core_schema"):
-        if "decision-schema" in content and "@main" in content and "v0.2.2" not in content:
-            missing.append("INV-CI-SCHEMA-FB-1: schema fallback must be tag (e.g. @v0.2.2), not @main")
+        if (
+            "decision-schema" in content
+            and "@main" in content
+            and "v0.2.2" not in content
+        ):
+            missing.append(
+                "INV-CI-SCHEMA-FB-1: schema fallback must be tag (e.g. @v0.2.2), not @main"
+            )
     missing.extend(_check_action_pins(content))
     missing.extend(_check_permissions(content))
     return missing
@@ -168,7 +184,7 @@ def check_docs(repo_path: Path) -> list[str]:
     all_content = all_workflows_content(repo_path)
     missing = []
     if not content:
-        return [f"Missing .github/workflows/docs_structure_guard.yml"]
+        return ["Missing .github/workflows/docs_structure_guard.yml"]
     if "gitleaks" not in all_content.lower():
         missing.append("gitleaks (secret_scan)")
     if "check_docs_root" not in content:
@@ -178,13 +194,17 @@ def check_docs(repo_path: Path) -> list[str]:
     )
     if has_py:
         if "ruff check" not in content:
-            missing.append("ruff check (INV-CI-SCOPE-1: required when pyproject or tools/*.py exist)")
+            missing.append(
+                "ruff check (INV-CI-SCOPE-1: required when pyproject or tools/*.py exist)"
+            )
         if "ruff format" not in content:
             missing.append("ruff format check (INV-CI-SCOPE-1)")
     return missing
 
 
-def check_repo(workspace: Path, repo_name: str, type_map: dict[str, str] | None = None) -> list[str]:
+def check_repo(
+    workspace: Path, repo_name: str, type_map: dict[str, str] | None = None
+) -> list[str]:
     repo_path = workspace / repo_name
     if not repo_path.is_dir():
         if workspace.name == repo_name and (workspace / ".github").is_dir():
@@ -220,7 +240,9 @@ def main() -> int:
     if registry:
         repo_list, type_map = registry
         # CI scope: core, harness, docs (optional: include experimental)
-        repo_list_in_scope = [r for r in repo_list if type_map.get(r, "") in ("core", "harness", "docs")]
+        repo_list_in_scope = [
+            r for r in repo_list if type_map.get(r, "") in ("core", "harness", "docs")
+        ]
     else:
         repo_list_in_scope = REPO_DIRS_FALLBACK
         type_map = None
@@ -233,10 +255,15 @@ def main() -> int:
         repo_names = [d for d in repo_list_in_scope if (workspace / d).is_dir()]
         if not repo_names:
             name = workspace.name
-            if name in repo_list_in_scope or name in (REPO_DIRS_FALLBACK if not registry else []):
+            if name in repo_list_in_scope or name in (
+                REPO_DIRS_FALLBACK if not registry else []
+            ):
                 repo_names = [name]
             else:
-                print("check_ci_compliance: no known repo dirs under workspace; specify --repos?", file=sys.stderr)
+                print(
+                    "check_ci_compliance: no known repo dirs under workspace; specify --repos?",
+                    file=sys.stderr,
+                )
                 return 1
 
     errors: list[tuple[str, list[str]]] = []
@@ -247,7 +274,9 @@ def main() -> int:
 
     if errors:
         for repo_name, miss in errors:
-            print(f"{repo_name}: missing or invalid: {', '.join(miss)}", file=sys.stderr)
+            print(
+                f"{repo_name}: missing or invalid: {', '.join(miss)}", file=sys.stderr
+            )
         print("INV-CI-COMPLY-2: FAIL (CI compliance check)", file=sys.stderr)
         return 1
     print("INV-CI-COMPLY-2: OK (all checked repos comply)")

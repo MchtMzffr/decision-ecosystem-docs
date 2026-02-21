@@ -80,16 +80,24 @@ def fetch(owner: str, repo: str, path: str) -> tuple[int, str, str]:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="INV-PUBLIC-MAIN-1/2: Audit public GitHub main (fail-closed).")
+    ap = argparse.ArgumentParser(
+        description="INV-PUBLIC-MAIN-1/2: Audit public GitHub main (fail-closed)."
+    )
     ap.add_argument("--owner", default="MchtMzffr", help="GitHub org/user")
-    ap.add_argument("--proof-json", default="", help="Write machine-readable proof to this path (optional)")
+    ap.add_argument(
+        "--proof-json",
+        default="",
+        help="Write machine-readable proof to this path (optional)",
+    )
     args = ap.parse_args()
     owner = args.owner
     errors: list[str] = []
     proof_checks: list[dict] = []
 
     def _proof(name: str, url: str, code: int, ok: bool) -> None:
-        proof_checks.append({"name": name, "url": url, "status": code, "ok": ok and code == 200})
+        proof_checks.append(
+            {"name": name, "url": url, "status": code, "ok": ok and code == 200}
+        )
 
     # LICENSE exists (INV-LIC-1)
     for repo in LICENSE_REPOS:
@@ -101,7 +109,11 @@ def main() -> int:
     # README no placeholder (INV-README-LIC-1, INV-LIC-SPDX-2)
     for repo in README_PLACEHOLDER_REPOS:
         code, body, url = fetch(owner, repo, "README.md")
-        no_placeholder = code == 200 and "[Add your license]" not in body and "Add your license" not in body
+        no_placeholder = (
+            code == 200
+            and "[Add your license]" not in body
+            and "Add your license" not in body
+        )
         if code != 200:
             errors.append(f"{repo}/README.md: not 200 (got {code})")
         elif not no_placeholder:
@@ -113,14 +125,30 @@ def main() -> int:
     if code != 200:
         errors.append(f"{OPS_FORMULAS_REPO}/{OPS_FORMULAS_PATH}: not 200 (got {code})")
     else:
-        if "max_rate_limit_events" in body or "max_rate_limit_events_per_window" in body:
-            errors.append(f"{OPS_FORMULAS_REPO}/FORMULAS.md: still uses max_rate_limit_events (doc/code drift)")
+        if (
+            "max_rate_limit_events" in body
+            or "max_rate_limit_events_per_window" in body
+        ):
+            errors.append(
+                f"{OPS_FORMULAS_REPO}/FORMULAS.md: still uses max_rate_limit_events (doc/code drift)"
+            )
         if "max_429_per_window" not in body:
-            errors.append(f"{OPS_FORMULAS_REPO}/FORMULAS.md: missing max_429_per_window")
-    _proof(OPS_FORMULAS_PATH, url, code, code == 200 and "max_429_per_window" in body and "max_rate_limit_events_per_window" not in body)
+            errors.append(
+                f"{OPS_FORMULAS_REPO}/FORMULAS.md: missing max_429_per_window"
+            )
+    _proof(
+        OPS_FORMULAS_PATH,
+        url,
+        code,
+        code == 200
+        and "max_429_per_window" in body
+        and "max_rate_limit_events_per_window" not in body,
+    )
     code, body, _ = fetch(owner, OPS_FORMULAS_REPO, OPS_README_PATH)
     if code == 200 and "max_rate_limit_events_per_window" in body:
-        errors.append(f"{OPS_FORMULAS_REPO}/README.md: example still uses max_rate_limit_events_per_window")
+        errors.append(
+            f"{OPS_FORMULAS_REPO}/README.md: example still uses max_rate_limit_events_per_window"
+        )
 
     # CI: tag trigger, no @main fallback (INV-CI-TAG-1, INV-CI-NONDET-0)
     for repo in CI_REPOS:
@@ -129,48 +157,92 @@ def main() -> int:
             errors.append(f"{repo}/ci.yml: not 200 (got {code})")
             _proof(f"{repo}/ci.yml", url, code, False)
             continue
-        no_main = "decision-schema.git@main" not in body and "decision-schema.git@main " not in body
-        if 'tags: ["v*"]' not in body and "tags: [\"v*\"]" not in body:
+        no_main = (
+            "decision-schema.git@main" not in body
+            and "decision-schema.git@main " not in body
+        )
+        if 'tags: ["v*"]' not in body and 'tags: ["v*"]' not in body:
             errors.append(f"{repo}/ci.yml: missing on.push.tags v* (INV-CI-TAG-1)")
         if not no_main:
-            errors.append(f"{repo}/ci.yml: decision-schema fallback uses @main (INV-CI-NONDET-0)")
-        if repo == "decision-ecosystem-integration-harness" and "decision-modulation-core" in body and "@main" in body:
+            errors.append(
+                f"{repo}/ci.yml: decision-schema fallback uses @main (INV-CI-NONDET-0)"
+            )
+        if (
+            repo == "decision-ecosystem-integration-harness"
+            and "decision-modulation-core" in body
+            and "@main" in body
+        ):
             if "@v0.1.1" not in body and "@v0.1.0" not in body:
-                errors.append(f"{repo}/ci.yml: dmc fallback uses @main (INV-CI-NONDET-0)")
-        _proof(f"{repo}/ci.yml", url, code, no_main and ("@v0.2.2" in body or "@v0.2.1" in body))
+                errors.append(
+                    f"{repo}/ci.yml: dmc fallback uses @main (INV-CI-NONDET-0)"
+                )
+        _proof(
+            f"{repo}/ci.yml",
+            url,
+            code,
+            no_main and ("@v0.2.2" in body or "@v0.2.1" in body),
+        )
 
     # INV-SSOT-REALITY-1: decision-schema version 0.2.2 on public main
     code, body, url = fetch(owner, SCHEMA_REPO, SCHEMA_PYPROJECT)
     if code != 200:
         errors.append(f"{SCHEMA_REPO}/pyproject.toml: not 200 (got {code})")
     else:
-        if f'version = "{SCHEMA_VERSION_EXPECTED}"' not in body and f"version = '{SCHEMA_VERSION_EXPECTED}'" not in body:
-            errors.append(f"{SCHEMA_REPO}/pyproject.toml: expected version {SCHEMA_VERSION_EXPECTED} (INV-SSOT-REALITY-1)")
-    _proof(f"{SCHEMA_REPO}/pyproject.toml", url, code, code == 200 and SCHEMA_VERSION_EXPECTED in body)
+        if (
+            f'version = "{SCHEMA_VERSION_EXPECTED}"' not in body
+            and f"version = '{SCHEMA_VERSION_EXPECTED}'" not in body
+        ):
+            errors.append(
+                f"{SCHEMA_REPO}/pyproject.toml: expected version {SCHEMA_VERSION_EXPECTED} (INV-SSOT-REALITY-1)"
+            )
+    _proof(
+        f"{SCHEMA_REPO}/pyproject.toml",
+        url,
+        code,
+        code == 200 and SCHEMA_VERSION_EXPECTED in body,
+    )
 
     # INV-CI-COMPLY-1: decision-schema CI has required steps
     code, body, url = fetch(owner, SCHEMA_REPO, CI_PATH)
     if code == 200:
         if "PARAMETER_INDEX" not in body and "check_parameter_index" not in body:
-            errors.append(f"{SCHEMA_REPO}/ci.yml: missing PARAMETER_INDEX / check_parameter_index step")
+            errors.append(
+                f"{SCHEMA_REPO}/ci.yml: missing PARAMETER_INDEX / check_parameter_index step"
+            )
         if "upload-artifact" not in body:
             errors.append(f"{SCHEMA_REPO}/ci.yml: missing upload-artifact (proof)")
     else:
         errors.append(f"{SCHEMA_REPO}/ci.yml: not 200 (got {code})")
-    _proof(f"{SCHEMA_REPO}/ci.yml", url, code, code == 200 and "upload-artifact" in body)
+    _proof(
+        f"{SCHEMA_REPO}/ci.yml", url, code, code == 200 and "upload-artifact" in body
+    )
 
     # Docs repo: public_main_audit.py must be present (deterministic proof)
     code, _, url = fetch(owner, DOCS_REPO, DOCS_AUDIT_PATH)
     if code != 200:
-        errors.append(f"{DOCS_REPO}/{DOCS_AUDIT_PATH}: not 200 (got {code}) — audit script must be on public main")
+        errors.append(
+            f"{DOCS_REPO}/{DOCS_AUDIT_PATH}: not 200 (got {code}) — audit script must be on public main"
+        )
     _proof(DOCS_AUDIT_PATH, url, code, code == 200)
 
     # INV-OWNER-REF-1: no wrong-owner links in READMEs
-    for repo in README_PLACEHOLDER_REPOS + [SCHEMA_REPO, "decision-modulation-core", "execution-orchestration-core"]:
+    for repo in README_PLACEHOLDER_REPOS + [
+        SCHEMA_REPO,
+        "decision-modulation-core",
+        "execution-orchestration-core",
+    ]:
         code, body, url = fetch(owner, repo, "README.md")
         if code == 200 and WRONG_OWNER_PATTERN.search(body):
-            errors.append(f"{repo}/README.md: contains wrong owner link (INV-OWNER-REF-1)")
-        _proof(f"{repo}/README owner", url, code, code == 200 and not (WRONG_OWNER_PATTERN.search(body) if code == 200 else False))
+            errors.append(
+                f"{repo}/README.md: contains wrong owner link (INV-OWNER-REF-1)"
+            )
+        _proof(
+            f"{repo}/README owner",
+            url,
+            code,
+            code == 200
+            and not (WRONG_OWNER_PATTERN.search(body) if code == 200 else False),
+        )
 
     if args.proof_json:
         out = {"owner": owner, "checks": proof_checks, "ok": len(errors) == 0}

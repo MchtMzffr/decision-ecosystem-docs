@@ -28,8 +28,12 @@ REPOS = [
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="P0.1: Verify git remote origin uses canonical owner.")
-    ap.add_argument("--workspace", required=True, help="Parent dir containing repo dirs")
+    ap = argparse.ArgumentParser(
+        description="P0.1: Verify git remote origin uses canonical owner."
+    )
+    ap.add_argument(
+        "--workspace", required=True, help="Parent dir containing repo dirs"
+    )
     ap.add_argument("--owner", default="MchtMzffr", help="Canonical GitHub owner")
     args = ap.parse_args()
     workspace = os.path.abspath(args.workspace)
@@ -54,7 +58,9 @@ def main() -> int:
                 continue
             # Expect github.com/<owner>/<repo>.git or github.com/<owner>/<repo>
             if owner.lower() not in url.lower() or "github.com" not in url:
-                errors.append(f"{repo}: origin URL should contain github.com/{owner}/... (got {url})")
+                errors.append(
+                    f"{repo}: origin URL should contain github.com/{owner}/... (got {url})"
+                )
         except Exception as e:
             errors.append(f"{repo}: {e}")
 

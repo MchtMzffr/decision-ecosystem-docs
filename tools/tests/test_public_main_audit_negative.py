@@ -5,6 +5,7 @@
 INV-AUDIT-NEG-1: Negative test for public_main_audit. Invalid owner or missing path must yield exit != 0.
 Run: pytest tools/tests/test_public_main_audit_negative.py -v
 """
+
 from __future__ import annotations
 
 import subprocess
@@ -21,5 +22,7 @@ def test_audit_fails_for_invalid_owner() -> None:
         text=True,
         timeout=60,
     )
-    assert proc.returncode != 0, f"Expected FAIL for invalid owner; got exit 0. stderr: {proc.stderr}"
+    assert proc.returncode != 0, (
+        f"Expected FAIL for invalid owner; got exit 0. stderr: {proc.stderr}"
+    )
     assert "FAIL" in proc.stderr or "not 200" in proc.stderr or "404" in proc.stderr

@@ -29,8 +29,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      # Pin Ruff to match .pre-commit-config.yaml so local pre-commit and CI behave the same.
       - name: Install ruff
-        run: pip install ruff
+        run: pip install "ruff>=0.8.4,<0.9"
 
       - name: Ruff check
         run: ruff check .
