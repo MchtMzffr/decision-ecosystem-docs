@@ -69,14 +69,14 @@ SPDX-License-Identifier: MIT
 
 **Kaynak:** İnceleme GitHub main branch’teki dosyalar üzerinden yapıldı; bazı standart dosyaları fetch edilemediği için “doğrulanamadı” işaretlenmişti.
 
-**Workspace doğrulaması (bu repo setinde):**
+**Workspace vs public main:** "Workspace'ta doğru" değerli; **DONE = public main'de kanıt** (INV-PUBLIC-MAIN-1). Public main farklıysa (push eksik veya farklı remote) iddia güncellenmemeli.
 
-| P0 madde | İnceleme iddiası | Workspace durumu | Uygulanan |
-|----------|------------------|------------------|-----------|
-| P0.1 Matrix vs tag | decision-schema tag v0.2.1, matrix @v0.2.2 | decision-schema pyproject 0.2.2; matrix @v0.2.2. Tag’in GitHub’da var olması gerekir. | RELEASE_VERIFICATION_CHECKLIST’e “Contract matrix / CI fallback: tag’in var olduğunu teyit et” notu eklendi. |
-| P0.2 LICENSE + placeholder | ops/eval/exec/harness LICENSE 404, README [Add your license] | Tüm repolarda LICENSE var; README “MIT License. See [LICENSE](LICENSE)”. | Değişiklik yok (zaten uyumlu). |
-| P0.3 ops-health doc↔code | FORMULAS/README max_rate_limit_events | FORMULAS.md, README, INTEGRATION_GUIDE max_429_per_window kullanıyor. | Değişiklik yok (zaten uyumlu). |
-| P0.4 CI minimal | tag/ruff/proof/secret_scan görünmüyor | Workflow’larda secret_scan, tag, ruff, build, pytest, artifact, wheel smoke mevcut. | Değişiklik yok (zaten uyumlu). |
+| P0 madde | İnceleme (public main) | Workspace durumu | Public main'i kapatmak için |
+|----------|------------------------|------------------|-----------------------------|
+| P0.1 Matrix vs tag | decision-schema main 0.2.1, tag v0.2.1 | Bazı clone'larda 0.2.2; matrix @v0.2.2. | decision-schema'da v0.2.2 tag'i oluşturup push et **veya** matrix'i v0.2.1'e indir. |
+| P0.2 LICENSE + placeholder | LICENSE 404; README [Add your license] | Bu workspace'te LICENSE var, README düzgün. | Tüm değişiklikleri **origin main**'e push et; `python tools/public_main_audit.py` ile doğrula. |
+| P0.3 ops-health doc↔code | FORMULAS/README max_rate_limit_events | Bu workspace'te max_429_per_window. | Push ops-health-core main; audit script ile teyit. |
+| P0.4 CI minimal | CI’da tag/ruff/build/proof/artifact yok; @main fallback | Bu workspace’te tam CI + tag fallback. | Tüm repo CI değişikliklerini push et; audit ile ci.yml kontrolü. |
 
 **Yeni kurallar (inceleme önerisi → uygulandı):**
 
@@ -85,6 +85,8 @@ SPDX-License-Identifier: MIT
 - **INV-DOC-LANG-2:** Normatif dokümanlar İngilizce; meta/operasyonel (örn. CI_RELIABILITY) Türkçe allowlist ile. (ECOSYSTEM_GATES.)
 
 **2.1 / 2.2 (PARAMETER_INDEX, trace registry):** Workspace’te PARAMETER_INDEX context key’leri düz format, trace key’ler noktalı; trace_registry’de exec.* kayıtlı. Ek patch uygulanmadı.
+
+**INV-PUBLIC-MAIN-1:** DONE öncesi public main doğrulaması zorunludur. `python tools/public_main_audit.py --owner MchtMzffr` (veya ilgili owner) exit 0 olmalı. Script: LICENSE, README placeholder, ops-health FORMULAS/README drift, CI tag trigger ve @main fallback kontrolleri.
 
 ---
 

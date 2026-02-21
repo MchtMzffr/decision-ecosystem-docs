@@ -79,6 +79,8 @@ SPDX-License-Identifier: MIT
 | **INV-CI-NONDET-0** | CI fallback must not use `@main` when a release tag exists. Allowlist SSOT (e.g. first-release-only temporary @main). | @main only in allowlist | grep workflow | Use tag fallback; document allowlist |
 | **INV-CI-TAG-1** | Tag push triggers CI. **Scope:** core + harness (docs optional). | on.push.tags: ["v*"] | workflow | Add tags trigger |
 | **INV-CI-PROOF-1** | CI produces machine-readable proof artifact. **Scope:** pytest repos → pytest-report JSON; docs → e.g. broken-link check. | Artifact present, parseable | upload-artifact / job | Add pytest-report or docs artifact step |
+| **INV-SYNC-1** | DONE = proof on GitHub main + CI pass; workspace-only state does not count. | Gates_present ∧ CI_pass ∧ Main_parity | CI / checklist | Push to main; re-run checks |
+| **INV-PUBLIC-MAIN-1** | Standards not DONE until verified on **public** main (`raw.githubusercontent.com/.../main/...`). | public_main_drift_count == 0 | public_main_audit.py | Push to origin main; run `python tools/public_main_audit.py --owner <owner>` |
 | **INV-DOC-DRIFT-1** | Roadmap table matches pyproject.version and Git tags. | roadmap_mismatch_rows == 0 | check_release_alignment.py | Update NEXT_STEPS_ROADMAP or version/tag |
 
 ---

@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 **Scope:** Repo list and types are SSOT in **docs/REPO_REGISTRY.md** (INV-REPO-REG-1). Current set: 6 core + harness + docs; optional 9th = explainability-audit-core (experimental/unreleased).
 
-**Hard prerequisite (INV-SYNC-1):** Policy = **main’de kanıt** + CI pass. “Done” only when gates are present on GitHub `main` and CI is green. See §6.
+**Hard prerequisite (INV-SYNC-1, INV-PUBLIC-MAIN-1):** Policy = **main’de kanıt** + CI pass. “Done” only when gates are present on **public** GitHub `main` and CI is green. Verify via `raw.githubusercontent.com` or `python tools/public_main_audit.py`; workspace-only state does not count. See §6.
 
 ---
 
