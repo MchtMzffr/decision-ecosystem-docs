@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
 
 - **CI compliance checker:** Repo list and types may be read from this file when present (fallback: built-in list).
 - **Version truth:** Per INV-REL-SSOT-2, version in docs = `pyproject.toml` + Git tag; this table’s `latest_tag` must match that.
-- **New repo:** Add a row; set type and status; add to `check_workspace_sync` REPO_DIRS and checker config if in scope.
+- **New repo:** Add a row; set type and status. **INV-REPO-REG-SSOT-1:** `check_workspace_sync` and `check_ci_compliance` read repo list from this file when present (no separate REPO_DIRS to maintain).
 
 ---
 

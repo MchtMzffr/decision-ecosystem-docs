@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 **Scope:** Repo list and types are SSOT in **docs/REPO_REGISTRY.md** (INV-REPO-REG-1). Current set: 6 core + harness + docs; optional 9th = explainability-audit-core (experimental/unreleased).
 
-**Hard prerequisite (INV-SYNC-1, INV-PUBLIC-MAIN-1):** Policy = **main’de kanıt** + CI pass. “Done” only when gates are present on **public** GitHub `main` and CI is green. Verify via `raw.githubusercontent.com` or `python tools/public_main_audit.py`; workspace-only state does not count. See §6.
+**Hard prerequisite (INV-SYNC-1, INV-PUBLIC-MAIN-1, INV-CI-PASS-1):** Policy = **main’de kanıt** + CI pass. “Done” only when gates are present on **public** GitHub `main` and CI is green. Verify via `raw.githubusercontent.com` or `python tools/public_main_audit.py`; workspace-only state does not count. See §6.
 
 ---
 
@@ -56,9 +56,9 @@ Same as **2.1** (secret_scan, LICENSE, Ruff check, Ruff format check, Install ha
 
 No `python -m build` or pytest (docs repo is not a Python package).
 
-### 2.4 N/A conditions (INV-CI-SCOPE-1)
+### 2.4 N/A conditions (INV-CI-SCOPE-1) — mandatory unless N/A
 
-Repo-type steps may be **N/A** only when the condition is documented and satisfied. Example: Docs repo Ruff is N/A when there is no `pyproject.toml` and no `tools/*.py`. **Metric:** `na_steps_without_condition == 0` (N/A only with explicit condition).
+All steps in §2.1–2.3 are **mandatory** for their repo type unless an **N/A condition** is documented and satisfied. No step may be omitted as "optional". **N/A rules:** (1) Docs repo Ruff check/format: N/A only when there is no `pyproject.toml` and no `tools/*.py` in the repo. (2) Any other N/A must be listed here with condition. **Metric:** `na_steps_without_condition == 0` (N/A only with explicit condition).
 
 ### 2.5 Proof artifact standard (INV-CI-PROOF-STD-1)
 

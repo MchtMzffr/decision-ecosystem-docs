@@ -24,7 +24,7 @@ This makes dependency pinning and contract matrices reproducible.
 | execution-orchestration-core | 0.1.0 | v0.1.0 | OK |
 | decision-modulation-core (dmc-core) | 0.1.1 | v0.1.1 | OK |
 
-**Note:** integration-harness is not in this P0 version table; release version tracking for harness is separate. Add a row when harness has a published release to align with INV-DOC-DRIFT-1.
+**Harness policy (INV-RM-SCOPE-1):** integration-harness is **non-core**; it is not in the core release alignment table above. Harness is tracked by tag for reproducibility when needed; optional "Non-core reproducibility" table can be added after first harness tag. Scope: roadmap P0 table = **core-only** (6 cores).
 
 **Source of truth:** pyproject version on `main` + Git tags. Update this table whenever you publish a tag.
 

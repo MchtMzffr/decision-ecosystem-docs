@@ -56,10 +56,10 @@ SPDX-License-Identifier: MIT
 
 ## 5. Özet (Yapılacaklar)
 
-- **Atlandı:** DOCS_REPO_STRUCTURE allowlist (ECOSYSTEM_INVARIANTS), RELEASE_VERIFICATION_CHECKLIST version tablosu ve INV-REL-1 şablonu (dmc, exec-orch), check_workspace_sync REPO_DIRS (docs ekle / explainability netleştir), roadmap harness (bilinçli karar veya tabloya ekle).
-- **Yanlış/uyumsuz:** INV-SYNC-1 metrik (CI_pass), CI standard §3 (optional→mandatory), README CI Compliance açıklamaları (INV-CI-COMPLY-2).
+- **Atlandı (giderildi):** DOCS_REPO_STRUCTURE’da ECOSYSTEM_INVARIANTS allowlist’te; RELEASE_VERIFICATION’da dmc+exec-orch var; check_workspace_sync REPO_REGISTRY’den okuyor; roadmap’te harness policy (INV-RM-SCOPE-1) yazıldı.
+- **Yanlış/uyumsuz (giderildi):** INV-SYNC-1 = git only; INV-CI-PASS-1 ayrı; §2.4 mandatory+N/A; README’de INV-CI-COMPLY-2 fail-closed.
 - **Uygulanmadı:** INV-CI-BUILD-SMOKE-1 (workflow’lara smoke adımı), INV-CI-ACT-PIN-1 / INV-CI-PERM-1 (checker’da veya ayrı script), INV-CI-PROOF-STD-1 (checker’da path/format).
-- **Tutarsızlık:** Repo listesi (sync vs standard), decision-schema minor (0.2.1 vs 0.2.2) contract matrix ile netleştirilmeli.
+- **Tutarsızlık:** decision-schema 0.2.1/0.2.2 = SSOT public main (audit 0.2.2 bekliyor); contract matrix güncel tutulmalı.
 
 ---
 

@@ -100,14 +100,18 @@ def all_workflows_content(repo_path: Path) -> str:
 
 
 def _check_action_pins(content: str) -> list[str]:
-    """INV-CI-ACT-PIN-1: every uses: must have @tag or @sha."""
+    """INV-CI-ACT-PIN-1: every uses: must have @tag or @sha; @main/@master/@HEAD forbidden."""
     missing = []
     for line in content.splitlines():
-        if "uses:" in line and not line.strip().startswith("#"):
-            # Allow ${{ }} for matrix; require @ in the action ref
-            if "uses:" in line and "@" not in line.split("uses:")[-1].split("#")[0]:
-                missing.append("INV-CI-ACT-PIN-1: action without pin (uses: ...@vX or @sha)")
-                break
+        if "uses:" not in line or line.strip().startswith("#"):
+            continue
+        ref = line.split("uses:")[-1].split("#")[0].strip()
+        if "@" not in ref:
+            missing.append("INV-CI-ACT-PIN-1: action without pin (uses: ...@vX or @sha)")
+            break
+        if "@main" in ref or "@master" in ref or "@HEAD" in ref:
+            missing.append("INV-CI-ACT-PIN-1: action must not use @main/@master/@HEAD (use @vX or sha)")
+            break
     return missing
 
 
@@ -146,8 +150,8 @@ def check_core_or_harness(repo_path: Path, typ: str) -> list[str]:
         missing.append("pytest")
     if "pytest-report" not in content and "pytest_report" not in content:
         missing.append("pytest report artifact (INV-CI-PROOF-STD-1)")
-    if "pytest-report.json" not in content and "json-report-file=" not in content:
-        missing.append("INV-CI-PROOF-STD-1: pytest json-report path (e.g. pytest-report.json)")
+    if "json-report-file=" not in content:
+        missing.append("INV-CI-PROOF-STD-1: pytest --json-report-file= (e.g. pytest-report.json or artifacts/pytest-report.json)")
     if typ == "core_schema":
         if "check_parameter_index" not in content:
             missing.append("INV-PARAM-INDEX-1 (check_parameter_index.py)")

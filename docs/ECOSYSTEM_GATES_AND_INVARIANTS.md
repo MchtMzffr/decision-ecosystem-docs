@@ -40,6 +40,7 @@ SPDX-License-Identifier: MIT
 | ID | Definition | Metric | CI / check | Remediation |
 |----|------------|--------|------------|-------------|
 | **INV-REPO-REG-1** | Repo list and type are SSOT in **docs/REPO_REGISTRY.md**. | repo_registry_count == expected; unknown_repo_in_ci == 0 | check_ci_compliance (reads registry) | Update REPO_REGISTRY.md; align checker/sync |
+| **INV-REPO-REG-SSOT-1** | check_workspace_sync and checker use repo list from registry when present (no hardcode drift). | sync_repos_from_registry == true when registry exists | check_workspace_sync / check_ci_compliance | Load REPO_DIRS from REPO_REGISTRY.md |
 | **Repo list** | Registry defines: core, harness, docs, experimental (e.g. explainability-audit-core as 9th). | — | REPO_REGISTRY.md | Add row when new repo joins ecosystem |
 | **Workspace paths** | Workspace root may also contain folders `docs`, `scripts` (not standalone repos but paths under a monorepo/workspace). Script COMPONENT_MAP uses these for **signature component name** only. | — | — | Keep COMPONENT_MAP in sync with repo names + workspace path names for header attribution |
 | **INV-CORE-DEP-1** | Core repos depend only on decision-schema (no core↔core). | core_to_core_dep_count == 0 | pyproject / grep | Remove cross-core dependency; use schema only |
@@ -65,6 +66,7 @@ SPDX-License-Identifier: MIT
 | ID | Definition | Metric | CI / check | Remediation |
 |----|------------|--------|------------|-------------|
 | **Root allowlist** | Only allowlist files at root; README links only to these. | — | check_docs_root.py | Move non-allowlist to archive or docs/ |
+| **INV-DOC-ROOT-ALLOWLIST-1** | ECOSYSTEM_INVARIANTS.md (and governance docs) in root allowlist; check_docs_root.py enforces. | allowlist_contains_invariants == true | check_docs_root.py | Add to DOCS_REPO_STRUCTURE allowlist |
 | **No root clutter** | No session/summary, one-off migration, sprint board, old verification at root. | — | check_docs_root.py | Move to archive/YYYY-MM-DD/ |
 | **INV-DOC-2** | Dated snapshots under `archive/YYYY-MM-DD/`. | — | — | Create dated archive dir; move file |
 | **Analysis limit** | At most 1–2 current analysis reports at root. | current_analysis_count <= 2 | check_docs_root.py | Move older to archive |
@@ -79,13 +81,15 @@ SPDX-License-Identifier: MIT
 | **INV-CI-NONDET-0** | CI fallback must not use `@main` when a release tag exists. Allowlist SSOT (e.g. first-release-only temporary @main). | @main only in allowlist | grep workflow | Use tag fallback; document allowlist |
 | **INV-CI-TAG-1** | Tag push triggers CI. **Scope:** core + harness (docs optional). | on.push.tags: ["v*"] | workflow | Add tags trigger |
 | **INV-CI-PROOF-1** | CI produces machine-readable proof artifact. **Scope:** pytest repos → pytest-report JSON; docs → e.g. broken-link check. | Artifact present, parseable | upload-artifact / job | Add pytest-report or docs artifact step |
-| **INV-SYNC-1** | DONE = proof on GitHub main + CI pass; workspace-only state does not count. | Gates_present ∧ CI_pass ∧ Main_parity | CI / checklist | Push to main; re-run checks |
+| **INV-SYNC-1** | Git state only: working tree clean, not ahead/behind origin/main, remote owner canonical. **CI run result is separate.** | working_tree_clean ∧ ahead_of_origin_main==0 ∧ behind==0 ∧ remote_owner | check_workspace_sync + check_remote_owner | Commit/push; fix remote URL |
+| **INV-CI-PASS-1** | CI workflow run outcome = PASS (green). Separate from sync. | workflow_run_success == true | GitHub Actions / API | Fix failing steps; re-run |
 | **INV-PUBLIC-MAIN-1** | Standards not DONE until verified on **public** main (`raw.githubusercontent.com/.../main/...`). | public_main_drift_count == 0 | public_main_audit.py | Push to origin main; run `python tools/public_main_audit.py --owner <owner>` |
 | **INV-PUBLIC-MAIN-2** | Public main raw content satisfies same invariants (deterministic proof; hard-fail). | Same as INV-PUBLIC-MAIN-1 | public_main_audit.py | Fix drift; push to origin; re-run audit |
 | **INV-README-NO-PLACEHOLDER-1** | README/docs have no `[Add your license]` placeholder. | placeholder_hits == 0 | grep / public_main_audit | Remove placeholder; add license link |
 | **INV-OWNER-REF-1** | All github.com/owner/... links use canonical owner (e.g. MchtMzffr). | wrong_owner_link_count == 0 | public_main_audit | Replace wrong owner with canonical |
 | **INV-SSOT-REALITY-1** | Docs pin/tag/version verifiable from public main. | docs_claim_mismatches == 0 | public_main_audit + check_release_alignment | Align pyproject/tag/CI on public main |
 | **INV-DOC-DRIFT-1** | Roadmap table matches pyproject.version and Git tags. | roadmap_mismatch_rows == 0 | check_release_alignment.py | Update NEXT_STEPS_ROADMAP or version/tag |
+| **INV-RM-SCOPE-1** | Roadmap P0 table scope is defined (e.g. core-only); repos not in table have written reason (e.g. harness non-core). | scope_documented == true | NEXT_STEPS_ROADMAP | Add harness policy / scope note |
 
 ---
 

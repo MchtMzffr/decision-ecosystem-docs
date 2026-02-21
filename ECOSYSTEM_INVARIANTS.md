@@ -25,7 +25,8 @@
 | **INV-CI-PROOF-1** | CI produces machine-readable proof artifact (`pytest-report-<py>` with JSON). | Artifact downloadable, JSON parseable. |
 | **INV-CI-COMPLY-1** | Every repo’s CI workflow conforms to the **CI Compliance Standard** (secret_scan, LICENSE, Ruff check, Ruff format check, build, pytest, artifact per repo type). | All required steps present and passing. See **docs/CI_COMPLIANCE_STANDARD.md**. |
 | **INV-CI-COMPLY-2** | CI compliance checker runs in docs repo CI (and optionally with `--workspace`); fail-closed. | compliance_checker_pass == true. See **docs/CI_COMPLIANCE_STANDARD.md** §7. |
-| **INV-SYNC-1** | “Workspace’te var” ≠ “main’de var”. **DONE** = proof on GitHub `main` + CI gate passing. | Done = Gates_present ∧ CI_pass ∧ Main_parity. See **docs/CI_COMPLIANCE_STANDARD.md** §6. |
+| **INV-SYNC-1** | “Workspace’te var” ≠ “main’de var”. Git state only: clean, not ahead/behind origin/main, remote canonical. (CI run = **INV-CI-PASS-1** separately.) | check_workspace_sync + check_remote_owner. See **docs/CI_COMPLIANCE_STANDARD.md** §6. |
+| **INV-CI-PASS-1** | CI workflow run outcome = PASS. Separate from sync. | workflow_run_success == true (GitHub Actions). |
 | **INV-PUBLIC-MAIN-1** | Standards are not marked DONE until verified on **public** main (`raw.githubusercontent.com/<owner>/<repo>/main/...`). | `public_main_drift_count == 0`. Run: `python tools/public_main_audit.py --owner <owner>`. |
 | **INV-PUBLIC-MAIN-2** | Public main raw content satisfies the same invariants (LICENSE, no placeholder, param names, SSOT version, CI no @main). Deterministic proof via raw URL + expected patterns; hard-fail. | Same as INV-PUBLIC-MAIN-1; audit script covers all P0 checks. |
 | **INV-README-NO-PLACEHOLDER-1** | README and docs root allowlist have no `[Add your license]` or equivalent placeholder. | `placeholder_hits == 0` (grep / audit script). |
