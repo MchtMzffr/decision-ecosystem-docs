@@ -27,6 +27,7 @@ ALLOWED_DIRS = {
     ".git",
     "tools",
     ".ruff_cache",
+    ".pytest_cache",
 }
 
 # INV-DOC-ANALYSIS-LIMIT-1: Max number of analysis/report files at root
