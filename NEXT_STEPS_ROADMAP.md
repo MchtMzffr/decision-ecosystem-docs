@@ -50,16 +50,16 @@ This makes dependency pinning and contract matrices reproducible.
 
 ## Future (P2–P3) — New Core Proposals
 
-**Note:** Yeni çekirdek geliştirmesi şu an **ertelendi**; öncelik mevcut core’ların stabilizasyonunda. Aşağıdaki proposal’lar ileride ele alınacak.
+**Note:** New core development is currently **deferred**; priority is stabilising existing cores. The proposals below will be addressed later.
 
-### explainability-audit-core (Priority: High) — ✅ Minimal tamamlandı (v0.1.0)
+### explainability-audit-core (Priority: High) — ✅ Minimal complete (v0.1.0)
 **Purpose:** Explain "why" decisions were made (audit/compliance).
 **Scope:** proposal explanation, guard trigger chain, domain-agnostic reason codes; `explain_from_packet(PacketV2)` → ExplanationArtifact.
-**Status:** v0.1.0 skeleton tamamlandı: INV-EXPL testleri, doc trio (ARCHITECTURE, FORMULAS, INTEGRATION_GUIDE), CI. İlk tag v0.1.0 yayınlandı. Harness’ta opsiyonel entegrasyon: rapora `report.explanation` eklenir.
+**Status:** v0.1.0 skeleton complete: INV-EXPL tests, doc trio (ARCHITECTURE, FORMULAS, INTEGRATION_GUIDE), CI. First tag v0.1.0 published. Optional integration in harness: `report.explanation` added to report.
 
-### decision-ecosystem-cli (Priority: Medium) — ✅ Devrede
+### decision-ecosystem-cli (Priority: Medium) — ✅ In use
 **Purpose:** Single-command ecosystem management.
-**Scope:** install cores, local test pipeline, release/sync checks. CLI: `python tools/ecosystem.py` (docs repo); subcommand’lar: `install`, `test`, `check-release`, `check-sync`.
+**Scope:** install cores, local test pipeline, release/sync checks. CLI: `python tools/ecosystem.py` (docs repo); subcommands: `install`, `test`, `check-release`, `check-sync`.
 
 **Note:** `execution-orchestration-core` already exists and is released (v0.1.0); do not list it as "new core".
 
@@ -73,9 +73,11 @@ This makes dependency pinning and contract matrices reproducible.
 | P1 Ops latency windowing | Low | Medium | P1 ✅ |
 | explainability-audit-core | High | High | P2 ✅ |
 | decision-ecosystem-cli | Medium | Medium | P2 ✅ |
-| CI/CD maturity (secret scan, vuln scan, coverage gates) | Medium | Medium | P3 |
+| CI/CD maturity (secret scan, vuln scan, coverage gates) | Medium | Medium | P3 ✅ |
 
 ---
 
-**Last Updated:** 2026-02-19  
+**P3 — CI/CD maturity:** Secret scan (gitleaks), vulnerability scan (pip-audit), and coverage gate (--cov-fail-under=30) are in place for all cores, harness, and explainability-audit-core. See [P3 CI/CD Checklist](docs/P3_CI_CD_CHECKLIST.md).
+
+**Last Updated:** 2026-02  
 **Status:** Ready for next phase

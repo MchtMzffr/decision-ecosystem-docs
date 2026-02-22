@@ -40,13 +40,15 @@ Central documentation for the Decision Ecosystem: release guides, verification c
 ### Roadmap & summaries
 
 - [Next Steps Roadmap](NEXT_STEPS_ROADMAP.md) — Planned work
+- [P2 Status Report](docs/P2_STATUS_REPORT.md) — P2 implementation status (explainability, harness explanation, ecosystem CLI)
+- [P3 CI/CD Checklist](docs/P3_CI_CD_CHECKLIST.md) — Secret scan, pip-audit, coverage gate (--cov-fail-under=30)
 - [Task Completion Summary](TASK_COMPLETION_SUMMARY.md) — Completed work
 
 ### Analysis & reports (max 2 at root — INV-DOC-ANALYSIS-LIMIT-1)
 
 - [Academic Static Analysis Report](ACADEMIC_STATIC_ANALYSIS_REPORT.md)
 - [Ecosystem QA Static Analysis Report](ECOSYSTEM_QA_STATIC_ANALYSIS_REPORT.md)
-- [Static Analysis & Code Quality — 5N1K and Control](docs/STATIC_ANALYSIS_CODE_QUALITY_5N1K_AND_CONTROL.md) — 5N1K, Feynman, uygunsuzluk/eksik/öneri listesi, akademik kontrol matrisi
+- [Static Analysis & Code Quality — 5N1K and Control](docs/STATIC_ANALYSIS_CODE_QUALITY_5N1K_AND_CONTROL.md) — 5N1K, Feynman, mismatch/gap/recommendation list, academic control matrix
 - [Core Repo Standards](docs/CORE_REPO_STANDARDS.md) — INV-GITIGNORE-1, INV-COMMIT-1 (revised); .gitignore and commit/push rules
 - [Ecosystem Gates and Invariants](docs/ECOSYSTEM_GATES_AND_INVARIANTS.md) — SSOT: all gates (A–M), metric, CI check, remediation
 - [CI Compliance Standard](docs/CI_COMPLIANCE_STANDARD.md) — INV-CI-COMPLY-1/2: required CI steps per repo type, N/A conditions, proof artifact standard, compliance checker
