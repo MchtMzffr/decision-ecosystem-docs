@@ -1,0 +1,6 @@
+# Local outputs and cache
+reports/
+**/__pycache__/
+*.pyc
+.venv/
+venv/
