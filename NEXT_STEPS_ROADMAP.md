@@ -52,14 +52,14 @@ This makes dependency pinning and contract matrices reproducible.
 
 **Note:** Yeni çekirdek geliştirmesi şu an **ertelendi**; öncelik mevcut core’ların stabilizasyonunda. Aşağıdaki proposal’lar ileride ele alınacak.
 
-### explainability-audit-core (Priority: High, deferred)
+### explainability-audit-core (Priority: High) — ✅ Minimal tamamlandı (v0.1.0)
 **Purpose:** Explain "why" decisions were made (audit/compliance).
-**Scope:** proposal explanation, guard trigger chain, domain-agnostic reason codes.
-**Status:** Minimal repo mevcut (reason codes, `explain()`, testler); CI çalışıyor. Aktif geliştirme ertelendi.
+**Scope:** proposal explanation, guard trigger chain, domain-agnostic reason codes; `explain_from_packet(PacketV2)` → ExplanationArtifact.
+**Status:** v0.1.0 skeleton tamamlandı: INV-EXPL testleri, doc trio (ARCHITECTURE, FORMULAS, INTEGRATION_GUIDE), CI. İlk tag v0.1.0 yayınlandı. Harness’ta opsiyonel entegrasyon: rapora `report.explanation` eklenir.
 
-### decision-ecosystem-cli (Priority: Medium)
+### decision-ecosystem-cli (Priority: Medium) — ✅ Devrede
 **Purpose:** Single-command ecosystem management.
-**Scope:** install cores, local test pipeline, contract matrix validation.
+**Scope:** install cores, local test pipeline, release/sync checks. CLI: `python tools/ecosystem.py` (docs repo); subcommand’lar: `install`, `test`, `check-release`, `check-sync`.
 
 **Note:** `execution-orchestration-core` already exists and is released (v0.1.0); do not list it as "new core".
 
@@ -71,8 +71,8 @@ This makes dependency pinning and contract matrices reproducible.
 |---|---:|---:|---:|
 | P0 Release alignment (tags) | Medium | Low | P0 ✅ |
 | P1 Ops latency windowing | Low | Medium | P1 ✅ |
-| explainability-audit-core | High | High | P2 |
-| decision-ecosystem-cli | Medium | Medium | P2 |
+| explainability-audit-core | High | High | P2 ✅ |
+| decision-ecosystem-cli | Medium | Medium | P2 ✅ |
 | CI/CD maturity (secret scan, vuln scan, coverage gates) | Medium | Medium | P3 |
 
 ---
