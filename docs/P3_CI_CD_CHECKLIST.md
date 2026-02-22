@@ -10,7 +10,7 @@
 | Gate | Status | Where |
 |------|--------|--------|
 | **Secret scan** | In place | All repos: `secret_scan` job with gitleaks/gitleaks-action@v2 (INV-SEC-RED-1). explainability-audit-core had no secret_scan; added. |
-| **Vulnerability scan** | In place | All Python repos: step "Vulnerability scan (pip audit)" after Install package; `pip install pip-audit && pip-audit`. Fails CI if known vulnerabilities in dependencies. |
+| **Vulnerability scan** | In place | All Python repos: step "Vulnerability scan (pip audit)" after Install package; `pip install -U 'pip>=26.0'` then `pip install pip-audit && pip-audit`. Pip upgrade avoids CVE in runner pip; pip-audit fails CI if known vulnerabilities in dependencies. |
 | **Coverage gate** | In place | All test jobs: `pytest ... --cov=. --cov-fail-under=30 --no-cov-on-fail`. Minimum 30% line coverage required; can be raised per repo later. |
 
 ---
