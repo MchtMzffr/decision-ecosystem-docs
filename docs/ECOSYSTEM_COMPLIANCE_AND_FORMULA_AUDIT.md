@@ -84,10 +84,10 @@ score = 1 - (w1*p_err + w2*p_429 + w3*p_rec + w4*p_lat)
 **Kod (model.py):** `weight_errors=0.4`, `weight_429=0.3`, `weight_reconnects=0.2`, `weight_latency=0.1` → toplam 1.0.  
 **Doküman:** “Weights: weight_errors, weight_429, weight_reconnects, weight_latency” — sayısal değer dokümanda yok; kod varsayılanları tutarlı. **Tutarsızlık yok.**
 
-### 3.4 decision-schema: confidence clamp
+### 3.4 decision-schema: confidence bounds
 
-**Kod (types.py):** `clamp_confidence(c) = max(0.0, min(1.0, c))`.  
-**Invariant:** Tüm Proposal/FinalDecision confidence ∈ [0,1]. **Tutarlı.**
+**Kod (types.py):** Proposal.__post_init__ raises ValueError if confidence not in [0.0, 1.0].  
+**Invariant:** Proposal confidence ∈ [0,1]. **Tutarlı.**
 
 ### 3.5 DMC: risk = Σ w·g ve modulation = 1 − risk
 
@@ -173,7 +173,7 @@ score = 1 - (w1*p_err + w2*p_429 + w3*p_rec + w4*p_lat)
 ## 7. Invariant ve test (mevcut durum)
 
 - **Fail-closed:** DMC modulator exception path’te `_fail_closed(policy)`; ops_health kill_switch; mdm private hook exception → HOLD. **Kod ile doküman uyumlu.**
-- **Bounded score [0,1]:** ops-health scorer clamp; decision_schema clamp_confidence. **Karşılanıyor.**
+- **Bounded score [0,1]:** ops-health scorer clamp; decision_schema Proposal enforces confidence ∈ [0,1] in __post_init__. **Karşılanıyor.**
 - **Determinism:** Formül kodlarında rastgelelik yok; guard sırası sabit. **Karşılanıyor.**
 - **Contract (schema):** Proposal/FinalDecision tipleri decision_schema’da; eval invariant’ları confidence_clamp vb. **Tutarlı.**
 

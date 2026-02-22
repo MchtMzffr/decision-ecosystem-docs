@@ -46,6 +46,12 @@ SPDX-License-Identifier: MIT
 | **INV-CORE-DEP-1** | Core repos depend only on decision-schema (no core↔core). | core_to_core_dep_count == 0 | pyproject / grep | Remove cross-core dependency; use schema only |
 | **INV-REL-SSOT-2** | Version in docs = pyproject + Git tag; docs do not override reality. | version_mismatch_rows == 0 | check_release_alignment; ECOSYSTEM_CONTRACT_MATRIX | Set matrix/roadmap to actual versions |
 
+### 3.1 COMPONENT_MAP vs repo list (P0)
+
+**Repo list (sync/CI):** The ecosystem has **9 repositories** (SSOT: REPO_REGISTRY.md / tools REPO_DIRS): decision-schema, mdm-engine, decision-modulation-core, ops-health-core, evaluation-calibration-core, execution-orchestration-core, explainability-audit-core, decision-ecosystem-integration-harness, decision-ecosystem-docs.
+
+**COMPONENT_MAP** (in `scripts/add_repo_signature.py`): Used **only for signature header attribution** when adding or verifying file headers. It lists **repo names** that exist as directories (e.g. decision-schema, mdm-engine, …) plus **workspace paths** that are not standalone repos: `docs`, `scripts`. So COMPONENT_MAP may have 8 repo names + `docs` + `scripts` (order and count depend on script version). When a new repo is added to the ecosystem, add it to REPO_REGISTRY / REPO_DIRS for sync and CI; add it to COMPONENT_MAP only if the signature script should attribute files under that path to a component name. **Do not** confuse COMPONENT_MAP with the canonical repo count: the canonical list for release/sync is REPO_REGISTRY / check_workspace_sync REPO_DIRS.
+
 ---
 
 ## 4. D. License / docs
@@ -57,7 +63,7 @@ SPDX-License-Identifier: MIT
 | **INV-LIC-SPDX-2** | Repo-level: LICENSE exists + README no license placeholder; CI enforces both. | license_missing == 0, license_placeholder_found == 0 | CI step + optional grep README | Add LICENSE; fix README |
 | **INV-LANG-1** | All documentation and file/dir names in **English**. | non_english_doc_or_filename == 0 | grep Turkish chars/words | Rename or translate to English |
 | **INV-DOC-LANG-2** | **All documentation in English** (standards, invariants, release notes, verification checklists, status reports, operational docs). No Turkish allowlist. | non_english_doc_count == 0 | Policy; .cursor/rules/documentation-english.mdc | Translate to English |
-| **Doc naming** | Documentation filenames: **single format** `SCREAMING_SNAKE_CASE.md` (ASCII-only). | nonconforming_doc_filenames == 0 | CI / script | Rename to SCREAMING_SNAKE_CASE |
+| **Doc naming** | Documentation filenames: **single format** `SCREAMING_SNAKE_CASE.md` (ASCII-only). | nonconforming_doc_filenames == 0 | CI / script | See **docs/DOCUMENTATION_STANDARDS.md**; rename to SCREAMING_SNAKE_CASE |
 
 ---
 
@@ -105,8 +111,8 @@ SPDX-License-Identifier: MIT
 
 | ID | Definition | Metric | CI / check | Remediation |
 |----|------------|--------|------------|-------------|
-| **INV-PARAM-INDEX-1** | PacketV2 / external trace key format changes require **decision-schema/docs/PARAMETER_INDEX.md** (or SSOT doc) updated before merge. | param_index_drift == 0 | decision-schema CI: check_parameter_index.py (to add) | Update PARAMETER_INDEX; cores do not edit (SSOT in schema) |
-| **INV-TRACE-REG-1** | Every key written to `PacketV2.external` by a core/harness must be **registered** in trace registry. | unregistered_external_key_count == 0 | Harness e2e: validate_external_dict(strict=True) | Register key in decision-schema trace_registry; or stop writing key |
+| **INV-PARAM-INDEX-1** | PacketV2 / external trace key format changes require **decision-schema/docs/PARAMETER_INDEX.md** (or SSOT doc) updated before merge. | param_index_drift == 0 | decision-schema CI: `python tools/check_parameter_index.py` | Update PARAMETER_INDEX; cores do not edit (SSOT in schema) ✅ |
+| **INV-TRACE-REG-1** | Every key written to `PacketV2.external` by a core/harness must be **registered** in trace registry. | unregistered_external_key_count == 0 | Harness: tests/test_invariant_t1_harness_external_keys_registered.py (validate_external_dict strict) | Register key in decision-schema trace_registry; or stop writing key ✅ |
 
 ---
 
@@ -167,20 +173,50 @@ SPDX-License-Identifier: MIT
 
 **P0**
 
-- INV-COMMIT-1 wording revision (intended changes; deterministic git checks).
-- COMPONENT_MAP vs repo list: document repo list (8) vs workspace paths (docs, scripts) for signature component.
-- INV-PARAM-INDEX-1, INV-TRACE-REG-1: add CI gates (decision-schema + harness).
-- INV-SEC-RED-1: already in place (gitleaks job); verify all repos.
+- INV-COMMIT-1 wording revision (intended changes; deterministic git checks). **Done:** Definition in §2 and **docs/CORE_REPO_STANDARDS.md** §2; checks: `git status --porcelain` empty, no commits ahead of origin/main. ✅
+- COMPONENT_MAP vs repo list: document repo list vs workspace paths (docs, scripts) for signature component. **§3.1** ✅
+- INV-PARAM-INDEX-1: CI gate in decision-schema (check_parameter_index.py in ci.yml). **Done.** ✅
+- INV-TRACE-REG-1: Harness tests enforce validate_external_dict(strict=True); see test_invariant_t1_harness_external_keys_registered.py. **Done.** ✅
+- INV-SEC-RED-1: secret_scan (gitleaks) job required in all repos per CI_COMPLIANCE_STANDARD; check_ci_compliance.py verifies. **Verified.** ✅
 
 **P1**
 
-- Doc naming: single standard SCREAMING_SNAKE_CASE (DOCUMENTATION_STANDARDS).
-- INV-BUILD-1, INV-LINT-1: ensure build + lint in each core CI.
-- INV-DEPREC-1: add DEPRECATION_POLICY.md and timeline requirement.
+- Doc naming: single standard SCREAMING_SNAKE_CASE. **Done:** **docs/DOCUMENTATION_STANDARDS.md** ✅
+- INV-BUILD-1, INV-LINT-1: ensure build + lint in each core CI. **Done:** check_ci_compliance.py requires ruff check, ruff format, python -m build for core/harness; all repos comply. ✅
+- INV-DEPREC-1: add DEPRECATION_POLICY.md and timeline requirement. **Done:** **docs/DEPRECATION_POLICY.md** (deprecated_in, remove_in, migration_note). ✅
+- **Academic & R&D (from ACADEMIC_CRITIQUE_AND_REASONS.md, RND_FUTURE_DIRECTIONS_AND_REASONS.md):**
+  - INV-EVIDENCE-1: Evidence summary doc — which claims (fail-closed, domain-agnostic) are enforced by which mechanism (test, CI, manual); separate (a) docs lexeme, (b) API/data, (c) runtime. See **docs/EVIDENCE_SUMMARY.md**. **Phase: P1.** ✅
+  - INV-TRACE-MAP-1: Invariant → CI/test mapping table in docs (Invariant ID → script/job → test file). See **docs/INVARIANT_TRACEABILITY.md**. **Phase: P1.** ✅
+  - INV-SEC-SCOPE-1: Security scope doc — in-scope vs out-of-scope threats; which invariants address which. See **docs/SECURITY_SCOPE.md**. **Phase: P1.** ✅
+  - INV-REPRO-1: For major releases or publications, document a versioned snapshot (e.g. Zenodo DOI or list of commit SHAs/tags) in docs repo. See **docs/REPRODUCIBILITY.md**. **Phase: P1 (process).** ✅
+
+**P2**
+
+- **Academic & R&D (continued):**
+  - INV-FORMAL-1: Formalisation note — fail-closed as predicate over pipeline state/outputs; list components in scope; reference tests linked to predicates. See **docs/FORMALISATION_NOTE.md**. **Phase: P2.** ✅
+  - INV-VALID-1: Validation section — list assumptions and intended guarantees; map critical scenarios (e.g. kill-switch, schema mismatch) to tests; optional one reproducible experiment. See **docs/VALIDATION.md**. **Phase: P2.** ✅
+  - R&D directions (roadmap): formalisation report, new vertical cores, explainability extension (counterfactuals/audit export), benchmarks/experiments, tooling (schema diff, trace viewer), community (CONTRIBUTING, interchange format). See **docs/RND_FUTURE_DIRECTIONS_AND_REASONS.md**. **Phase: P2/P3.**
 
 ---
 
-## 15. Last full-structure and CI verification (per rules)
+## 15. Academic and R&D standards (normative)
+
+These entries stem from **docs/ACADEMIC_CRITIQUE_AND_REASONS.md** and **docs/RND_FUTURE_DIRECTIONS_AND_REASONS.md**. They are added as project rules so that gaps and improvements are tracked and phased.
+
+| ID | Definition | Metric | CI / check | Remediation | Phase |
+|----|------------|--------|------------|-------------|-------|
+| **INV-EVIDENCE-1** | Claims (fail-closed, domain-agnostic) have an evidence summary: which claim is enforced by which mechanism (lexeme scan, test, CI, manual). Docs vs API vs runtime separated. | evidence_summary_doc_exists == true; three categories present | Doc review; optional link check | Add **docs/EVIDENCE_SUMMARY.md**; keep table up to date | P1 |
+| **INV-TRACE-MAP-1** | Every invariant (or each P0/P1 gate) has a mapping to the script/job and test file that enforces it. | mapping_rows >= key_invariants_count | Doc review; checklist | Add mapping table to gates doc or **docs/INVARIANT_TRACEABILITY.md** | P1 |
+| **INV-SEC-SCOPE-1** | Security scope is documented: in-scope threats, out-of-scope, and which invariants (e.g. INV-SEC-RED-1, INV-ERR-SURFACE-1) address which. | security_scope_doc_exists == true | Doc review | Add **docs/SECURITY_SCOPE.md** | P1 |
+| **INV-REPRO-1** | For each major release or publication, a versioned snapshot (DOI or commit/tag list) is documented so that “this report refers to this version” is citable. | snapshot_documented_for_release == true when release is published | Checklist / release process | Document in release notes or **docs/REPRODUCIBILITY.md** | P1 |
+| **INV-FORMAL-1** | Fail-closed (and optionally pipeline) have a short formalisation: predicate over state/outputs; components in scope; tests referenced. | formalisation_note_exists == true | Doc review | **docs/FORMALISATION_NOTE.md** ✅ | P2 ✅ |
+| **INV-VALID-1** | Validation section exists: assumptions, intended guarantees, critical scenarios mapped to tests; optional one reproducible experiment. | validation_section_exists == true | Doc review | **docs/VALIDATION.md** ✅ | P2 ✅ |
+
+**Cursor rule:** When editing docs or invariants related to academic/R&D standards, follow **.cursor/rules/academic-rnd-standards.mdc** (evidence vs claim separation, traceability, formalisation when defining terms, reproducibility).
+
+---
+
+## 16. Last full-structure and CI verification (per rules)
 
 **Date:** 2026-02-18
 
@@ -198,4 +234,4 @@ CI workflows (secret scan, Ruff, build, pip-audit, coverage) are configured per 
 ---
 
 **Last updated:** 2026-02-19  
-**References:** ECOSYSTEM_INVARIANTS.md, CORE_REPO_STANDARDS.md, REPO_SIGNATURE_STANDARD.md, RELEASE_NOTES_STANDARD_AND_TEMPLATES.md
+**References:** ECOSYSTEM_INVARIANTS.md, CORE_REPO_STANDARDS.md, REPO_SIGNATURE_STANDARD.md, RELEASE_NOTES_STANDARD_AND_TEMPLATES.md, ACADEMIC_CRITIQUE_AND_REASONS.md, RND_FUTURE_DIRECTIONS_AND_REASONS.md

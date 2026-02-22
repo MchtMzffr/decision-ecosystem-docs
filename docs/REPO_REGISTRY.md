@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
 | execution-orchestration-core | core | released | execution_orchestration_core | v0.1.0 |
 | decision-ecosystem-integration-harness | harness | released | harness | — |
 | decision-ecosystem-docs | docs | released | — | — |
-| explainability-audit-core | experimental | unreleased | (TBD) | — |
+| explainability-audit-core | experimental | released | explainability_audit_core | v0.1.0 |
 
 - **repo_type:** `core` | `harness` | `docs` | `experimental`. "6 core" narrative = first 6 rows with type=core.
 - **status:** `released` (has tag/release) | `unreleased`.

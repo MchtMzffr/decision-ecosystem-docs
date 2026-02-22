@@ -75,6 +75,12 @@ Full gates (H–L, metrics, remediation): **docs/ECOSYSTEM_GATES_AND_INVARIANTS.
 
 ---
 
+## Academic & R&D (P1/P2)
+
+See **docs/ECOSYSTEM_GATES_AND_INVARIANTS.md** §15–16 for INV-EVIDENCE-1, INV-TRACE-MAP-1, INV-SEC-SCOPE-1, INV-REPRO-1 (P1), INV-FORMAL-1, INV-VALID-1 (P2). Source: **docs/ACADEMIC_CRITIQUE_AND_REASONS.md**, **docs/RND_FUTURE_DIRECTIONS_AND_REASONS.md**. Cursor rule: **.cursor/rules/academic-rnd-standards.mdc**.
+
+---
+
 ## Release notes
 
 See **docs/RELEASE_NOTES_STANDARD_AND_TEMPLATES.md** for INV-REL-TAG-1, INV-REL-SSOT-1, INV-REL-SEC-1, INV-REL-PROOF-1, **INV-REL-NO-TBD-1** (no TBD in release body at publish time), INV-CI-TAG-1, INV-CI-PROOF-1.
@@ -82,4 +88,4 @@ See **docs/RELEASE_NOTES_STANDARD_AND_TEMPLATES.md** for INV-REL-TAG-1, INV-REL-
 ---
 
 **Last updated:** 2026-02-19  
-**Status:** Checklist for static analysis and score (contract, CI, docs, license).
+**Status:** Checklist for static analysis and score (contract, CI, docs, license); P1/P2 Academic & R&D active.

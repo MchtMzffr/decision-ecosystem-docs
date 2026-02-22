@@ -34,6 +34,18 @@ This makes dependency pinning and contract matrices reproducible.
 
 ## Completed (Recent)
 
+### P0 — Patch plan (gates) — ✅ Documented / verified
+- **COMPONENT_MAP vs repo list:** Documented in ECOSYSTEM_GATES_AND_INVARIANTS.md §3.1 (repo list vs workspace paths docs/scripts for signature).
+- **INV-PARAM-INDEX-1:** decision-schema CI runs `check_parameter_index.py`. ✅
+- **INV-TRACE-REG-1:** Harness tests (test_invariant_t1_harness_external_keys_registered.py) enforce validate_external_dict(strict=True). ✅
+- **INV-SEC-RED-1:** secret_scan required in all repos; check_ci_compliance.py verifies. ✅
+- **INV-COMMIT-1:** Wording in §2 and CORE_REPO_STANDARDS.md §2; deterministic checks. ✅
+
+### P1 — Patch plan (gates) — ✅ Done
+- **Doc naming:** docs/DOCUMENTATION_STANDARDS.md (SCREAMING_SNAKE_CASE, ASCII). ✅
+- **INV-BUILD-1, INV-LINT-1:** check_ci_compliance requires ruff + build for core/harness; all repos comply. ✅
+- **INV-DEPREC-1:** docs/DEPRECATION_POLICY.md (deprecated_in, remove_in, migration_note). ✅
+
 ### P2 — DMC-Core Dependency Cleanup (F7) — ✅ DONE
 - Removed unused `numpy` and `pydantic` from `dmc-core` package.
 - Reference: `decision-modulation-core/docs/DEPENDENCY_CLEANUP.md`
@@ -65,12 +77,39 @@ This makes dependency pinning and contract matrices reproducible.
 
 ---
 
+## P1 — Academic & R&D standards — ✅ Done
+
+**Rationale:** Address gaps from [ACADEMIC_CRITIQUE_AND_REASONS.md](docs/ACADEMIC_CRITIQUE_AND_REASONS.md); rules added to [ECOSYSTEM_GATES_AND_INVARIANTS.md](docs/ECOSYSTEM_GATES_AND_INVARIANTS.md) §14–15. Cursor rule: `.cursor/rules/academic-rnd-standards.mdc`.
+
+| Item | Invariant | Deliverable | Status |
+|------|-----------|-------------|--------|
+| Evidence summary | INV-EVIDENCE-1 | **docs/EVIDENCE_SUMMARY.md** — which claims (fail-closed, domain-agnostic) enforced by which mechanism; separate docs / API / runtime | ✅ Done |
+| Invariant → test mapping | INV-TRACE-MAP-1 | **docs/INVARIANT_TRACEABILITY.md** — Invariant ID → script/job → test file | ✅ Done |
+| Security scope | INV-SEC-SCOPE-1 | **docs/SECURITY_SCOPE.md** — in-scope vs out-of-scope threats; which invariants address which | ✅ Done |
+| Reproducibility (releases) | INV-REPRO-1 | **docs/REPRODUCIBILITY.md** — process and snapshot table for major releases | ✅ Done |
+
+---
+
+## P2 — Academic & R&D (formalisation, validation) — ✅ Done
+
+**Rationale:** Formalisation and validation from critique; R&D directions from [RND_FUTURE_DIRECTIONS_AND_REASONS.md](docs/RND_FUTURE_DIRECTIONS_AND_REASONS.md).
+
+| Item | Invariant | Deliverable | Status |
+|------|-----------|-------------|--------|
+| Formalisation note | INV-FORMAL-1 | **docs/FORMALISATION_NOTE.md** — fail-closed as predicate; pipeline state/outputs; components in scope; tests referenced | ✅ Done |
+| Validation section | INV-VALID-1 | **docs/VALIDATION.md** — assumptions, guarantees, critical scenarios → tests; optional one reproducible experiment | ✅ Done |
+| R&D roadmap items | — | Formalisation report, new vertical cores, explainability extension (counterfactuals/audit), benchmarks, tooling (schema diff, trace viewer), community (CONTRIBUTING, interchange format) | Backlog |
+
+---
+
 ## Decision Matrix (High Level)
 
 | Item | Impact | Effort | Priority |
 |---|---:|---:|---:|
 | P0 Release alignment (tags) | Medium | Low | P0 ✅ |
 | P1 Ops latency windowing | Low | Medium | P1 ✅ |
+| P1 Academic & R&D (evidence, traceability, security scope, reproducibility) | Medium | Medium | P1 ✅ |
+| P2 Academic & R&D (formalisation, validation) | Medium | Medium | P2 ✅ |
 | explainability-audit-core | High | High | P2 ✅ |
 | decision-ecosystem-cli | Medium | Medium | P2 ✅ |
 | CI/CD maturity (secret scan, vuln scan, coverage gates) | Medium | Medium | P3 ✅ |
@@ -80,4 +119,4 @@ This makes dependency pinning and contract matrices reproducible.
 **P3 — CI/CD maturity:** Secret scan (gitleaks), vulnerability scan (pip-audit), and coverage gate (--cov-fail-under=30) are in place for all cores, harness, and explainability-audit-core. See [P3 CI/CD Checklist](docs/P3_CI_CD_CHECKLIST.md).
 
 **Last Updated:** 2026-02  
-**Status:** Ready for next phase
+**Status:** P0 and P1 patch plan complete. P1/P2 Academic & R&D complete. R&D roadmap items (new cores, explainability extension, benchmarks, tooling, community) remain in backlog.
