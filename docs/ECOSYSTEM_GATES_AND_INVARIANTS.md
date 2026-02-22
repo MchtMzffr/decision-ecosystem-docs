@@ -56,7 +56,7 @@ SPDX-License-Identifier: MIT
 | **INV-README-LIC-1** | README has no placeholder like `[Add your license]`. | count(placeholder) == 0 | grep | Replace placeholder |
 | **INV-LIC-SPDX-2** | Repo-level: LICENSE exists + README no license placeholder; CI enforces both. | license_missing == 0, license_placeholder_found == 0 | CI step + optional grep README | Add LICENSE; fix README |
 | **INV-LANG-1** | All documentation and file/dir names in **English**. | non_english_doc_or_filename == 0 | grep Turkish chars/words | Rename or translate to English |
-| **INV-DOC-LANG-2** | Language policy: normative docs (standards, invariants, release) in **English**. Meta/operational docs (e.g. CI_RELIABILITY.md) may be in Turkish per allowlist. | — | Policy / allowlist | Translate or add to allowlist |
+| **INV-DOC-LANG-2** | **All documentation in English** (standards, invariants, release notes, verification checklists, status reports, operational docs). No Turkish allowlist. | non_english_doc_count == 0 | Policy; .cursor/rules/documentation-english.mdc | Translate to English |
 | **Doc naming** | Documentation filenames: **single format** `SCREAMING_SNAKE_CASE.md` (ASCII-only). | nonconforming_doc_filenames == 0 | CI / script | Rename to SCREAMING_SNAKE_CASE |
 
 ---
@@ -177,6 +177,23 @@ SPDX-License-Identifier: MIT
 - Doc naming: single standard SCREAMING_SNAKE_CASE (DOCUMENTATION_STANDARDS).
 - INV-BUILD-1, INV-LINT-1: ensure build + lint in each core CI.
 - INV-DEPREC-1: add DEPRECATION_POLICY.md and timeline requirement.
+
+---
+
+## 15. Last full-structure and CI verification (per rules)
+
+**Date:** 2026-02-18
+
+| Check | Script / command | Result |
+|-------|------------------|--------|
+| Release alignment | `check_release_alignment.py` | OK |
+| Remote owner | `check_remote_owner.py` | OK |
+| CI compliance | `check_ci_compliance.py` | OK (all repos) |
+| Workspace sync (INV-SYNC-1) | `check_workspace_sync.py` | FAIL until local changes committed (ops-health-core, harness, docs) |
+| Pytest + coverage | `ecosystem.py test` (all 8 repos with tests) | OK (197 tests total) |
+| INV0 docs (harness) | `test_invariant_0_domain_agnosticism` | OK (P0_CLOSURE_CHECKLIST: "forbidden" → "prohibited" to avoid lexeme "bid") |
+
+CI workflows (secret scan, Ruff, build, pip-audit, coverage) are configured per P3; pip upgraded to ≥26 in CI before pip-audit to satisfy CVE requirements.
 
 ---
 
