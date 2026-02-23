@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 **Purpose:** Single-page SSOT for the Decision Center / Platform layer: file tree, invariants, minimal endpoint contract, and test plan. Platform lives inside the harness repo under `harness/platform/`; it does not change pipeline semantics (INV-PLAT-ISOLATION-1).
 
-**References:** DECISION_CENTER_GAPS.md, ECOSYSTEM_GATES_AND_INVARIANTS.md, REPO_REGISTRY.md.
+**References:** DECISION_CENTER_GAPS.md, ECOSYSTEM_GATES_AND_INVARIANTS.md, REPO_REGISTRY.md. **Görselleştirme:** ARCHITECTURE_VISUALIZATION.md (Mermaid diyagramları).
 
 ---
 
