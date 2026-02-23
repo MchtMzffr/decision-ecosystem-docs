@@ -29,8 +29,12 @@ harness/
     adapters/
       __init__.py          # get_adapter(name), BaseAdapter, Example domain adapters
       base.py              # BaseAdapter (to_state_context, to_domain_output)
+      example_domain_agent_tool_use.py
+      example_domain_content_moderation.py
       example_domain_lending.py
+      example_domain_ops_automation.py
       example_domain_scheduling.py
+      example_domain_triage.py
       example_domain_trading.py
 ```
 
@@ -66,7 +70,7 @@ harness/
 ### Gateway
 
 - **POST `/decide`** (domain-agnostic)
-  - **Input:** `{ "adapter": "example_domain_lending" | "example_domain_scheduling" | null, "input": {...}, "tenant": "...", "policy_id": "...", "idempotency_key": "...", "run_id": "...", "step": 0 }`
+  - **Input:** `{ "adapter": "example_domain_lending" | "example_domain_scheduling" | "example_domain_trading" | "example_domain_content_moderation" | "example_domain_ops_automation" | "example_domain_triage" | "example_domain_agent_tool_use" | null, "input": {...}, "tenant": "...", "policy_id": "...", "idempotency_key": "...", "run_id": "...", "step": 0 }`
   - If `adapter` is set: `input` → adapter.to_state_context() → (state, context). Else: `input.state`, `input.context` (or input as state).
   - **Output:** `{ "final_decision": {...}, "packet": {...}, "report_suite": ..., "domain_output": ... (if adapter) }`
 - **POST `/decision`** (legacy)
@@ -131,7 +135,7 @@ Model users (mdm-engine + harness) get platform capabilities by default or singl
 - **Entry:** `python -m harness --port 8000` (with `[gateway]` installed) or `harness.serve()`.
 - **Catalog/control:** Gateway merges get_context_overrides(tenant) and get_ops_state() into context.
 - **Store:** Optional; enable via create_app(store_backend=...) or env DECISION_STORE_PATH for file.
-- **Adapters:** Use `adapter=example_domain_lending`, `example_domain_scheduling`, or `example_domain_trading` in POST /decide body for domain input/output mapping.
+- **Adapters:** Use `adapter=example_domain_lending`, `example_domain_scheduling`, `example_domain_trading`, `example_domain_content_moderation`, `example_domain_ops_automation`, `example_domain_triage`, or `example_domain_agent_tool_use` in POST /decide body for domain input/output mapping.
 - **Control:** By default GET/POST /control return 403. Set `DECISION_GATEWAY_ENABLE_CONTROL=1` and `DECISION_CONTROL_TOKEN` (header `X-Decision-Control-Token` or `Authorization: Bearer <token>`) to enable.
 
 ---
