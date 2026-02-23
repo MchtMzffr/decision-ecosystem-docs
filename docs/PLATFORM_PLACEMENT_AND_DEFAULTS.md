@@ -52,7 +52,12 @@ harness/
 | **INV-GW-CTRL-LOCK-1** | Control mutation endpoint (GET/POST /control) default disabled; enable via DECISION_GATEWAY_ENABLE_CONTROL=1 or create_app(enable_control_endpoints=True). | harness/platform/gateway.py; 403 when disabled. |
 | **INV-GW-AUTH-1** | When control enabled, X-Decision-Control-Token or Authorization: Bearer must match DECISION_CONTROL_TOKEN; else 401. | harness/platform/gateway.py _control_token_ok(). |
 | **INV-CTRL-DOM-1** | Kill-switch ON ⇒ all decisions deny (ops-health dominance). | DMC ops_health_guard; control merges ops state into context. |
-| **INV-API-SURFACE-1** (P1) | Top-level harness exports minimal; platform API under harness.platform.*. | Docs; future deprecation of non-essential top-level exports. |
+| **INV-ADAPTER-REG-1** | Every adapter in registry is importable and implements BaseAdapter. | harness/platform/adapters/__init__.py; test_inv_adapter_reg_det. |
+| **INV-ADAPTER-DET-1** | Same domain_input ⇒ same (state, context) when serialized (order-stable JSON). | Adapters; test_inv_adapter_reg_det. |
+| **INV-STORE-PATH-1** | Default store path only under allowlist (e.g. cwd or ./artifacts); absolute path only with explicit allow_absolute_path=True. | harness/platform/store.py save(); test_inv_store_sec_1. |
+| **INV-GW-SIZE-1** | Request body size upper bound (default 256KB); over limit ⇒ 413. | harness/platform/gateway.py middleware; test_inv_gw_size_rl. |
+| **INV-GW-RL-1** | In-memory per-IP (or per-tenant) rate limit; over limit ⇒ 429. | harness/platform/gateway.py _rate_limit; test_inv_gw_size_rl. |
+| **INV-API-SURFACE-1** (P1) | Top-level harness exports minimal; platform API under harness.platform.*. | Docs; DEPRECATION_POLICY.md; future removal at 1.0. |
 
 ---
 
@@ -98,8 +103,24 @@ harness/
 | INV-CTRL-DOM-1 | set_red(); run_one_step with context merged from get_ops_state() ⇒ allowed=false (existing kill-switch tests). |
 | INV-DEPS-OPTIONAL-1 | Install without [gateway]; import harness works; create_app() or serve() raises ImportError with message. |
 | INV-ADAPTER-DOMAIN-LEAK-1 | test_inv_adapter_domain_leak_1_no_bare_domain_modules (adapter modules must have example_domain_ prefix). |
+| INV-ADAPTER-REG-1 | test_inv_adapter_reg_det: get_adapter(name) returns BaseAdapter for each registry name. |
+| INV-ADAPTER-DET-1 | test_inv_adapter_reg_det: same domain_input ⇒ same JSON (sort_keys) for (state, context). |
+| INV-STORE-PATH-1 | test_inv_store_sec_1: save(..., path=absolute, allow_absolute_path=False) ⇒ ValueError. |
+| INV-GW-SIZE-1 | test_inv_gw_size_rl: body over max_body_bytes ⇒ 413. |
+| INV-GW-RL-1 | test_inv_gw_size_rl: requests over DECISION_GATEWAY_RATE_MAX in window ⇒ 429. |
 
 **CI:** `pytest tests/ -k "platform or inv_gw or inv_store or inv_ctrl"` (and existing fullstack tests). Optional: JSON artifact for PROOF-STD alignment.
+
+---
+
+### 4.1 Adapter PR checklist (fail-closed)
+
+Before merging a new adapter:
+
+- **INV-ADAPTER-DOMAIN-LEAK-1** (prefix): Adapter module name and public surface use `example_domain_*`; no production domain in public API. Test: `test_inv_adapter_domain_leak_1_*` PASS.
+- **INV-ADAPTER-REG-1**: Adapter is in registry and `get_adapter(name)` returns a `BaseAdapter` instance. Test: `test_inv_adapter_reg_det` PASS.
+- **INV-ADAPTER-DET-1**: Same `domain_input` ⇒ same `(state, context)` (order-stable JSON). Test: `test_inv_adapter_reg_det` PASS.
+- **Store redaction gate**: Example input produces packet with `harness.redaction_applied=True` when redaction is enabled; store write path satisfies INV-STORE-SEC-1.
 
 ---
 

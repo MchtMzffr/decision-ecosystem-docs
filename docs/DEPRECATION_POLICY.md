@@ -46,5 +46,18 @@ Every deprecated field or API must have:
 
 ---
 
+## 5. INV-API-SURFACE-1 (harness top-level exports)
+
+| Element | Value |
+|---------|--------|
+| **Item** | Top-level harness exports for platform (e.g. `from harness import create_app`, `serve`, `catalog`, `control`, `store`) |
+| **deprecated_in** | 0.2 |
+| **remove_in** | 1.0 |
+| **migration_note** | Prefer `from harness.platform.gateway import create_app`; `from harness.platform import catalog, control, store`; serve via `harness.platform.gateway` or `python -m harness`. |
+
+**Rationale:** Platform API lives under `harness.platform.*`; top-level re-exports are for backward compatibility only and will be removed in 1.0.
+
+---
+
 **Last updated:** 2026-02-19  
-**References:** ECOSYSTEM_GATES_AND_INVARIANTS.md (J. SemVer / deprecation), RELEASE_NOTES_STANDARD_AND_TEMPLATES.md
+**References:** ECOSYSTEM_GATES_AND_INVARIANTS.md (J. SemVer / deprecation), RELEASE_NOTES_STANDARD_AND_TEMPLATES.md, PLATFORM_PLACEMENT_AND_DEFAULTS.md
