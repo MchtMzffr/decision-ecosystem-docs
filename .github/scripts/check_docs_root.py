@@ -25,6 +25,7 @@ ALLOWED_DIRS = {
     "docs",
     "examples",
     ".git",
+    "reports",
     "tools",
     ".ruff_cache",
     ".pytest_cache",

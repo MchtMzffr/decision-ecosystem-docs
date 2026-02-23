@@ -1,6 +1,7 @@
 # INV-DOC-ROOT-ALLOW-1: Files allowed at repo root (single source of truth).
 # CI: .github/scripts/check_docs_root.py reads this list.
 # Comment lines and blank lines are ignored.
+.gitignore
 ROOT_ALLOWLIST.txt
 README.md
 DOCS_REPO_STRUCTURE.md
