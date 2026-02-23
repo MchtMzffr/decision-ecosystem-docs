@@ -26,6 +26,7 @@ For the **defined scope** (contract-first multi-repo pipeline, invariants, CI, d
 | **P3 CI/CD** | Secret scan, pip-audit, coverage gate in all cores, harness, explainability |
 | **Releases** | Schema 0.2.2, cores tagged, explainability v0.1.0, ecosystem CLI in use |
 | **Governance** | ECOSYSTEM_GATES_AND_INVARIANTS, REPO_REGISTRY, CI_COMPLIANCE_STANDARD, release alignment, workspace sync, remote owner checks |
+| **Platform (harness)** | Gateway, store, catalog, control, adapters under `harness/platform/`; P0 invariants (INV-STORE-SEC-1, INV-STORE-NO-PII-1, INV-GW-CTRL-LOCK-1, INV-GW-AUTH-1, INV-ADAPTER-DOMAIN-LEAK-1) implemented and tested. See PLATFORM_PLACEMENT_AND_DEFAULTS.md. |
 
 ---
 
@@ -52,4 +53,4 @@ When you run `check_release_alignment`, `check_workspace_sync` (with clean repos
 
 ---
 
-**References:** NEXT_STEPS_ROADMAP.md, ECOSYSTEM_GATES_AND_INVARIANTS.md §14–16, RND_FUTURE_DIRECTIONS_AND_REASONS.md
+**References:** NEXT_STEPS_ROADMAP.md, ECOSYSTEM_GATES_AND_INVARIANTS.md §14–16, RND_FUTURE_DIRECTIONS_AND_REASONS.md, PLATFORM_PLACEMENT_AND_DEFAULTS.md
