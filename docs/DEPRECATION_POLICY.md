@@ -55,6 +55,8 @@ Every deprecated field or API must have:
 | **remove_in** | 1.0 |
 | **migration_note** | Prefer `from harness.platform.gateway import create_app`; `from harness.platform import catalog, control, store`; serve via `harness.platform.gateway` or `python -m harness`. |
 
+**Support window:** At least 2 minor versions (deprecated_in 0.2 → remove_in 1.0); deprecated API continues to work until 1.0.
+
 **Rationale:** Platform API lives under `harness.platform.*`; top-level re-exports are for backward compatibility only and will be removed in 1.0.
 
 ---

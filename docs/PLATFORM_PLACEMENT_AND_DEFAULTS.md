@@ -60,7 +60,7 @@ harness/
 | **INV-ADAPTER-DET-1** | Same domain_input ⇒ same (state, context) when serialized (order-stable JSON). | Adapters; test_inv_adapter_reg_det. |
 | **INV-STORE-PATH-1** | Default store path only under allowlist (e.g. cwd or ./artifacts); absolute path only with explicit allow_absolute_path=True. | harness/platform/store.py save(); test_inv_store_sec_1. |
 | **INV-GW-SIZE-1** | Request body size upper bound (default 256KB); over limit ⇒ 413. | harness/platform/gateway.py middleware; test_inv_gw_size_rl. |
-| **INV-GW-RL-1** | In-memory per-IP (or per-tenant) rate limit; over limit ⇒ 429. | harness/platform/gateway.py _rate_limit; test_inv_gw_size_rl. |
+| **INV-GW-RL-1** | In-memory per-IP rate limit (key: client IP; optional future: per-tenant); over limit ⇒ 429 with Retry-After, X-RateLimit-Limit/Remaining/Reset. | harness/platform/gateway.py _rate_limit; test_inv_gw_size_rl. |
 | **INV-API-SURFACE-1** (P1) | Top-level harness exports minimal; platform API under harness.platform.*. | Docs; DEPRECATION_POLICY.md; future removal at 1.0. |
 
 ---
@@ -77,6 +77,7 @@ harness/
   - **Input:** `{ "state": {...}, "context": {...}, "run_id": "...", "step": 0, "tenant_id": "..." }`
   - **Output:** same shape as /decide (no domain_output).
 - **GET `/control`**, **POST `/control`** (INV-GW-CTRL-LOCK-1): Default **disabled** (403). Enable with `DECISION_GATEWAY_ENABLE_CONTROL=1` or `create_app(enable_control_endpoints=True)`. When enabled (INV-GW-AUTH-1): require header `X-Decision-Control-Token` or `Authorization: Bearer <token>` matching `DECISION_CONTROL_TOKEN`; else 401.
+- **Rate limit (INV-GW-RL-1):** Over limit ⇒ 429 with `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`. Key: per-IP (deterministic); optional future: per-tenant.
 - **GET `/health`** ⇒ `{ "status": "ok" }`.
 
 ### Store
