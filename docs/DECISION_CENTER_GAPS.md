@@ -41,13 +41,14 @@ A **Decision Center** in the full sense is not only the pipeline but:
 Today we have:
 
 - **Engine:** propose → ops → modulate → PacketV2 → report (and optional explanation, execution). ✓  
-- **Caller:** Whoever uses the harness (e.g. a script or service) must import `run_one_step`, build `state` and `context`, and handle the return value. There is **no standard API layer** (e.g. REST/gRPC “decision service”) that the ecosystem provides.
-- **Persistence:** PacketV2 and Report are returned in memory. **No ecosystem-owned store** for audit, replay, or analytics; the caller is responsible.
-- **Configuration:** Policy and context are passed per call. **No central catalog** for policies, model endpoints, or tenant-specific config that the pipeline reads from.
-- **Control plane:** Ops state (e.g. kill-switch) is updated by the caller. **No standard control API or UI** (e.g. “set RED”, “view last N runs”) provided by the ecosystem.
-- **Verticals:** Domains use the same harness and schema; there is **no formal adapter layer** (e.g. “lending adapter” that maps domain input → state/context and FinalDecision → domain output) as part of the ecosystem.
+- **Caller:** ✓ **Implemented.** Gateway under `harness/platform/gateway.py`: POST /decide, POST /decision, GET/POST /control (opt-in), GET /health; INV-GW-SIZE-1, INV-GW-RL-1, 429 headers.
+- **Persistence:** ✓ **Implemented.** Store under `harness/platform/store.py`: memory/file/off; INV-STORE-SEC-1, INV-STORE-NO-PII-1, INV-STORE-PATH-1, fsync.
+- **Configuration:** ✓ **Implemented.** Catalog under `harness/platform/catalog.py`; gateway merges context overrides.
+- **Control plane:** ✓ **Implemented.** Control under `harness/platform/control.py`; GET/POST /control (INV-GW-CTRL-LOCK-1, INV-GW-AUTH-1).
+- **Verticals:** ✓ **Implemented.** Adapters under `harness/platform/adapters/`: seven example_domain_* adapters, INV-ADAPTER-REG-1/DET-1, checklist.
 
-So: **the engine is global and complete; the “center” (platform around it) is not.**
+
+**So: the engine and the platform (Decision Center) are implemented in the harness repo.** See PLATFORM_PLACEMENT_AND_DEFAULTS.md.
 
 ---
 
@@ -95,7 +96,7 @@ Yes — but as a **support group**, not as duplicates of the current cores.
 | Is building “fairness core”, “cost core” as new cores the right move? | **No.** Same mechanism (guards, context); extend DMC or supply context from caller. |
 | What is missing? | **The center around the engine:** API, persistence, catalog, control plane, adapters. |
 | Do we need a new group of “cores” that integrate with decision-schema? | **Yes** — as **support/platform** components (gateway, store, catalog, control, adapters), not as more decision-logic cores. |
-| Is the Decision Center complete today? | **Engine: yes. Center: no.** Completing it means adding the support layer above. |
+| Is the Decision Center complete today? | **Engine: yes. Center: yes.** Platform (gateway, store, catalog, control, adapters) is implemented under harness; see PLATFORM_PLACEMENT_AND_DEFAULTS.md. |
 
 ---
 

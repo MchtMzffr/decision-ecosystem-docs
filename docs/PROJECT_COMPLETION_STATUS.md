@@ -26,7 +26,7 @@ For the **defined scope** (contract-first multi-repo pipeline, invariants, CI, d
 | **P3 CI/CD** | Secret scan, pip-audit, coverage gate in all cores, harness, explainability |
 | **Releases** | Schema 0.2.2, cores tagged, explainability v0.1.0, ecosystem CLI in use |
 | **Governance** | ECOSYSTEM_GATES_AND_INVARIANTS, REPO_REGISTRY, CI_COMPLIANCE_STANDARD, release alignment, workspace sync, remote owner checks |
-| **Platform (harness)** | Gateway, store, catalog, control, adapters under `harness/platform/`; P0 invariants (INV-STORE-SEC-1, INV-STORE-NO-PII-1, INV-GW-CTRL-LOCK-1, INV-GW-AUTH-1, INV-ADAPTER-DOMAIN-LEAK-1) implemented and tested. See PLATFORM_PLACEMENT_AND_DEFAULTS.md. |
+| **Platform (harness)** | Gateway, store, catalog, control, adapters under `harness/platform/`; P0 invariants (domain leak, store redaction/PII/fsync, control default off + token) and P0.5 (INV-ADAPTER-REG-1/DET-1, INV-STORE-PATH-1, INV-GW-SIZE-1, INV-GW-RL-1, adapter checklist, INV-API-SURFACE-1 deprecation) and P0.6 (429 Retry-After + X-RateLimit-* headers, RL key per-IP, support window) implemented and tested. Seven example adapters (lending, scheduling, trading, content_moderation, ops_automation, triage, agent_tool_use). See PLATFORM_PLACEMENT_AND_DEFAULTS.md. |
 
 ---
 
