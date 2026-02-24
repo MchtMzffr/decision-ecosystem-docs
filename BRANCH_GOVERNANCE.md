@@ -20,7 +20,7 @@
 
 1. **Ecosystem Consistency**: All cores use `main` for uniformity
 2. **Modern Standard**: GitHub's default branch naming (2020+)
-3. **CI/CD Alignment**: All workflows and git fallbacks use `@main`
+3. **CI/CD Alignment**: CI uses tag-pinned fallbacks (`@vX.Y.Z`); dev/experiments may use `@main` (non-deterministic)
 
 ## Branch Naming Convention
 
@@ -62,8 +62,8 @@ All GitHub Actions workflows:
 If any repository still has `master` branch:
 1. Merge `master` → `main` (if needed)
 2. Update default branch in GitHub settings
-3. Update CI workflows to remove `master` triggers
-4. Update git fallback URLs to `@main`
+3. Update CI workflows to trigger on `main` only (remove `master` triggers)
+4. Keep CI fallbacks tag-pinned (`@vX.Y.Z`); do not use `@main` in CI. For local dev only, `@main` is allowed.
 5. Delete `master` branch (after migration complete)
 
 ## Enforcement

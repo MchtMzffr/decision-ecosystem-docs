@@ -1,0 +1,6 @@
+# INV-DOC-DOMAIN-0: Lexemes forbidden in ACTIVE docs (docs/ excluding archive/ and examples/).
+# One lexeme per line; case-insensitive match. Add domain-specific or vendor terms to keep ACTIVE domain-agnostic.
+# Examples (uncomment or add as needed):
+# Sharpe
+# drawdown
+# MeetlyTR

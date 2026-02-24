@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 #!/usr/bin/env python3
 """
-Docs repo root structure guard — INV-DOC-ROOT-*, INV-DOC-ARCHIVE-*, INV-DOC-README-*, INV-DOC-ANALYSIS-LIMIT-1.
+Docs repo root structure guard — INV-DOC-ROOT-*, INV-DOC-ROOT-ALLOWLIST-FMT-1, INV-DOC-ARCHIVE-*, INV-DOC-README-*, INV-DOC-ANALYSIS-LIMIT-1.
 Run from repo root: python .github/scripts/check_docs_root.py
 """
 
@@ -20,6 +20,7 @@ README_FILE = REPO_ROOT / "README.md"
 
 # Directories allowed at root (archive/ may only contain YYYY-MM-DD subdirs)
 ALLOWED_DIRS = {
+    ".cursor",
     ".github",
     "archive",
     "docs",
@@ -36,6 +37,23 @@ MAX_ANALYSIS_REPORTS = 2
 
 # Only YYYY-MM-DD subdirs allowed under archive/
 ARCHIVE_SUBDIR_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def check_allowlist_format() -> tuple[bool, list[str]]:
+    """INV-DOC-ROOT-ALLOWLIST-FMT-1: Each non-comment line must contain a single path (no whitespace)."""
+    errors = []
+    if not ALLOWLIST_FILE.exists():
+        return True, []
+    with open(ALLOWLIST_FILE, encoding="utf-8") as f:
+        for i, line in enumerate(f, 1):
+            s = line.strip()
+            if not s or s.startswith("#"):
+                continue
+            if " " in s or "\t" in s:
+                errors.append(
+                    f"INV-DOC-ROOT-ALLOWLIST-FMT-1: line {i} contains whitespace (one path per line): {s!r}"
+                )
+    return len(errors) == 0, errors
 
 
 def load_allowlist() -> set[str]:
@@ -132,8 +150,13 @@ def check_inv_doc_analysis_limit_1(allowlist: set[str]) -> tuple[bool, list[str]
 
 def main() -> int:
     os.chdir(REPO_ROOT)
-    allowlist = load_allowlist()
     all_errors = []
+
+    ok0, err0 = check_allowlist_format()
+    if not ok0:
+        all_errors.extend(err0)
+
+    allowlist = load_allowlist()
 
     ok1, err1 = check_inv_doc_root_allow_1(allowlist)
     if not ok1:

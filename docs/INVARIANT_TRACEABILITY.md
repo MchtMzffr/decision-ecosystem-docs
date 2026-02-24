@@ -20,7 +20,12 @@ SPDX-License-Identifier: MIT
 | INV-REMOTE-OWNER | `tools/check_remote_owner.py --workspace <path>` | — |
 | INV-CI-COMPLY-2, INV-CI-COMPLY-1 (per repo) | `tools/check_ci_compliance.py --workspace <path>` | — |
 | INV-PUBLIC-MAIN-1, INV-PUBLIC-MAIN-2 | `tools/public_main_audit.py --owner <owner>` | — |
-| INV-DOC-ROOT-ALLOWLIST-1, docs structure | `.github/scripts/check_docs_root.py` (docs repo CI) | — |
+| INV-DOC-ROOT-ALLOWLIST-1, INV-DOC-ROOT-ALLOWLIST-FMT-1, docs structure | `.github/scripts/check_docs_root.py` (docs repo CI) | — |
+| INV-DOC-LINK-1 | `.github/scripts/check_docs_links.py` | — |
+| INV-DOC-DOMAIN-0 | `.github/scripts/check_docs_domain_lexemes.py` (config: docs/DOMAIN_LEXEMES.txt) | — |
+| Local CI simulation (all docs guard steps) | `python .github/scripts/run_docs_guard_ci_steps.py` (from repo root) | — |
+| **Tüm testler + guard'lar (sadece docs repo)** | `python .github/scripts/run_all_tests_and_guards.py` (docs pytest + 4 guard) | `tools/tests/` |
+| **Tüm ekosistem (çekirdekler + harness + docs + guard'lar)** | `python tools/run_all_ecosystem_tests.py --workspace <parent-dir>` (tüm repolarda pytest + docs guard'lar) | Her repoda `tests/`; docs: `tools/tests/` |
 
 ---
 
@@ -36,6 +41,7 @@ SPDX-License-Identifier: MIT
 | INV-CI-PROOF-1, INV-CI-PROOF-STD-1 | pytest with artifact upload | (all `tests/` in repo) |
 | INV-PARAM-INDEX-1 | decision-schema CI: `python tools/check_parameter_index.py` | — |
 | INV-CI-PIN-1, INV-CI-SCHEMA-FB-1 | Workflow YAML + check_ci_compliance.py | — |
+| INV-DOC-* (docs repo) | `.github/workflows/docs_structure_guard.yml`: check_docs_root, check_docs_links, check_docs_domain_lexemes, check_ci_compliance | — |
 
 ---
 

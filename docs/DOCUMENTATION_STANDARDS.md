@@ -42,5 +42,13 @@ SPDX-License-Identifier: MIT
 
 ---
 
+## 4. CURRENT vs ARCHIVE (INV-DOC-ACTIVE-1)
+
+- **CURRENT docs** live under `docs/` (and root allowlist files). These are the live policy, guides, and checklists.
+- **archive/YYYY-MM-DD/** is an immutable snapshot; do not edit archived files. Historical reports and one-off session output go here.
+- **README link policy:** The main index ("Current documentation" / "Quick links") must link only to CURRENT set (root allowlist + `docs/`). Links to `archive/` belong in a separate **Archive (historical)** section so readers know what is current vs historical.
+
+---
+
 **Last updated:** 2026-02  
 **References:** ECOSYSTEM_GATES_AND_INVARIANTS.md §4, §14 P1

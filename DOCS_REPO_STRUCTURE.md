@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 **Purpose:** This repo is the single source of truth (SSOT) for ecosystem-wide **governance, release, and verification**. A clear structure and rule set is applied instead of placing every file at root.
 
-**Principles:** CURRENT (live, at-a-glance) vs ARCHIVE (historical snapshot); root holds only "living" documents; duplicates and old reports go to archive.
+**Principles:** CURRENT (live, at-a-glance) vs ARCHIVE (historical snapshot); root holds only "living" documents; duplicates and old reports go to archive. README main index links only to CURRENT (root allowlist + docs/); archive links live in a separate section (INV-DOC-ACTIVE-1). See **docs/DOCUMENTATION_STANDARDS.md** §4.
 
 ---
 

@@ -1,0 +1,36 @@
+---
+description: Decision Ecosystem global rules — contract-first, domain-agnostic, fail-closed, trace registry (INV-TRACE-REG-1), SemVer, CI tag pin, docs governance.
+alwaysApply: true
+---
+
+# Decision Ecosystem — Global Rule
+
+You are working in the Decision Ecosystem (contract-first, domain-agnostic). Non-negotiables:
+
+## ARCHITECTURE / DEPENDENCIES
+
+- SSOT is decision-schema. All cores may depend ONLY on decision-schema (no core↔core deps). Enforce INV-CORE-DEP-1.
+- Any new trace keys MUST be registered in decision-schema's trace registry before being used (INV-TRACE-REG-1).
+- Keep public-safe language: no vendor terms, no secrets, no internal endpoints. Domain examples must live under docs/examples and be labeled "Example domain".
+
+## ENGINEERING STYLE (always)
+
+- Define: Terms → Assumptions → Formulas → Invariants → Tests → Patch plan (file/path/function-level).
+- Fail-closed by default: on exception, decision/action must become deny/blocked unless explicitly allowed by invariant.
+- Safety: secret redaction, structured errors, kill-switch compliance, bounded memory/time, rate-limit awareness.
+
+## VERSIONING / RELEASES
+
+- SemVer strictly. Patch releases for backward-compatible fixes.
+- CI must be deterministic: install fallbacks use tagged versions (@vX.Y.Z), never @main in CI.
+- Tags are immutable once pushed. If a fix is needed, bump version and create a new tag; never move a tag.
+
+## DOCS GOVERNANCE
+
+- Follow docs repo standards: root allowlist (INV-DOC-ROOT-ALLOWLIST-FMT-1: one path per line), SCREAMING_SNAKE_CASE filenames for governance/process docs.
+- Any new doc must be justified by an invariant or a gate. Otherwise put it in archive/YYYY-MM-DD/ or don't add it.
+- Broken links are a hard failure (INV-DOC-LINK-1). Keep docs paths consistent (prefer docs/…).
+
+## OUTPUT FORMAT
+
+- Provide: (1) Findings, (2) Invariants/metrics, (3) Minimal patch set, (4) Compatibility & deprecation notes.

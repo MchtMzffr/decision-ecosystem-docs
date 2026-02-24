@@ -1,0 +1,11 @@
+---
+description: decision-ecosystem-docs repo scope — do not write core API docs here; link to core. New doc must be justified by an invariant.
+globs: "**/*.md"
+alwaysApply: false
+---
+
+# Docs repo scope (decision-ecosystem-docs)
+
+- **Do not write core API or implementation docs in this repo.** Link to the owning core repo (e.g. decision-schema, mdm-engine) for API, types, and code-level docs. This repo holds governance, release, verification, and ecosystem-level policy only.
+- **Before adding a new doc:** state which invariant or gate it serves (e.g. INV-DOC-*, release checklist, compliance standard). If none, put the content in `archive/YYYY-MM-DD/` or do not add it.
+- **INV-DOC-*** prefix is standard for docs invariants (INV-DOC-LINK-1, INV-DOC-ACTIVE-1, INV-DOC-DOMAIN-0, INV-DOC-POLICY-SSOT-1). Use these names in patches and check scripts.

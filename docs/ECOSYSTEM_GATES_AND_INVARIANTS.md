@@ -72,9 +72,11 @@ SPDX-License-Identifier: MIT
 | ID | Definition | Metric | CI / check | Remediation |
 |----|------------|--------|------------|-------------|
 | **Root allowlist** | Only allowlist files at root; README links only to these. | — | check_docs_root.py | Move non-allowlist to archive or docs/ |
+| **INV-DOC-ROOT-ALLOWLIST-FMT-1** | Each non-comment line in ROOT_ALLOWLIST.txt contains a single path (no spaces). | allowlist_parse_errors == 0 | check_docs_root.py | One path per line; fix or remove whitespace |
 | **INV-DOC-ROOT-ALLOWLIST-1** | ECOSYSTEM_INVARIANTS.md (and governance docs) in root allowlist; check_docs_root.py enforces. | allowlist_contains_invariants == true | check_docs_root.py | Add to DOCS_REPO_STRUCTURE allowlist |
 | **No root clutter** | No session/summary, one-off migration, sprint board, old verification at root. | — | check_docs_root.py | Move to archive/YYYY-MM-DD/ |
 | **INV-DOC-2** | Dated snapshots under `archive/YYYY-MM-DD/`. | — | — | Create dated archive dir; move file |
+| **INV-DOC-ACTIVE-1** | README "Current" section links only to CURRENT set (root allowlist + docs/); archive/ links only in Archive section. | current_section_archive_links == 0 | check_docs_root.py / policy | Keep CURRENT vs Archive sections separate; link checker can enforce |
 | **Analysis limit** | At most 1–2 current analysis reports at root. | current_analysis_count <= 2 | check_docs_root.py | Move older to archive |
 
 ---
@@ -147,7 +149,9 @@ SPDX-License-Identifier: MIT
 
 | ID | Definition | Metric | CI / check | Remediation |
 |----|------------|--------|------------|-------------|
-| **INV-DOC-LINK-1** | README and doc links (relative) resolve; no broken link. | broken_link_count == 0 | check_docs_root.py / link checker | Fix or remove link; add target file |
+| **INV-DOC-LINK-1** | README and doc links (relative) resolve; no broken link. | broken_link_count == 0 | check_docs_links.py | Fix or remove link; add target file |
+| **INV-DOC-DOMAIN-0** | ACTIVE docs (docs/ excluding archive/ and examples/) contain no domain lexemes from config. | domain_lexeme_count == 0 | check_docs_domain_lexemes.py | Remove lexeme or move to examples/; update docs/DOMAIN_LEXEMES.txt |
+| **INV-DOC-POLICY-SSOT-1** | Branch/tag/release policy is defined only in designated governance docs (root: BRANCH_GOVERNANCE.md, TAG_GOVERNANCE.md, RELEASE_VERIFICATION_CHECKLIST.md; docs/: CI_COMPLIANCE_STANDARD.md, RELEASE_NOTES_STANDARD_AND_TEMPLATES.md). Other docs link; do not duplicate policy text. | policy_duplicate_undefined | Manual / optional check_policy_duplicates.py | Move policy text to governance doc; replace with link |
 
 ---
 

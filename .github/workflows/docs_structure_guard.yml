@@ -42,5 +42,11 @@ jobs:
       - name: Run docs root invariants
         run: python .github/scripts/check_docs_root.py
 
+      - name: INV-DOC-LINK-1 (broken link check)
+        run: python .github/scripts/check_docs_links.py
+
+      - name: INV-DOC-DOMAIN-0 (domain lexeme check)
+        run: python .github/scripts/check_docs_domain_lexemes.py
+
       - name: INV-CI-COMPLY-2 (CI compliance check)
         run: python tools/check_ci_compliance.py --workspace .

@@ -25,7 +25,7 @@
 | **Kaynak kod analizi** | Erişilemedi | **Yapılabildi** | Dil: **Python** (pyproject, `*.py`). Modül sınırları: decision_schema, mdm_engine, dmc_core, ops_health_core, eval_calibration_core, execution_orchestration_core, harness, explainability_audit_core. |
 | **Testler / coverage** | Erişilemedi | **Var** | Her core/harness’ta `tests/`; invariant testleri (version_single_source, schema_pin_minor_2, fail_closed, guard_order_determinism, ops_health_guard); docs’ta `tools/tests/` (public_main_audit_negative). |
 | **CI (GitHub Actions)** | Erişilemedi | **Var** | Her core/harness’ta `.github/workflows/ci.yml` (secret_scan, LICENSE check, Ruff, build, pytest, artifact); docs’ta `docs_structure_guard.yml` + `secret-scan.yml`. |
-| **Lisans** | Erişilemedi | **Var** | Tüm repolarda root **LICENSE** (MIT metni). README’lerde "MIT License. See [LICENSE](LICENSE)." — placeholder yok. |
+| **Lisans** | Erişilemedi | **Var** | Tüm repolarda root **LICENSE** (MIT metni). README’lerde "MIT License. See [LICENSE](../LICENSE)." — placeholder yok. |
 | **Issues / PR’lar** | Erişilemedi | **Belirsiz** | Workspace’te issue/PR verisi yok; yalnızca yerel dosya ağacı doğrulandı. |
 | **Commit geçmişi / release/tag** | Erişilemedi | **Kısmen** | Yerel git log’larda license/SPDX commit’leri görüldü; tag/release sayısı GitHub API olmadan tam sayılamadı. REPO_REGISTRY’de latest_tag: decision-schema v0.2.2, mdm v0.2.1, dmc v0.1.1, ops-health v0.1.1, eval-cal v0.1.1, exec-orch v0.1.0. |
 
@@ -44,7 +44,7 @@
 
 | Rapor iddiası | Doğrulama | Veri |
 |---------------|-----------|------|
-| "Depoda hangi lisans bilinmiyor" | **Yanlış** | Tüm repolarda root **LICENSE** (MIT). README’de "MIT License. See [LICENSE](LICENSE)." SPDX pratikte uyumlu (MIT identifier). |
+| "Depoda hangi lisans bilinmiyor" | **Yanlış** | Tüm repolarda root **LICENSE** (MIT). README’de "MIT License. See [LICENSE](../LICENSE)." SPDX pratikte uyumlu (MIT identifier). |
 | "CI/workflow yokluğu bilinmediği için unspecified" | **Yanlış** | 10 workflow dosyası: 6 core + harness + explainability + docs (docs_structure_guard, secret-scan). Her core CI: checkout, LICENSE check, setup-python, Ruff check/format, decision-schema install (pin/fallback), build, pytest, artifact. |
 | "no_secrets_in_repo" invariant | **Uygulanıyor** | Docs’ta gitleaks (secret-scan.yml); core’larda ci.yml içinde secret_scan job. |
 | "workflow_permissions_minimized" | **Uygulanıyor** | Örnek (docs_structure_guard): `permissions` yok (default); core ci.yml’lerde `permissions: contents: read` mevcut. |
