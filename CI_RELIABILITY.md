@@ -23,7 +23,7 @@ Partly **yes**. The following can cause one-off or transient failures; we cannot
 | **Job hang** | Step stops responding and the run runs for hours | **timeout-minutes** on every job (15–25 min) |
 | **Concurrency cancel** | When a new push is made, the previous run is **cancelled** | This is not a "failure" but **cancelled**; appears as "Cancelled" in the UI |
 | **Single matrix fail** | With default `fail-fast: true`, one Python version failing cancels the other | **fail-fast: false** so 3.11 and 3.12 finish separately and it is clear which environment failed |
-| **Ruff / lint** | CI runs `ruff check` and `ruff format --check` (no auto-fix). If you push without running lint locally, CI fails. | **Run before push:** `pre-commit run --all-files` or `ruff check . && ruff format .`. CI pins Ruff to match `.pre-commit-config.yaml` (v0.8.x). |
+| **Ruff / lint** | CI runs `ruff check` and `ruff format --check` (no auto-fix). If you push without running lint locally, CI fails. | **Run before push:** `pre-commit run --all-files` or `ruff check . && ruff format .`. **Standard:** Every Python repo must have `[tool.ruff]` in pyproject.toml with `line-length = 100`, `target-version = "py311"` (see docs/CI_COMPLIANCE_STANDARD.md §5.2). Pin Ruff in CI to match pre-commit (e.g. `ruff==0.8.4` or `ruff>=0.8.4,<0.9`). |
 
 ---
 

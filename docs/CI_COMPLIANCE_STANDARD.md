@@ -116,6 +116,20 @@ When adding a **new** core repo, copy the CI workflow from an existing core (e.g
 
 **INV-CI-COMPLY-2:** CI compliance checker runs in docs repo CI (and optionally locally with `--workspace`); fail-closed. **Metric:** `compliance_checker_pass == true`. See §7.
 
+### 5.2 Ruff standard (INV-LINT-1) — avoid format/lint drift
+
+**Cause of repeated compatibility issues:** Repos without `[tool.ruff]` use Ruff defaults (e.g. line-length 88); others use line-length 100. CI installs Ruff without a version pin, so CI and local/pre-commit can differ. Result: `ruff format --check` fails intermittently.
+
+**Canonical config (all Python repos):** Every repo that runs `ruff check` / `ruff format` must have in `pyproject.toml`:
+
+```toml
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+```
+
+**Version pin (recommended):** Pin Ruff so CI and pre-commit match. Options: (1) In CI: `pip install ruff==0.8.4` (or `ruff>=0.8.4,<0.9`). (2) Pre-commit: `rev: v0.8.4` in `.pre-commit-config.yaml` (docs repo). (3) Dev deps: `ruff>=0.8.4,<0.9` in `[project.optional-dependencies] dev`. **Metric:** Same major/minor Ruff version in CI and pre-commit; all Python repos have `[tool.ruff]` with `line-length = 100` and `target-version = "py311"`.
+
 ---
 
 ## 6. Fail-closed verification: “Done” only with proof on main (INV-SYNC-1)
