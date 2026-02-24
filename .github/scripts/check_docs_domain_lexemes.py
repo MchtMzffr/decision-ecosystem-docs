@@ -10,7 +10,6 @@ Run from repo root: python .github/scripts/check_docs_domain_lexemes.py
 
 from __future__ import annotations
 
-import re
 import sys
 from pathlib import Path
 

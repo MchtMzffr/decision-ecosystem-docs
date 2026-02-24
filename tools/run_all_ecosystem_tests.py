@@ -89,7 +89,12 @@ def run_pytest_in_repo(workspace: Path, repo_name: str) -> tuple[int, int, bool]
 def run_docs_guard(docs_repo: Path, script_name: str, workspace: Path) -> bool:
     if script_name == "check_ci_compliance.py":
         r = subprocess.run(
-            [sys.executable, "tools/check_ci_compliance.py", "--workspace", str(workspace)],
+            [
+                sys.executable,
+                "tools/check_ci_compliance.py",
+                "--workspace",
+                str(workspace),
+            ],
             cwd=docs_repo,
             capture_output=True,
             text=True,
@@ -110,8 +115,12 @@ def run_docs_guard(docs_repo: Path, script_name: str, workspace: Path) -> bool:
 
 
 def main() -> int:
-    ap = __import__("argparse").ArgumentParser(description="Run all ecosystem tests + docs guards.")
-    ap.add_argument("--workspace", type=Path, default=None, help="Parent dir containing repo dirs")
+    ap = __import__("argparse").ArgumentParser(
+        description="Run all ecosystem tests + docs guards."
+    )
+    ap.add_argument(
+        "--workspace", type=Path, default=None, help="Parent dir containing repo dirs"
+    )
     args = ap.parse_args()
     workspace = get_workspace(args.workspace)
     docs_repo = workspace / DOCS_REPO_NAME
@@ -139,8 +148,14 @@ def main() -> int:
     if docs_repo.is_dir():
         guards = [
             (".github/scripts/check_docs_root.py", "check_docs_root (INV-DOC-ROOT-*)"),
-            (".github/scripts/check_docs_links.py", "check_docs_links (INV-DOC-LINK-1)"),
-            (".github/scripts/check_docs_domain_lexemes.py", "check_docs_domain_lexemes (INV-DOC-DOMAIN-0)"),
+            (
+                ".github/scripts/check_docs_links.py",
+                "check_docs_links (INV-DOC-LINK-1)",
+            ),
+            (
+                ".github/scripts/check_docs_domain_lexemes.py",
+                "check_docs_domain_lexemes (INV-DOC-DOMAIN-0)",
+            ),
         ]
         for script_rel, label in guards:
             script_path = docs_repo / script_rel
@@ -148,12 +163,21 @@ def main() -> int:
                 ok = run_docs_guard(docs_repo, Path(script_rel).name, workspace)
                 total_passed += 1 if ok else 0
                 total_failed += 0 if ok else 1
-                results.append((label, 1 if ok else 0, 0 if ok else 1, "OK" if ok else "FAIL"))
+                results.append(
+                    (label, 1 if ok else 0, 0 if ok else 1, "OK" if ok else "FAIL")
+                )
 
         ok = run_docs_guard(docs_repo, "check_ci_compliance.py", workspace)
         total_passed += 1 if ok else 0
         total_failed += 0 if ok else 1
-        results.append(("check_ci_compliance (INV-CI-COMPLY-2)", 1 if ok else 0, 0 if ok else 1, "OK" if ok else "FAIL"))
+        results.append(
+            (
+                "check_ci_compliance (INV-CI-COMPLY-2)",
+                1 if ok else 0,
+                0 if ok else 1,
+                "OK" if ok else "FAIL",
+            )
+        )
 
     # Report
     print("--- Results ---")
@@ -162,7 +186,10 @@ def main() -> int:
     print("---")
     print(f"TOPLAM: {total_passed} gecti, {total_failed} kaldi")
     if total_failed > 0:
-        print("Not: Core/harness pytest icin once: python decision-ecosystem-docs/tools/ecosystem.py --workspace <dir> install", file=sys.stderr)
+        print(
+            "Not: Core/harness pytest icin once: python decision-ecosystem-docs/tools/ecosystem.py --workspace <dir> install",
+            file=sys.stderr,
+        )
         return 1
     print("Tum testler ve guard'lar gecti.")
     return 0

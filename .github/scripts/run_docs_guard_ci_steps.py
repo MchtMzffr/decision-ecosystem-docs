@@ -29,10 +29,26 @@ def main() -> int:
     steps = [
         ("Ruff check", ["ruff", "check", "."], True),
         ("Ruff format check", ["ruff", "format", "--check", "."], True),
-        ("Docs root invariants", [sys.executable, ".github/scripts/check_docs_root.py"], False),
-        ("INV-DOC-LINK-1", [sys.executable, ".github/scripts/check_docs_links.py"], False),
-        ("INV-DOC-DOMAIN-0", [sys.executable, ".github/scripts/check_docs_domain_lexemes.py"], False),
-        ("INV-CI-COMPLY-2", [sys.executable, "tools/check_ci_compliance.py", "--workspace", "."], False),
+        (
+            "Docs root invariants",
+            [sys.executable, ".github/scripts/check_docs_root.py"],
+            False,
+        ),
+        (
+            "INV-DOC-LINK-1",
+            [sys.executable, ".github/scripts/check_docs_links.py"],
+            False,
+        ),
+        (
+            "INV-DOC-DOMAIN-0",
+            [sys.executable, ".github/scripts/check_docs_domain_lexemes.py"],
+            False,
+        ),
+        (
+            "INV-CI-COMPLY-2",
+            [sys.executable, "tools/check_ci_compliance.py", "--workspace", "."],
+            False,
+        ),
     ]
     for name, cmd, optional in steps:
         code = run(cmd)

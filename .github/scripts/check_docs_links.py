@@ -28,7 +28,12 @@ def iter_md_files(root: Path):
 
 
 def is_external(url: str) -> bool:
-    return url.startswith("http://") or url.startswith("https://") or url.startswith("mailto:") or url.startswith("#")
+    return (
+        url.startswith("http://")
+        or url.startswith("https://")
+        or url.startswith("mailto:")
+        or url.startswith("#")
+    )
 
 
 def strip_code_for_link_scan(line: str) -> str:
@@ -63,7 +68,9 @@ def main() -> int:
     if broken:
         for md_path, line_no, url, resolved in broken:
             rel = md_path.relative_to(REPO_ROOT)
-            print(f"INV-DOC-LINK-1: broken link in {rel}:{line_no} -> {url} (resolved: {resolved})")
+            print(
+                f"INV-DOC-LINK-1: broken link in {rel}:{line_no} -> {url} (resolved: {resolved})"
+            )
         return 1
     print("OK: INV-DOC-LINK-1 passed (no broken relative links).")
     return 0

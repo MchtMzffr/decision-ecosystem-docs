@@ -67,25 +67,38 @@ def main() -> int:
     total_failed += failed
     results.append(("pytest tools/tests/", passed, failed))
     if failed > 0:
-        subprocess.run([sys.executable, "-m", "pytest", "tools/tests/", "-v", "--tb=short"], cwd=REPO_ROOT)
+        subprocess.run(
+            [sys.executable, "-m", "pytest", "tools/tests/", "-v", "--tb=short"],
+            cwd=REPO_ROOT,
+        )
 
     # 2. Docs root
     ok = run_script(".github/scripts/check_docs_root.py")
     total_passed += 1 if ok else 0
     total_failed += 0 if ok else 1
-    results.append(("check_docs_root.py (INV-DOC-ROOT-*)", 1 if ok else 0, 0 if ok else 1))
+    results.append(
+        ("check_docs_root.py (INV-DOC-ROOT-*)", 1 if ok else 0, 0 if ok else 1)
+    )
 
     # 3. Links
     ok = run_script(".github/scripts/check_docs_links.py")
     total_passed += 1 if ok else 0
     total_failed += 0 if ok else 1
-    results.append(("check_docs_links.py (INV-DOC-LINK-1)", 1 if ok else 0, 0 if ok else 1))
+    results.append(
+        ("check_docs_links.py (INV-DOC-LINK-1)", 1 if ok else 0, 0 if ok else 1)
+    )
 
     # 4. Domain lexemes
     ok = run_script(".github/scripts/check_docs_domain_lexemes.py")
     total_passed += 1 if ok else 0
     total_failed += 0 if ok else 1
-    results.append(("check_docs_domain_lexemes.py (INV-DOC-DOMAIN-0)", 1 if ok else 0, 0 if ok else 1))
+    results.append(
+        (
+            "check_docs_domain_lexemes.py (INV-DOC-DOMAIN-0)",
+            1 if ok else 0,
+            0 if ok else 1,
+        )
+    )
 
     # 5. CI compliance
     r = subprocess.run(
@@ -97,7 +110,9 @@ def main() -> int:
     ok = r.returncode == 0
     total_passed += 1 if ok else 0
     total_failed += 0 if ok else 1
-    results.append(("check_ci_compliance.py (INV-CI-COMPLY-2)", 1 if ok else 0, 0 if ok else 1))
+    results.append(
+        ("check_ci_compliance.py (INV-CI-COMPLY-2)", 1 if ok else 0, 0 if ok else 1)
+    )
 
     # Report
     print("--- Results ---")
